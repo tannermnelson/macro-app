@@ -367,6 +367,29 @@ h1 {
   color: var(--muted);
   font-size: .8rem;
 }
+.archive-section {
+  margin: 12px 0 0;
+  border: 1px dashed color-mix(in srgb, var(--muted) 45%, var(--line));
+  border-radius: 8px;
+  padding: 12px;
+  background: color-mix(in srgb, var(--panel) 66%, var(--soft));
+}
+.archive-section h2 {
+  margin: 0;
+  font-size: .98rem;
+}
+.archive-section p {
+  margin: 4px 0 10px;
+  color: var(--muted);
+  font-size: .8rem;
+}
+.archive-section summary {
+  cursor: pointer;
+  font-weight: 850;
+}
+.archive-section summary::marker {
+  color: var(--accent);
+}
 .stat-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -650,6 +673,14 @@ h1 {
   margin: 0 0 8px;
   font-size: .95rem;
 }
+.meal-slot-card {
+  display: grid;
+  gap: 13px;
+}
+.meal-slot-card h3 {
+  font-size: 1.16rem;
+  letter-spacing: 0;
+}
 .slot-items {
   display: grid;
   gap: 8px;
@@ -688,6 +719,167 @@ h1 {
   display: grid;
   gap: 10px;
 }
+.meal-section {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: 6px;
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+}
+.meal-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: start;
+}
+.meal-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--ink);
+  text-align: left;
+}
+.meal-toggle .triangle {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 16%, var(--panel));
+  color: var(--accent-dark);
+  font-size: .72rem;
+  font-weight: 900;
+}
+.meal-header h2,
+.meal-section-title {
+  margin: 0;
+  font-size: 1.18rem;
+  line-height: 1.1;
+  font-weight: 850;
+}
+.meal-header p {
+  margin: 3px 0 0;
+  color: var(--muted);
+  font-size: .78rem;
+}
+.meal-total {
+  border-radius: 999px;
+  padding: 6px 9px;
+  background: var(--accent);
+  color: white;
+  font-size: .76rem;
+  font-weight: 850;
+  white-space: nowrap;
+}
+.slot-add-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 2px;
+}
+.slot-add-row select {
+  min-height: 36px;
+  padding: 8px 10px;
+  margin: 0;
+}
+.slot-add-row .primary {
+  min-height: 36px;
+  padding: 8px 10px;
+  font-size: .82rem;
+}
+.meal-items {
+  display: grid;
+  gap: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--panel);
+}
+.meal-slot-card .meal-items + .meal-items {
+  margin-top: 4px;
+}
+.meal-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+  padding: 9px;
+  border-top: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+}
+.meal-row:first-child {
+  border-top: 0;
+}
+.meal-items > .meal-row:first-child {
+  background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 16%, var(--panel)), color-mix(in srgb, var(--gold) 16%, var(--panel)));
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 30%, var(--line));
+}
+.meal-items > .meal-row:first-child .meal-row-name strong {
+  font-size: .95rem;
+}
+.meal-row-name {
+  min-width: 0;
+}
+.meal-row-name strong {
+  display: block;
+  font-size: .88rem;
+  line-height: 1.15;
+}
+.meal-title-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: baseline;
+}
+.meal-title-line b {
+  color: var(--accent-dark);
+  font-size: .78rem;
+}
+.meal-row-name span,
+.meal-row-macros {
+  color: var(--muted);
+  font-size: .72rem;
+}
+.meal-row-right {
+  display: grid;
+  justify-items: end;
+  gap: 5px;
+}
+.meal-row .servings {
+  grid-template-columns: 30px 46px 30px;
+}
+.meal-row .servings button {
+  width: 30px;
+  height: 30px;
+}
+.meal-row .servings input {
+  width: 46px;
+  height: 30px;
+  font-size: .82rem;
+}
+.meal-row-totals {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+  padding: 9px;
+  background: color-mix(in srgb, var(--panel) 62%, var(--soft));
+  border-top: 1px solid var(--line);
+}
+.meal-row-totals span {
+  display: grid;
+  gap: 2px;
+  color: var(--muted);
+  font-size: .68rem;
+  text-align: center;
+}
+.meal-row-totals b {
+  color: var(--ink);
+  font-size: .82rem;
+}
 .item {
   background: linear-gradient(180deg, var(--panel), color-mix(in srgb, var(--panel) 80%, var(--soft)));
   border: 1px solid var(--line);
@@ -713,6 +905,11 @@ h1 {
   display: flex;
   gap: 6px;
   margin-top: 10px;
+}
+.library-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
 }
 .mini {
   border: 1px solid var(--line);
@@ -913,6 +1110,12 @@ const PROFILE_KEY = "macroProfileName";
 const PROFILE_DATA_KEY = "macroProfileData";
 const CHEAT_KEY = "macroCheatEntries";
 const TRAINING_KEY = "macroTrainingLog";
+const MEAL_PLAN_KEY = "macroDailyMealPlan";
+const MEAL_SLOT_KEY = "macroMealSlots";
+const MEAL_COLLAPSE_KEY = "macroMealCollapsedSlots";
+const CUSTOM_MEALS_KEY = "macroCustomMeals";
+const DELETED_FOOD_KEY = "macroDeletedFoodKeys";
+const MEAL_FOOD_KEY = "macroMealFoodLinks";
 
 const clone = (value) => JSON.parse(JSON.stringify(value));
 const slug = (value) => String(value || "item").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "item";
@@ -1046,6 +1249,12 @@ const state = {
   profileData: JSON.parse(localStorage.getItem(PROFILE_DATA_KEY) || "{}"),
   trainingLog: JSON.parse(localStorage.getItem(TRAINING_KEY) || "{}"),
   cheatEntries: JSON.parse(localStorage.getItem(CHEAT_KEY) || "{}"),
+  mealServings: JSON.parse(localStorage.getItem(MEAL_PLAN_KEY) || "{}"),
+  mealSlots: JSON.parse(localStorage.getItem(MEAL_SLOT_KEY) || "{}"),
+  collapsedMealSlots: JSON.parse(localStorage.getItem(MEAL_COLLAPSE_KEY) || "{}"),
+  customMeals: JSON.parse(localStorage.getItem(CUSTOM_MEALS_KEY) || "[]"),
+  deletedFoodKeys: JSON.parse(localStorage.getItem(DELETED_FOOD_KEY) || "[]"),
+  mealFoodKeys: JSON.parse(localStorage.getItem(MEAL_FOOD_KEY) || "{}"),
   favoriteIds: JSON.parse(localStorage.getItem(FAVORITES_KEY) || "[]"),
   editingProfile: false,
   modal: null
@@ -1073,6 +1282,18 @@ function saveFavorites() {
 function setView(view) {
   state.view = view;
   localStorage.setItem("macroView", view);
+}
+
+function savedMeals() {
+  return [...MEAL_TEMPLATES, ...state.customMeals];
+}
+
+function saveCustomMeals() {
+  localStorage.setItem(CUSTOM_MEALS_KEY, JSON.stringify(state.customMeals));
+}
+
+function mealById(idOrName) {
+  return savedMeals().find((meal) => (meal.id || meal.name) === idOrName || meal.name === idOrName);
 }
 
 function copyCurrentPhase() {
@@ -1136,9 +1357,11 @@ function foodKey(item) {
 
 function foodLibrary() {
   const map = new Map();
+  const deleted = new Set(state.deletedFoodKeys || []);
   DATA.forEach((phase) => {
     phase.items.forEach((item) => {
       const key = foodKey(item);
+      if (deleted.has(key)) return;
       if (!map.has(key)) map.set(key, { ...item, sources: [phase.name] });
       else map.get(key).sources.push(phase.name);
     });
@@ -1147,6 +1370,347 @@ function foodLibrary() {
 }
 
 const GROUP_ORDER = ["Protein", "Dairy", "Grains & Starches", "Fruit", "Vegetables", "Fats, Sauces & Extras", "Supplements", "Other"];
+const MEAL_PLAN_SLOTS = ["Breakfast", "Lunch", "Dinner", "Snacks", "Other"];
+const MEAL_TEMPLATES = [
+  {
+    name: "Ground Turkey Meal",
+    items: [
+      { name: "Ground Turkey", servings: 1.7, aliases: ["ground turkey", "ground tky", "ground turk", "grd tky", "ground tky"] },
+      { name: "Potatoes", servings: 1, aliases: ["potatoes", "pototaoes", "potato", "russet pot", "russet potato"] },
+      { name: "Peppers", servings: 1, aliases: ["peppers", "green pepper", "pepper"] },
+      { name: "Onions", servings: 1, aliases: ["onions", "onion"] },
+      { name: "Pinto Beans", servings: 1, aliases: ["pinto beans", "pinto bean", "pinto", "pinot beans", "beans"] },
+      { name: "Cottage Cheese", servings: 1, aliases: ["cottage cheese", "cottage ch", "cottage chse"] }
+    ]
+  },
+  {
+    name: "Chicken Meal",
+    items: [
+      { name: "Chicken", servings: 2, aliases: ["chicken", "chicken tend"] },
+      { name: "Potatoes", servings: 1, aliases: ["potatoes", "pototaoes", "potato", "russet pot", "russet potato"] },
+      { name: "Peppers", servings: 1, aliases: ["peppers", "green pepper", "pepper"] },
+      { name: "Onions", servings: 1, aliases: ["onions", "onion"] },
+      { name: "Pinto Beans", servings: 1, aliases: ["pinto beans", "pinto bean", "pinto", "pinot beans", "beans"] },
+      { name: "Cottage Cheese", servings: 1, aliases: ["cottage cheese", "cottage ch", "cottage chse"] }
+    ]
+  },
+  {
+    name: "Egg Breakfast",
+    items: [
+      { name: "Eggs", servings: 2, aliases: ["eggs", "egg"] },
+      { name: "Egg Whites", servings: 2, aliases: ["egg whites", "egg white"] },
+      { name: "Onion", servings: 1, aliases: ["onion", "onions"] },
+      { name: "Spinach", servings: 2, aliases: ["spinach"] }
+    ]
+  },
+  {
+    name: "Ninja Creami",
+    items: [
+      { name: "Protein Powder", servings: 1, aliases: ["protein powder", "protein pwd"] },
+      { name: "Almond Milk", servings: 1, aliases: ["almond milk", "milk"] },
+      { name: "Xanthan Gum", servings: 1, aliases: ["xanthan gum", "xtham gum"] },
+      { name: "Salt", servings: 1, aliases: ["salt"] },
+      { name: "Jello Mix", servings: 1, aliases: ["jello mix", "jello"] },
+      { name: "Oreo Thins", servings: 1, aliases: ["oreo thins", "oreo"] }
+    ]
+  },
+  {
+    name: "Protein Oatmeal",
+    items: [
+      { name: "Oatmeal", servings: 1, aliases: ["oatmeal", "oats", "oat"] },
+      { name: "Protein Powder", servings: 1, aliases: ["protein powder", "protein pwd"] },
+      { name: "Blueberries", servings: 1, aliases: ["blueberries", "bb"] },
+      { name: "Strawberries", servings: 1, aliases: ["strawberries"] },
+      { name: "Banana", servings: 1, aliases: ["banana"] }
+    ]
+  },
+  {
+    name: "Protein Shake",
+    items: [
+      { name: "Almond Milk", servings: 1, aliases: ["almond milk", "milk"] },
+      { name: "Protein Powder", servings: 1, aliases: ["protein powder", "protein pwd"] },
+      { name: "Banana", servings: 1, aliases: ["banana"] },
+      { name: "Ice", servings: 1, aliases: ["ice"] },
+      { name: "Cinnamon", servings: 1, aliases: ["cinnamon", "cinnonman"] },
+      { name: "PB2", servings: 1, aliases: ["pb2", "pb powder"] }
+    ]
+  },
+  {
+    name: "Cream of Rice",
+    items: [
+      { name: "Elevate COR", servings: 1, aliases: ["elevate cor", "cream of rice"] },
+      { name: "Protein Powder", servings: 1, aliases: ["protein powder", "protein pwd"] },
+      { name: "Blueberries", servings: 1, aliases: ["blueberries", "bb"] },
+      { name: "Strawberries", servings: 1, aliases: ["strawberries"] },
+      { name: "Honey", servings: 1, aliases: ["honey"] }
+    ]
+  }
+];
+const TEMPLATE_FOOD_DEFAULTS = [
+  { name: "Ground Turkey", category: "Protein", calories: 160, fat: 8, carbs: 0, protein: 22 },
+  { name: "Russet Potato", category: "Grains & Starches", calories: 110, fat: 0, carbs: 26, protein: 3 },
+  { name: "Green Pepper", category: "Vegetables", calories: 30, fat: 0, carbs: 4, protein: 1 },
+  { name: "Onion", category: "Vegetables", calories: 40, fat: 0, carbs: 10, protein: 1 },
+  { name: "Pinto Beans", category: "Vegetables", calories: 90, fat: 0.5, carbs: 18, protein: 6 },
+  { name: "Cottage Cheese", category: "Dairy", calories: 110, fat: 1, carbs: 6, protein: 13 },
+  { name: "Chicken", category: "Protein", calories: 130, fat: 3, carbs: 0, protein: 25 },
+  { name: "Eggs", category: "Protein", calories: 70, fat: 5, carbs: 0, protein: 6 },
+  { name: "Egg Whites", category: "Protein", calories: 25, fat: 0, carbs: 0, protein: 5 },
+  { name: "Spinach", category: "Vegetables", calories: 25, fat: 0, carbs: 3, protein: 2 },
+  { name: "Protein Powder", category: "Supplements", calories: 147, fat: 3, carbs: 5, protein: 25 },
+  { name: "Almond Milk", category: "Dairy", calories: 35, fat: 3, carbs: 1, protein: 1 },
+  { name: "Xanthan Gum", category: "Fats, Sauces & Extras", calories: 10, fat: 0, carbs: 3, protein: 0 },
+  { name: "Salt", category: "Fats, Sauces & Extras", calories: 0, fat: 0, carbs: 0, protein: 0 },
+  { name: "Jello Mix", category: "Fats, Sauces & Extras", calories: 20, fat: 0, carbs: 5, protein: 0 },
+  { name: "Oreo Thins", category: "Fats, Sauces & Extras", calories: 35, fat: 1.5, carbs: 5, protein: 0.5 },
+  { name: "Oatmeal", category: "Grains & Starches", calories: 150, fat: 3, carbs: 27, protein: 5 },
+  { name: "Blueberries", category: "Fruit", calories: 40, fat: 0, carbs: 10, protein: 1 },
+  { name: "Strawberries", category: "Fruit", calories: 25, fat: 0, carbs: 6, protein: 1 },
+  { name: "Banana", category: "Fruit", calories: 105, fat: 0, carbs: 27, protein: 1 },
+  { name: "Ice", category: "Fats, Sauces & Extras", calories: 0, fat: 0, carbs: 0, protein: 0 },
+  { name: "Cinnamon", category: "Fats, Sauces & Extras", calories: 6, fat: 0, carbs: 2, protein: 0 },
+  { name: "PB Powder", category: "Supplements", calories: 50, fat: 1.5, carbs: 4, protein: 6 },
+  { name: "Cream of Rice", category: "Grains & Starches", calories: 120, fat: 0, carbs: 26, protein: 2 },
+  { name: "Honey", category: "Fats, Sauces & Extras", calories: 60, fat: 0, carbs: 17, protein: 0 }
+];
+
+function normalizedFoodName(value) {
+  return String(value || "").toLowerCase().replace(/[^a-z0-9]+/g, "");
+}
+
+function findTemplateFood(component) {
+  const library = foodLibrary();
+  const preferredKey = state.mealFoodKeys?.[normalizedFoodName(component.name)];
+  if (preferredKey) {
+    const preferred = library.find((item) => foodKey(item) === preferredKey);
+    if (preferred) return preferred;
+  }
+  return library.find((item) => mealComponentMatchesItem(component, item));
+}
+
+function ensureMealTemplateFoods() {
+  const bank = foodBankPhase();
+  if (!bank || bank.__seededMealFoods) return;
+  const library = foodLibrary();
+  const deleted = new Set(state.deletedFoodKeys || []);
+  const missing = TEMPLATE_FOOD_DEFAULTS.filter((food) => {
+    const foodName = normalizedFoodName(food.name);
+    return !deleted.has(foodKey({ ...food, servings: 0 })) && !library.some((item) => normalizedFoodName(item.name) === foodName);
+  });
+  if (missing.length) {
+    missing.forEach((food) => {
+      bank.items.push({
+        id: `${slug(food.name)}-meal-bank-${Date.now()}-${bank.items.length}`,
+        servings: 0,
+        ...food
+      });
+    });
+    saveData();
+  }
+  bank.__seededMealFoods = true;
+}
+
+function mealComponentMatchesItem(component, item) {
+  const itemName = normalizedFoodName(item.name);
+  return component.aliases.some((alias) => {
+    const aliasName = normalizedFoodName(alias);
+    return itemName === aliasName || (aliasName.length > 3 && itemName.includes(aliasName));
+  });
+}
+
+function componentMatchesFood(component, item) {
+  const itemName = normalizedFoodName(item.name);
+  const componentName = normalizedFoodName(component.name);
+  return componentName === itemName || mealComponentMatchesItem({ ...component, aliases: [...(component.aliases || []), component.name] }, item);
+}
+
+function slotTotals(slot) {
+  return mealInstancesForSlot(slot).reduce((totals, instance) => {
+    const meal = mealById(instance.mealId);
+    if (!meal) return totals;
+    const mealTotals = mealMacroTotals(mealMatchesFor(instance.id, meal));
+    totals.calories += mealTotals.calories;
+    totals.fat += mealTotals.fat;
+    totals.carbs += mealTotals.carbs;
+    totals.protein += mealTotals.protein;
+    return totals;
+  }, { calories: 0, fat: 0, carbs: 0, protein: 0 });
+}
+
+function deleteFoodFromBank(itemKey) {
+  const libraryItem = foodLibrary().find((item) => foodKey(item) === itemKey);
+  if (!libraryItem) return false;
+  let removed = false;
+  state.deletedFoodKeys = [...new Set([...(state.deletedFoodKeys || []), itemKey])];
+  DATA.forEach((phase) => {
+    const before = phase.items.length;
+    phase.items = phase.items.filter((item) => foodKey(item) !== itemKey);
+    if (phase.items.length !== before) removed = true;
+  });
+  const customMealIdsBefore = new Set(state.customMeals.map((meal) => meal.id));
+  state.customMeals = state.customMeals.map((meal) => ({
+    ...meal,
+    items: meal.items.filter((component) => !componentMatchesFood(component, libraryItem))
+  })).filter((meal) => meal.items.length);
+  const customMealIdsAfter = new Set(state.customMeals.map((meal) => meal.id));
+  const removedMealIds = [...customMealIdsBefore].filter((mealId) => !customMealIdsAfter.has(mealId));
+  if (removedMealIds.length) {
+    Object.keys(state.mealSlots).forEach((slot) => {
+      state.mealSlots[slot] = mealInstancesForSlot(slot).filter((instance) => !removedMealIds.includes(instance.mealId));
+    });
+    localStorage.setItem(MEAL_SLOT_KEY, JSON.stringify(state.mealSlots));
+  }
+  Object.keys(state.mealServings).forEach((key) => {
+    if (key.endsWith(`::${slug(libraryItem.name)}`)) delete state.mealServings[key];
+  });
+  Object.entries(state.mealFoodKeys || {}).forEach(([componentKey, linkedKey]) => {
+    if (linkedKey === itemKey) delete state.mealFoodKeys[componentKey];
+  });
+  saveData();
+  saveCustomMeals();
+  localStorage.setItem(MEAL_PLAN_KEY, JSON.stringify(state.mealServings));
+  localStorage.setItem(DELETED_FOOD_KEY, JSON.stringify(state.deletedFoodKeys));
+  localStorage.setItem(MEAL_FOOD_KEY, JSON.stringify(state.mealFoodKeys));
+  return removed;
+}
+
+function editFoodInBank(oldKey, itemData) {
+  const oldItem = foodLibrary().find((item) => foodKey(item) === oldKey);
+  if (!oldItem) return false;
+  const usedComponents = [];
+  savedMeals().forEach((meal) => {
+    meal.items.forEach((component) => {
+      const matched = findTemplateFood(component);
+      if (matched && foodKey(matched) === oldKey) usedComponents.push(component);
+    });
+  });
+  let updated = false;
+  DATA.forEach((phase) => {
+    phase.items = phase.items.map((item) => {
+      if (foodKey(item) !== oldKey) return item;
+      updated = true;
+      return { ...item, ...itemData, id: item.id };
+    });
+  });
+  if (!updated) {
+    foodBankPhase().items.push({ ...itemData, id: `${slug(itemData.name)}-${Date.now()}` });
+  }
+  const newKey = foodKey(itemData);
+  usedComponents.forEach((component) => {
+    state.mealFoodKeys[normalizedFoodName(component.name)] = newKey;
+  });
+  state.deletedFoodKeys = (state.deletedFoodKeys || []).filter((key) => key !== oldKey && key !== newKey);
+  saveData();
+  localStorage.setItem(MEAL_FOOD_KEY, JSON.stringify(state.mealFoodKeys));
+  localStorage.setItem(DELETED_FOOD_KEY, JSON.stringify(state.deletedFoodKeys));
+  return true;
+}
+
+function mealUsageForFood(item) {
+  const itemKey = foodKey(item);
+  const meals = savedMeals().filter((meal) => meal.items.some((component) => {
+    const matched = findTemplateFood(component);
+    return matched && foodKey(matched) === itemKey;
+  }));
+  return meals.map((meal) => meal.name);
+}
+
+function mealServingKey(instanceId, component) {
+  return `${instanceId}::${slug(component.name)}`;
+}
+
+function getMealServing(instanceId, component) {
+  const key = mealServingKey(instanceId, component);
+  return state.mealServings[key] ?? component.servings ?? 0;
+}
+
+function setMealServing(key, value) {
+  const parsed = Math.max(0, Math.round(parseNumber(value) * 10) / 10);
+  state.mealServings[key] = parsed;
+  localStorage.setItem(MEAL_PLAN_KEY, JSON.stringify(state.mealServings));
+  if (state.view === "meal" || state.view === "phase") renderMealPlan();
+  else {
+    renderSummary();
+    renderItems();
+  }
+}
+
+function mealMacroTotals(matches) {
+  return matches.reduce((totals, match) => {
+    totals.calories += match.item.calories * match.servings;
+    totals.fat += match.item.fat * match.servings;
+    totals.carbs += match.item.carbs * match.servings;
+    totals.protein += match.item.protein * match.servings;
+    return totals;
+  }, { calories: 0, fat: 0, carbs: 0, protein: 0 });
+}
+
+function mealMatchesFor(instanceId, meal) {
+  return meal.items.map((component) => {
+    const item = findTemplateFood(component);
+    if (!item) return null;
+    return {
+      item,
+      component,
+      key: mealServingKey(instanceId, component),
+      servings: getMealServing(instanceId, component)
+    };
+  }).filter(Boolean);
+}
+
+function mealInstancesForSlot(slot) {
+  const raw = state.mealSlots[slot];
+  if (Array.isArray(raw)) return raw;
+  if (typeof raw === "string" && raw) {
+    const migrated = [{ id: `${slug(slot)}-${slug(raw)}-legacy`, mealId: raw }];
+    state.mealSlots[slot] = migrated;
+    localStorage.setItem(MEAL_SLOT_KEY, JSON.stringify(state.mealSlots));
+    return migrated;
+  }
+  return [];
+}
+
+function dailyMealTotals() {
+  return MEAL_PLAN_SLOTS.reduce((totals, slot) => {
+    mealInstancesForSlot(slot).forEach((instance) => {
+      const meal = mealById(instance.mealId);
+      if (!meal) return;
+      const matches = mealMatchesFor(instance.id, meal);
+      const mealTotals = mealMacroTotals(matches);
+      totals.calories += mealTotals.calories;
+      totals.fat += mealTotals.fat;
+      totals.carbs += mealTotals.carbs;
+      totals.protein += mealTotals.protein;
+      totals.servings += matches.reduce((sum, match) => sum + match.servings, 0);
+    });
+    return totals;
+  }, { calories: 0, fat: 0, carbs: 0, protein: 0, servings: 0 });
+}
+
+function mealItemRow(match) {
+  const totals = {
+    calories: match.item.calories * match.servings,
+    fat: match.item.fat * match.servings,
+    carbs: match.item.carbs * match.servings,
+    protein: match.item.protein * match.servings
+  };
+  return `
+    <div class="meal-row">
+      <div class="meal-row-name">
+        <strong>${esc(match.item.name)}</strong>
+        <span>${fmt(match.item.calories)} cal each</span>
+      </div>
+      <div class="meal-row-right">
+        <div class="meal-row-macros">${fmt(totals.calories)} cal - F ${fmt(totals.fat)}g - C ${fmt(totals.carbs)}g - P ${fmt(totals.protein)}g</div>
+        <div class="servings" aria-label="Daily servings for ${esc(match.item.name)}">
+          <button data-meal-step="-0.5" data-meal-key="${esc(match.key)}" aria-label="Remove meal serving">-</button>
+          <input inputmode="decimal" value="${fmt(match.servings)}" data-meal-input="${esc(match.key)}" aria-label="Daily meal servings">
+          <button data-meal-step="0.5" data-meal-key="${esc(match.key)}" aria-label="Add meal serving">+</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
 
 function foodGroup(item) {
   const rawCategory = String(item.category || "").toLowerCase();
@@ -1179,6 +1743,10 @@ function groupedListHtml(phase, items, options = {}) {
     .join("");
 }
 
+function mealListHtml(phase, items) {
+  return groupedListHtml(phase, items);
+}
+
 function phaseOptions(phase) {
   return DATA.filter((entry) => !entry.bankOnly).map((entry) => `<option value="${esc(entry.id)}" ${entry.id === phase.id ? "selected" : ""}>${esc(entry.name)}</option>`).join("");
 }
@@ -1207,15 +1775,22 @@ function itemCard(phase, item, options = {}) {
   const weeklyCal = item.calories * servings;
   const dailyCal = weeklyCal / 7;
   const isLibrary = options.library;
-  const sourceText = item.sources?.length ? `From ${item.sources.slice(0, 2).join(", ")}` : "From library";
+  const mealUsage = options.bankDelete ? mealUsageForFood(item) : [];
+  const sourceText = options.bankDelete
+    ? (mealUsage.length ? `Used in ${mealUsage.slice(0, 3).join(", ")}${mealUsage.length > 3 ? ` +${mealUsage.length - 3} more` : ""}` : "Not used in saved meals")
+    : (item.sources?.length ? `From ${item.sources.slice(0, 2).join(", ")}` : "From library");
+  const libraryAction = options.bankDelete
+    ? `<div class="library-actions"><button class="mini" data-edit-bank-food="${esc(foodKey(item))}">Edit</button><button class="mini danger" data-delete-bank-food="${esc(foodKey(item))}">Delete</button></div>`
+    : `<button class="mini add" data-add-library="${esc(item.id)}">Add</button>`;
   return `
     <article class="item">
       <div class="item-head">
         <div>
           <div class="item-name">${esc(item.name)}</div>
-          <div class="item-cat">${esc(item.category || (isLibrary ? sourceText : "Per serving"))} - ${fmt(item.calories)} cal</div>
+          <div class="item-cat">${esc(isLibrary ? sourceText : (item.category || "Per serving"))} - ${fmt(item.calories)} cal</div>
+          ${options.mealServing ? `<span class="meal-plan">Meal plan: ${fmt(options.mealServing)} serving${Number(options.mealServing) === 1 ? "" : "s"}</span>` : ""}
         </div>
-        ${isLibrary ? `<button class="mini add" data-add-library="${esc(item.id)}">Add</button>` : `
+        ${isLibrary ? libraryAction : `
           <div class="servings" aria-label="Weekly servings for ${esc(item.name)}">
             <button data-step="-0.5" data-item-id="${esc(item.id)}" aria-label="Remove serving">-</button>
             <input inputmode="decimal" value="${fmt(servings)}" data-input-id="${esc(item.id)}" aria-label="Weekly servings">
@@ -1246,17 +1821,11 @@ function itemCard(phase, item, options = {}) {
 function renderSummary() {
   const phase = currentPhase();
   if (!phase) return;
-  const weekly = totalsFor(phase);
+  const daily = dailyMealTotals();
   const targets = { ...DEFAULT_TARGETS, ...(phase.targets || {}) };
-  const macroCal = macroCalories(weekly);
+  const macroCal = macroCalories(daily);
   const fatEnd = macroCal.fatPct;
   const carbEnd = macroCal.fatPct + macroCal.carbsPct;
-  const daily = {
-    calories: weekly.calories / 7,
-    fat: weekly.fat / 7,
-    carbs: weekly.carbs / 7,
-    protein: weekly.protein / 7
-  };
   const summary = document.querySelector("[data-summary]");
   const bottom = document.querySelector("[data-bottom]");
   const goalCard = (label, actual, target, unit = "") => {
@@ -1277,8 +1846,8 @@ function renderSummary() {
     summary.innerHTML = `
       <div class="metric"><span>Daily Calories</span><strong>${fmt(daily.calories)}</strong></div>
       <div class="metric"><span>Daily Protein</span><strong>${fmt(daily.protein)}g</strong></div>
-      <div class="metric"><span>Weekly Calories</span><strong>${fmt(weekly.calories)}</strong></div>
-      <div class="metric"><span>Weekly Servings</span><strong>${fmt(weekly.servings)}</strong></div>
+      <div class="metric"><span>Daily Fat</span><strong>${fmt(daily.fat)}g</strong></div>
+      <div class="metric"><span>Daily Carbs</span><strong>${fmt(daily.carbs)}g</strong></div>
       <div class="macro-chart">
         <div class="donut" style="--fat-end:${fatEnd}%; --carb-end:${carbEnd}%"></div>
         <div class="chart-copy">
@@ -1314,7 +1883,7 @@ function renderItems() {
   const phase = currentPhase();
   if (!phase) return;
   const query = state.query.trim().toLowerCase();
-  const currentMatches = phase.items.filter((item) => (!state.activeOnly || getServings(phase, item) > 0) && (!query || item.name.toLowerCase().includes(query) || item.category.toLowerCase().includes(query)));
+  const currentMatches = phase.items.filter((item) => !query || item.name.toLowerCase().includes(query) || item.category.toLowerCase().includes(query));
   const currentKeys = new Set(phase.items.map(foodKey));
   const libraryMatches = foodLibrary()
     .filter((item) => (!query || item.name.toLowerCase().includes(query) || item.category.toLowerCase().includes(query)) && !currentKeys.has(foodKey(item)))
@@ -1322,7 +1891,7 @@ function renderItems() {
   const list = document.querySelector("[data-items]");
   if (!list) return;
   const currentHtml = currentMatches.length
-    ? groupedListHtml(phase, currentMatches)
+    ? mealListHtml(phase, currentMatches)
     : `<div class="empty">No foods in this tab match this search.</div>`;
   const libraryHtml = libraryMatches.length
     ? `<div class="section-label">Food library from all tabs${query ? "" : " - all foods"}</div>${groupedListHtml(phase, libraryMatches, { library: true })}`
@@ -1338,12 +1907,14 @@ function renderModal() {
     return;
   }
   const phase = currentPhase();
-  const item = state.modal.itemId ? phase.items.find((entry) => entry.id === state.modal.itemId) : null;
+  const bankEditItem = state.modal.bankEditKey ? foodLibrary().find((entry) => foodKey(entry) === state.modal.bankEditKey) : null;
+  const item = bankEditItem || (state.modal.itemId ? phase.items.find((entry) => entry.id === state.modal.itemId) : null);
   const isTab = state.modal.type === "tab";
   const isGoals = state.modal.type === "goals";
   const isCheat = state.modal.type === "cheat";
   const isTraining = state.modal.type === "training";
-  const title = isTraining ? "Training Day" : isCheat ? "Add Cheat Meal" : isGoals ? "Daily Goals" : isTab ? "Add Tab" : item ? "Edit Food" : "Add Food";
+  const isMeal = state.modal.type === "meal";
+  const title = isMeal ? "Create Meal" : isTraining ? "Training Day" : isCheat ? "Add Cheat Meal" : isGoals ? "Daily Goals" : isTab ? "Add Tab" : item ? "Edit Food" : "Add Food";
   const values = item || { name: "", category: "", servings: 0, calories: 0, fat: 0, carbs: 0, protein: 0 };
   const targets = { ...DEFAULT_TARGETS, ...(phase.targets || {}) };
   const cheatItem = state.modal.cheatItem || { name: "", restaurant: "", slot: "Other", servings: 1, calories: 0, fat: 0, carbs: 0, protein: 0 };
@@ -1351,9 +1922,20 @@ function renderModal() {
   const trainingEntry = trainingDate ? (state.trainingLog[trainingDate] || {}) : {};
   modalRoot.innerHTML = `
     <div class="modal-backdrop open" data-close-modal>
-      <form class="modal" data-food-form data-form-type="${esc(state.modal.type)}" data-form-item="${esc(state.modal.itemId || "")}" data-form-bank="${state.modal.bankItem ? "true" : "false"}">
+      <form class="modal" data-food-form data-form-type="${esc(state.modal.type)}" data-form-item="${esc(state.modal.itemId || "")}" data-form-bank-key="${esc(state.modal.bankEditKey || "")}" data-form-bank="${state.modal.bankItem || state.modal.bankEditKey ? "true" : "false"}">
         <h2>${title}</h2>
-        ${isTraining ? `
+        ${isMeal ? `
+          <div class="form-grid">
+            <label class="field full"><span>Meal name</span><input name="mealName" required placeholder="Example: Turkey Lunch"></label>
+            ${Array.from({ length: 8 }).map((_, index) => `
+              <label class="field"><span>Item ${index + 1}</span><select name="mealItem${index}">
+                <option value="">Choose food</option>
+                ${foodLibrary().map((food) => `<option value="${esc(food.name)}">${esc(food.name)}</option>`).join("")}
+              </select></label>
+              <label class="field"><span>Servings</span><input name="mealServing${index}" inputmode="decimal" value="${index === 0 ? "1" : ""}"></label>
+            `).join("")}
+          </div>
+        ` : isTraining ? `
           <div class="form-grid">
             <label class="field full"><span>Date</span><input name="trainingDate" value="${esc(trainingDate)}" readonly></label>
             <label class="field full"><span>Training</span><select name="trainingType">
@@ -1406,8 +1988,25 @@ function renderModal() {
 }
 
 function renderFoodBank() {
+  ensureMealTemplateFoods();
   const query = state.query.trim().toLowerCase();
   const items = foodLibrary().filter((item) => !query || item.name.toLowerCase().includes(query) || item.category.toLowerCase().includes(query));
+  const mealCards = savedMeals().map((meal) => {
+    const totals = mealMacroTotals(mealMatchesFor(`preview-${slug(meal.id || meal.name)}`, meal));
+    const isCustom = Boolean(meal.custom);
+    return `
+      <article class="item">
+        <div class="item-head">
+          <div>
+            <div class="item-name">${esc(meal.name)}</div>
+            <div class="item-cat">${meal.items.length} items - ${fmt(totals.calories)} cal - P ${fmt(totals.protein)}g</div>
+          </div>
+          ${isCustom ? `<button class="mini danger" data-delete-custom-meal="${esc(meal.id)}">Delete</button>` : ""}
+        </div>
+        <ul class="ingredients">${meal.items.map((component) => `<li>${esc(component.name)} - ${fmt(component.servings)} serving${component.servings === 1 ? "" : "s"}</li>`).join("")}</ul>
+      </article>
+    `;
+  }).join("");
   document.querySelector("#app").innerHTML = `
     <div class="topbar">
       <div class="title-row">
@@ -1418,18 +2017,29 @@ function renderFoodBank() {
     </div>
     <div class="action-row">
       <button class="primary" data-open-bank-food>Add Food Bank Item</button>
+      <button class="ghost" data-open-create-meal>Create Meal</button>
       <button class="ghost" data-view-target="home">Home</button>
     </div>
+    <div class="section-label">Saved meals</div>
+    <main class="items">${mealCards}</main>
     <div class="toolbar">
       <input class="search" type="search" placeholder="Search food bank" value="${esc(state.query)}" data-search>
       <button class="ghost" data-clear>Clear</button>
     </div>
     <main class="items" data-items>
-      ${items.length ? groupedListHtml(currentPhase(), items, { library: true }) : `<div class="empty">No foods found.</div>`}
+      ${items.length ? groupedListHtml(currentPhase(), items, { library: true, bankDelete: true }) : `<div class="empty">No foods found.</div>`}
     </main>
     <div data-modal-root></div>
   `;
   renderModal();
+}
+
+function renderFoodBankItems() {
+  const list = document.querySelector("[data-items]");
+  if (!list) return;
+  const query = state.query.trim().toLowerCase();
+  const items = foodLibrary().filter((item) => !query || item.name.toLowerCase().includes(query) || item.category.toLowerCase().includes(query));
+  list.innerHTML = items.length ? groupedListHtml(currentPhase(), items, { library: true, bankDelete: true }) : `<div class="empty">No foods found.</div>`;
 }
 
 function topShell(title, extra = "") {
@@ -1616,12 +2226,17 @@ function renderHome() {
       <div class="metric"><span>Gym / Cardio</span><strong>${counts.gym} / ${counts.cardio}</strong></div>
     </section>
     <main class="home-grid">
-      <button class="home-card" data-view-target="phase"><strong>Phases</strong><span>Daily macros, goals, servings, favorites, and phase tabs.</span></button>
+      <button class="home-card" data-view-target="meal"><strong>Meal Plan</strong><span>Daily meals, macro totals, food servings, and saved meal groups.</span></button>
       <button class="home-card" data-view-target="bank"><strong>Food Bank</strong><span>All saved foods grouped by food type.</span></button>
       <button class="home-card" data-view-target="cheat"><strong>Cheat Day Entry</strong><span>Restaurant meals plus normal Food Bank items by meal slot.</span></button>
       <button class="home-card" data-view-target="desserts"><strong>Protein Dessert Options</strong><span>Six macro-friendly dessert ideas with ingredients and visuals.</span></button>
     </main>
     ${renderTrainingCalendar()}
+    <section class="archive-section">
+      <h2>Archived Phase Tabs</h2>
+      <p>Old phase tabs stay here as a reference while the main setup moves toward a personal meal plan.</p>
+      <button class="ghost" data-view-target="archive">Open Phase Archive</button>
+    </section>
     <div data-modal-root></div>
   `;
   renderModal();
@@ -1713,27 +2328,160 @@ function renderDesserts() {
   `;
 }
 
-function render() {
+function mealOptions(selected = "") {
+  return `<option value="">Choose saved meal...</option>${savedMeals().map((meal) => {
+    const id = meal.id || meal.name;
+    return `<option value="${esc(id)}" ${id === selected ? "selected" : ""}>${esc(meal.name)}</option>`;
+  }).join("")}`;
+}
+
+function renderMealPlanSummary() {
+  const totals = dailyMealTotals();
+  const targets = { ...DEFAULT_TARGETS, ...(currentPhase()?.targets || {}) };
+  const macroCal = macroCalories(totals);
+  const fatEnd = macroCal.fatPct;
+  const carbEnd = macroCal.fatPct + macroCal.carbsPct;
+  const goalCard = (label, actual, target, unit = "") => {
+    const fill = target > 0 ? Math.min(actual / target * 100, 120) : 0;
+    const remaining = target > 0 ? target - actual : 0;
+    const status = target > 0 && remaining > 0 ? "under" : target > 0 && remaining < 0 ? "over" : "";
+    const remainingText = target > 0 ? `${remaining >= 0 ? fmt(remaining) + unit + " left" : fmt(Math.abs(remaining)) + unit + " over"}` : "No goal set";
+    return `
+      <div class="goal-card ${status}">
+        <span>${label}</span>
+        <strong>${fmt(actual)}${unit} / ${target ? fmt(target) + unit : "--"}</strong>
+        <small>${remainingText}</small>
+        <div class="bar"><i style="--fill:${fill}%"></i></div>
+      </div>
+    `;
+  };
+  return `
+    <section class="summary">
+      <div class="metric"><span>Daily Calories</span><strong>${fmt(totals.calories)}</strong></div>
+      <div class="metric"><span>Daily Protein</span><strong>${fmt(totals.protein)}g</strong></div>
+      <div class="metric"><span>Daily Carbs</span><strong>${fmt(totals.carbs)}g</strong></div>
+      <div class="metric"><span>Daily Fat</span><strong>${fmt(totals.fat)}g</strong></div>
+      <div class="macro-chart">
+        <div class="donut" style="--fat-end:${fatEnd}%; --carb-end:${carbEnd}%"></div>
+        <div class="chart-copy">
+          <strong>Macro Calories</strong>
+          <span>Fat, carbs, and protein calorie split</span>
+          <div class="goal-actions"><button class="mini" data-edit-goals>Edit Goals</button></div>
+          <div class="legend">
+            <div class="legend-row"><i class="swatch fat"></i><span>Fat</span><b>${fmt(macroCal.fatPct)}%</b></div>
+            <div class="legend-row"><i class="swatch carbs"></i><span>Carbs</span><b>${fmt(macroCal.carbsPct)}%</b></div>
+            <div class="legend-row"><i class="swatch protein"></i><span>Protein</span><b>${fmt(macroCal.proteinPct)}%</b></div>
+          </div>
+        </div>
+        <div class="goal-grid">
+          ${goalCard("Calories", totals.calories, targets.calories)}
+          ${goalCard("Fat", totals.fat, targets.fat, "g")}
+          ${goalCard("Carbs", totals.carbs, targets.carbs, "g")}
+          ${goalCard("Protein", totals.protein, targets.protein, "g")}
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+function renderMealSlot(slot) {
+  const instances = mealInstancesForSlot(slot);
+  const isCollapsed = !!state.collapsedMealSlots[slot];
+  const totals = slotTotals(slot);
+  return `
+    <section class="slot-card meal-slot-card">
+      <div class="meal-header">
+        <div>
+          <button class="meal-toggle" data-toggle-meal-slot="${esc(slot)}" aria-expanded="${isCollapsed ? "false" : "true"}">
+            <span class="triangle">${isCollapsed ? "&#9656;" : "&#9662;"}</span>
+            <span class="meal-section-title">${esc(slot)}</span>
+          </button>
+          <p>${instances.length ? `${instances.length} meal${instances.length === 1 ? "" : "s"} selected` : "No meals selected."}</p>
+          ${isCollapsed && instances.length ? `<p>${fmt(totals.calories)} cal - F ${fmt(totals.fat)}g - C ${fmt(totals.carbs)}g - P ${fmt(totals.protein)}g</p>` : ""}
+        </div>
+      </div>
+      ${isCollapsed ? "" : `
+      <div class="slot-add-row">
+        <select class="phase-select" data-pending-slot-meal="${esc(slot)}">${mealOptions()}</select>
+        <button class="primary" data-add-slot-meal="${esc(slot)}">Add Meal</button>
+      </div>
+      ${instances.length ? instances.map((instance) => {
+        const meal = mealById(instance.mealId);
+        if (!meal) return "";
+        const matches = mealMatchesFor(instance.id, meal);
+        const totals = mealMacroTotals(matches);
+        return `
+          <div class="meal-items">
+            <div class="meal-row">
+              <div class="meal-row-name">
+                <div class="meal-title-line"><strong>${esc(meal.name)}</strong><b>${fmt(totals.calories)} cal</b></div>
+                <span>F ${fmt(totals.fat)}g - C ${fmt(totals.carbs)}g - P ${fmt(totals.protein)}g</span>
+              </div>
+              <button class="mini danger" data-remove-slot-meal="${esc(slot)}" data-meal-instance="${esc(instance.id)}">Remove</button>
+            </div>
+            ${matches.map((match) => mealItemRow(match)).join("")}
+          </div>
+        `;
+      }).join("") : `<div class="empty">Add one or more saved meals here.</div>`}
+      `}
+    </section>
+  `;
+}
+
+function renderMealPlan() {
+  ensureMealTemplateFoods();
+  document.querySelector("#app").innerHTML = `
+    ${topShell("Meal Plan", `<button class="ghost" data-view-target="home">Home</button>`)}
+    ${renderMealPlanSummary()}
+    <main class="items">
+      ${MEAL_PLAN_SLOTS.map(renderMealSlot).join("")}
+    </main>
+  `;
+}
+
+function renderArchiveSummary() {
   const phase = currentPhase();
   if (!phase) return;
-  applyTheme();
-  saveFavorites();
-  if (state.view === "home") {
-    renderHome();
-    return;
+  const weekly = totalsFor(phase);
+  const daily = {
+    calories: weekly.calories / 7,
+    fat: weekly.fat / 7,
+    carbs: weekly.carbs / 7,
+    protein: weekly.protein / 7
+  };
+  const summary = document.querySelector("[data-summary]");
+  const bottom = document.querySelector("[data-bottom]");
+  if (summary) {
+    summary.innerHTML = `
+      <div class="metric"><span>Daily Calories</span><strong>${fmt(daily.calories)}</strong></div>
+      <div class="metric"><span>Daily Protein</span><strong>${fmt(daily.protein)}g</strong></div>
+      <div class="metric"><span>Weekly Calories</span><strong>${fmt(weekly.calories)}</strong></div>
+      <div class="metric"><span>Weekly Servings</span><strong>${fmt(weekly.servings)}</strong></div>
+    `;
   }
-  if (state.view === "bank") {
-    renderFoodBank();
-    return;
+  if (bottom) {
+    bottom.innerHTML = `
+      <div class="bottom-cell"><span>Cal</span><strong>${fmt(daily.calories)}</strong></div>
+      <div class="bottom-cell"><span>Fat</span><strong>${fmt(daily.fat)}g</strong></div>
+      <div class="bottom-cell"><span>Carbs</span><strong>${fmt(daily.carbs)}g</strong></div>
+      <div class="bottom-cell"><span>Protein</span><strong>${fmt(daily.protein)}g</strong></div>
+    `;
   }
-  if (state.view === "cheat") {
-    renderCheat();
-    return;
-  }
-  if (state.view === "desserts") {
-    renderDesserts();
-    return;
-  }
+}
+
+function renderArchiveItems() {
+  const phase = currentPhase();
+  if (!phase) return;
+  const query = state.query.trim().toLowerCase();
+  const currentMatches = phase.items.filter((item) => (!state.activeOnly || getServings(phase, item) > 0) && (!query || item.name.toLowerCase().includes(query) || item.category.toLowerCase().includes(query)));
+  const list = document.querySelector("[data-items]");
+  if (!list) return;
+  list.innerHTML = currentMatches.length ? groupedListHtml(phase, currentMatches) : `<div class="empty">No foods in this archived tab match this search.</div>`;
+}
+
+function renderArchive() {
+  const phase = currentPhase();
+  if (!phase) return;
   const isFavorite = state.favoriteIds.includes(phase.id);
   localStorage.setItem("macroPhase", phase.id);
   document.querySelector("#app").innerHTML = `
@@ -1766,9 +2514,41 @@ function render() {
     </footer>
     <div data-modal-root></div>
   `;
-  renderSummary();
-  renderItems();
+  renderArchiveSummary();
+  renderArchiveItems();
   renderModal();
+}
+
+function render() {
+  const phase = currentPhase();
+  if (!phase) return;
+  applyTheme();
+  saveFavorites();
+  if (state.view === "home") {
+    renderHome();
+    return;
+  }
+  if (state.view === "meal" || state.view === "phase") {
+    renderMealPlan();
+    return;
+  }
+  if (state.view === "archive") {
+    renderArchive();
+    return;
+  }
+  if (state.view === "bank") {
+    renderFoodBank();
+    return;
+  }
+  if (state.view === "cheat") {
+    renderCheat();
+    return;
+  }
+  if (state.view === "desserts") {
+    renderDesserts();
+    return;
+  }
+  renderHome();
 }
 
 document.addEventListener("click", (event) => {
@@ -1838,6 +2618,40 @@ document.addEventListener("click", (event) => {
     renderModal();
     return;
   }
+  const mealSlotToggle = event.target.closest("[data-toggle-meal-slot]");
+  if (mealSlotToggle) {
+    const slot = mealSlotToggle.dataset.toggleMealSlot;
+    state.collapsedMealSlots[slot] = !state.collapsedMealSlots[slot];
+    if (!state.collapsedMealSlots[slot]) delete state.collapsedMealSlots[slot];
+    localStorage.setItem(MEAL_COLLAPSE_KEY, JSON.stringify(state.collapsedMealSlots));
+    renderMealPlan();
+    return;
+  }
+  const addSlotMeal = event.target.closest("[data-add-slot-meal]");
+  if (addSlotMeal) {
+    const slot = addSlotMeal.dataset.addSlotMeal;
+    const select = document.querySelector(`[data-pending-slot-meal="${CSS.escape(slot)}"]`);
+    const mealId = select?.value || "";
+    if (!mealId) return;
+    state.mealSlots[slot] = mealInstancesForSlot(slot);
+    state.mealSlots[slot].push({ id: `${slug(slot)}-${slug(mealId)}-${Date.now()}`, mealId });
+    localStorage.setItem(MEAL_SLOT_KEY, JSON.stringify(state.mealSlots));
+    renderMealPlan();
+    return;
+  }
+  const removeSlotMeal = event.target.closest("[data-remove-slot-meal]");
+  if (removeSlotMeal) {
+    const slot = removeSlotMeal.dataset.removeSlotMeal;
+    const instanceId = removeSlotMeal.dataset.mealInstance;
+    state.mealSlots[slot] = mealInstancesForSlot(slot).filter((instance) => instance.id !== instanceId);
+    Object.keys(state.mealServings).forEach((key) => {
+      if (key.startsWith(`${instanceId}::`)) delete state.mealServings[key];
+    });
+    localStorage.setItem(MEAL_SLOT_KEY, JSON.stringify(state.mealSlots));
+    localStorage.setItem(MEAL_PLAN_KEY, JSON.stringify(state.mealServings));
+    renderMealPlan();
+    return;
+  }
   const phaseButton = event.target.closest("[data-phase]");
   if (phaseButton) {
     state.phaseId = phaseButton.dataset.phase;
@@ -1860,6 +2674,13 @@ document.addEventListener("click", (event) => {
     const phase = currentPhase();
     const item = phase.items.find((entry) => entry.id === stepButton.dataset.itemId);
     setServings(phase, item, getServings(phase, item) + Number(stepButton.dataset.step));
+    return;
+  }
+  const mealStepButton = event.target.closest("[data-meal-step]");
+  if (mealStepButton) {
+    const key = mealStepButton.dataset.mealKey;
+    const current = state.mealServings[key] ?? parseNumber(document.querySelector(`[data-meal-input="${CSS.escape(key)}"]`)?.value);
+    setMealServing(key, current + Number(mealStepButton.dataset.mealStep));
     return;
   }
   const editButton = event.target.closest("[data-edit-item]");
@@ -1893,6 +2714,23 @@ document.addEventListener("click", (event) => {
     }
     return;
   }
+  const editBankFood = event.target.closest("[data-edit-bank-food]");
+  if (editBankFood) {
+    state.modal = { type: "food", bankItem: true, bankEditKey: editBankFood.dataset.editBankFood };
+    renderModal();
+    return;
+  }
+  const deleteBankFood = event.target.closest("[data-delete-bank-food]");
+  if (deleteBankFood) {
+    const itemKey = deleteBankFood.dataset.deleteBankFood;
+    const item = foodLibrary().find((entry) => foodKey(entry) === itemKey);
+    if (item) {
+      deleteFoodFromBank(itemKey);
+      if (state.view === "bank") renderFoodBank();
+      else render();
+    }
+    return;
+  }
   const cheatAdd = event.target.closest("[data-cheat-add]");
   if (cheatAdd) {
     const source = cheatAdd.dataset.cheatSource;
@@ -1912,6 +2750,26 @@ document.addEventListener("click", (event) => {
   if (event.target.closest("[data-open-bank-food]")) {
     state.modal = { type: "food", bankItem: true };
     renderModal();
+    return;
+  }
+  if (event.target.closest("[data-open-create-meal]")) {
+    state.modal = { type: "meal" };
+    renderModal();
+    return;
+  }
+  const deleteCustomMeal = event.target.closest("[data-delete-custom-meal]");
+  if (deleteCustomMeal) {
+    const mealId = deleteCustomMeal.dataset.deleteCustomMeal;
+    const meal = state.customMeals.find((entry) => entry.id === mealId);
+    if (meal && confirm(`Delete saved meal ${meal.name}?`)) {
+      state.customMeals = state.customMeals.filter((entry) => entry.id !== mealId);
+      Object.keys(state.mealSlots).forEach((slot) => {
+        state.mealSlots[slot] = mealInstancesForSlot(slot).filter((instance) => instance.mealId !== mealId);
+      });
+      saveCustomMeals();
+      localStorage.setItem(MEAL_SLOT_KEY, JSON.stringify(state.mealSlots));
+      render();
+    }
     return;
   }
   if (event.target.closest("[data-clear-cheat]")) {
@@ -1953,8 +2811,18 @@ document.addEventListener("click", (event) => {
       localStorage.removeItem("macroServings");
       localStorage.removeItem("macroActiveOnly");
       localStorage.removeItem(CHEAT_KEY);
+      localStorage.removeItem(MEAL_PLAN_KEY);
+      localStorage.removeItem(MEAL_SLOT_KEY);
+      localStorage.removeItem(CUSTOM_MEALS_KEY);
+      localStorage.removeItem(DELETED_FOOD_KEY);
+      localStorage.removeItem(MEAL_FOOD_KEY);
       state.favoriteIds = [];
       state.cheatEntries = {};
+      state.mealServings = {};
+      state.mealSlots = {};
+      state.customMeals = [];
+      state.deletedFoodKeys = [];
+      state.mealFoodKeys = {};
       localStorage.removeItem(FAVORITES_KEY);
       state.phaseId = DATA[0]?.id;
       state.activeOnly = false;
@@ -1967,8 +2835,10 @@ document.addEventListener("click", (event) => {
 document.addEventListener("input", (event) => {
   if (event.target.matches("[data-search]")) {
     state.query = event.target.value;
-    if (state.view === "bank") renderFoodBank();
+    if (state.view === "bank") renderFoodBankItems();
     else if (state.view === "cheat") renderCheat();
+    else if (state.view === "meal" || state.view === "phase") renderMealPlan();
+    else if (state.view === "archive") renderArchiveItems();
     else renderItems();
   }
 });
@@ -1977,7 +2847,17 @@ document.addEventListener("change", (event) => {
   if (event.target.matches("[data-theme-select]")) {
     state.theme = event.target.value;
     applyTheme();
-    if (state.view === "phase") renderSummary();
+    if (state.view === "archive") renderArchiveSummary();
+    if (state.view === "meal" || state.view === "phase") renderMealPlan();
+    return;
+  }
+  if (event.target.matches("[data-slot-meal]")) {
+    const slot = event.target.dataset.slotMeal;
+    const meal = event.target.value;
+    if (meal) state.mealSlots[slot] = meal;
+    else delete state.mealSlots[slot];
+    localStorage.setItem(MEAL_SLOT_KEY, JSON.stringify(state.mealSlots));
+    renderMealPlan();
     return;
   }
   if (event.target.matches("[data-select]")) {
@@ -1989,6 +2869,10 @@ document.addEventListener("change", (event) => {
     const phase = currentPhase();
     const item = phase.items.find((entry) => entry.id === event.target.dataset.inputId);
     setServings(phase, item, event.target.value);
+    return;
+  }
+  if (event.target.matches("[data-meal-input]")) {
+    setMealServing(event.target.dataset.mealInput, event.target.value);
   }
 });
 
@@ -2059,6 +2943,19 @@ document.addEventListener("submit", (event) => {
     state.cheatEntries[slot] = state.cheatEntries[slot] || [];
     state.cheatEntries[slot].push(itemData);
     localStorage.setItem(CHEAT_KEY, JSON.stringify(state.cheatEntries));
+  } else if (form.dataset.formType === "meal") {
+    const name = String(formData.get("mealName") || "").trim();
+    if (!name) return;
+    const items = [];
+    for (let index = 0; index < 8; index += 1) {
+      const itemName = String(formData.get(`mealItem${index}`) || "").trim();
+      const servings = parseNumber(formData.get(`mealServing${index}`));
+      if (!itemName || servings <= 0) continue;
+      items.push({ name: itemName, servings, aliases: [itemName] });
+    }
+    if (!items.length) return;
+    state.customMeals.push({ id: `${slug(name)}-${Date.now()}`, name, custom: true, items });
+    saveCustomMeals();
   } else {
     const itemData = {
       id: form.dataset.formItem || `${slug(formData.get("name"))}-${Date.now()}`,
@@ -2070,9 +2967,15 @@ document.addEventListener("submit", (event) => {
       carbs: parseNumber(formData.get("carbs")),
       protein: parseNumber(formData.get("protein"))
     };
-    const existingIndex = phase.items.findIndex((item) => item.id === itemData.id);
-    if (existingIndex >= 0) phase.items[existingIndex] = itemData;
-    else phase.items.push(itemData);
+    if (form.dataset.formBankKey) {
+      editFoodInBank(form.dataset.formBankKey, itemData);
+    } else {
+      const existingIndex = phase.items.findIndex((item) => item.id === itemData.id);
+      if (existingIndex >= 0) phase.items[existingIndex] = itemData;
+      else phase.items.push(itemData);
+    }
+    state.deletedFoodKeys = (state.deletedFoodKeys || []).filter((key) => key !== foodKey(itemData));
+    localStorage.setItem(DELETED_FOOD_KEY, JSON.stringify(state.deletedFoodKeys));
   }
   saveData();
   state.modal = null;
