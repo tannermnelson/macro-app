@@ -45,6 +45,22 @@
   --soft-2: #bfe5ed;
   --bottom: #063342;
 }
+[data-theme="original"] {
+  --ink: #1f2933;
+  --muted: #5f6b76;
+  --line: #dfcfaa;
+  --paper: #fff4d9;
+  --panel: #fffdf6;
+  --accent: #00a88f;
+  --accent-dark: #006b5d;
+  --gold: #ffb000;
+  --blue: #2962ff;
+  --danger: #e53935;
+  --under-goal: #d7263d;
+  --soft: #ffedb8;
+  --soft-2: #b8f3df;
+  --bottom: #16324f;
+}
 [data-theme="forest"] {
   --ink: #17211b;
   --muted: #667269;
@@ -140,6 +156,30 @@ body {
   color: var(--ink);
 }
 button, input, select { font: inherit; }
+button,
+[data-view-target],
+[data-training-day],
+.tab,
+.home-card,
+.cal-cell {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color .14s ease, border-color .14s ease, color .14s ease, transform .08s ease, filter .14s ease, box-shadow .14s ease;
+}
+button:hover,
+.home-card:hover,
+.tab:hover,
+.cal-cell:hover {
+  filter: brightness(1.04) saturate(1.08);
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
+}
+button:active,
+.home-card:active,
+.tab:active,
+.cal-cell:active {
+  transform: scale(.985);
+  filter: brightness(.96) saturate(1.12);
+}
 .app {
   min-height: 100vh;
   padding: 16px;
@@ -222,6 +262,194 @@ h1 {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
   margin: 12px 0;
+}
+.home-hero {
+  background: linear-gradient(135deg, var(--panel), color-mix(in srgb, var(--panel) 46%, var(--soft)));
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px;
+  margin: 10px 0;
+}
+.home-hero h2 {
+  margin: 0;
+  font-size: 1.15rem;
+}
+.home-hero p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: .82rem;
+}
+.profile-top {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: start;
+}
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--accent);
+  color: white;
+  font-weight: 900;
+  font-size: 1rem;
+}
+.profile-actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+}
+.profile-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+}
+.profile-form label {
+  display: grid;
+  gap: 4px;
+}
+.profile-form label span {
+  color: var(--muted);
+  font-size: .7rem;
+}
+.profile-form input,
+.profile-form select {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px;
+  background: color-mix(in srgb, var(--panel) 82%, var(--soft));
+  color: var(--ink);
+}
+.profile-form .full {
+  grid-column: 1 / -1;
+}
+.login-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  margin-top: 12px;
+}
+.login-row input {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 11px;
+  background: color-mix(in srgb, var(--panel) 82%, var(--soft));
+  color: var(--ink);
+}
+.home-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.home-card {
+  width: 100%;
+  text-align: left;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--line));
+  border-radius: 8px;
+  padding: 16px;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 18%, var(--panel)), color-mix(in srgb, var(--panel) 45%, var(--soft)));
+  color: var(--ink);
+  min-height: 126px;
+  box-shadow: 0 8px 20px rgba(0,0,0,.07);
+}
+.home-card strong {
+  display: block;
+  font-size: 1.08rem;
+}
+.home-card span {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: .8rem;
+}
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 10px 0;
+}
+.stat-grid .metric {
+  padding: 9px;
+}
+.stat-grid .metric strong {
+  font-size: 1.05rem;
+}
+.cal-weekdays,
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 6px;
+  margin-top: 10px;
+}
+.cal-weekdays span {
+  text-align: center;
+  color: var(--muted);
+  font-size: .68rem;
+}
+.cal-cell {
+  min-height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--panel) 78%, var(--soft));
+  color: var(--ink);
+  display: grid;
+  place-items: center;
+  padding: 4px;
+}
+.cal-cell.muted {
+  border-color: transparent;
+  background: transparent;
+}
+.cal-cell.active {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+.cal-cell small {
+  min-height: 12px;
+  font-size: .62rem;
+  font-weight: 800;
+}
+.month-summary {
+  margin-top: 14px;
+  display: grid;
+  gap: 8px;
+}
+.month-summary h3 {
+  margin: 0;
+  font-size: .9rem;
+}
+.month-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 8px;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 9px;
+  background: color-mix(in srgb, var(--panel) 76%, var(--soft));
+}
+.month-row strong {
+  font-size: .86rem;
+}
+.month-pill {
+  min-width: 48px;
+  border-radius: 999px;
+  padding: 5px 8px;
+  text-align: center;
+  font-size: .76rem;
+  font-weight: 850;
+  background: var(--soft-2);
+  color: var(--accent-dark);
+}
+.month-pill.cardio {
+  background: color-mix(in srgb, var(--blue) 18%, var(--panel));
+  color: var(--blue);
 }
 .metric {
   background: linear-gradient(180deg, var(--panel), color-mix(in srgb, var(--panel) 72%, var(--soft)));
@@ -410,6 +638,43 @@ h1 {
   font-weight: 750;
   padding: 4px 2px 0;
   text-transform: uppercase;
+}
+.slot-card {
+  grid-column: 1 / -1;
+  background: color-mix(in srgb, var(--panel) 74%, var(--soft));
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px;
+}
+.slot-card h3 {
+  margin: 0 0 8px;
+  font-size: .95rem;
+}
+.slot-items {
+  display: grid;
+  gap: 8px;
+}
+.slot-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: center;
+  border-top: 1px solid var(--line);
+  padding-top: 8px;
+  color: var(--muted);
+  font-size: .82rem;
+}
+.dessert-image {
+  height: 132px;
+  border-radius: 8px;
+  margin: -2px -2px 10px;
+  background: radial-gradient(circle at 25% 25%, rgba(255,255,255,.85), transparent 18%), linear-gradient(135deg, var(--gold), var(--blue), var(--accent));
+}
+.ingredients {
+  margin: 10px 0 0;
+  padding-left: 18px;
+  color: var(--muted);
+  font-size: .8rem;
 }
 .food-group {
   grid-column: 1 / -1;
@@ -603,6 +868,14 @@ h1 {
   border-radius: 8px;
   padding: 11px;
 }
+.field select {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 11px;
+  background: var(--panel);
+  color: var(--ink);
+}
 .modal-actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -636,6 +909,10 @@ const ORIGINAL_DATA = [{"id":"summer2k24cut","name":"summer2k24cut","items":[{"n
 const STORAGE_KEY = "macroDataV2";
 const THEME_KEY = "macroTheme";
 const FAVORITES_KEY = "macroFavoritePhases";
+const PROFILE_KEY = "macroProfileName";
+const PROFILE_DATA_KEY = "macroProfileData";
+const CHEAT_KEY = "macroCheatEntries";
+const TRAINING_KEY = "macroTrainingLog";
 
 const clone = (value) => JSON.parse(JSON.stringify(value));
 const slug = (value) => String(value || "item").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "item";
@@ -651,6 +928,47 @@ const parseNumber = (value) => {
   return Number.isFinite(parsed) ? parsed : 0;
 };
 const DEFAULT_TARGETS = { calories: 0, fat: 0, carbs: 0, protein: 0 };
+const MEAL_SLOTS = ["Breakfast", "Lunch", "Dinner", "Snacks", "Other"];
+const RESTAURANT_MEALS = [
+  { id: "oakwood-cheese-slice", restaurant: "Oakwood Pizza Box", name: "Cheese Pizza Slice", slot: "Lunch", calories: 360, fat: 13, carbs: 45, protein: 16, note: "Estimated from 18 inch cheese pizza" },
+  { id: "oakwood-white-slice", restaurant: "Oakwood Pizza Box", name: "White Pizza Slice", slot: "Dinner", calories: 390, fat: 17, carbs: 42, protein: 17, note: "Estimated mozzarella, ricotta, garlic" },
+  { id: "oakwood-square-slice", restaurant: "Oakwood Pizza Box", name: "Square Pizza Slice", slot: "Dinner", calories: 430, fat: 16, carbs: 54, protein: 18, note: "Estimated square pie slice" },
+  { id: "oakwood-caesar", restaurant: "Oakwood Pizza Box", name: "Caesar Salad", slot: "Lunch", calories: 360, fat: 26, carbs: 18, protein: 12, note: "Estimated small salad" },
+  { id: "oakwood-cannoli", restaurant: "Oakwood Pizza Box", name: "Cannoli", slot: "Snacks", calories: 220, fat: 11, carbs: 26, protein: 5, note: "Estimated per piece" },
+  { id: "chipotle-chicken-bowl-custom", restaurant: "Chipotle", name: "Chicken Bowl - White Rice, Pinto Beans, Fajita Veggies, Cheese, Pico", slot: "Lunch", calories: 675, fat: 21, carbs: 67, protein: 51, note: "Component-based estimate: chicken, white rice, pinto beans, fajita veggies, cheese, fresh tomato salsa" },
+  { id: "saigon-pho-beef", restaurant: "Saigon Kitchen Raleigh", name: "Beef Pho", slot: "Lunch", calories: 640, fat: 18, carbs: 82, protein: 36, note: "Estimated Vietnamese noodle soup" },
+  { id: "saigon-banh-mi", restaurant: "Saigon Kitchen Raleigh", name: "Chicken Banh Mi", slot: "Lunch", calories: 560, fat: 16, carbs: 68, protein: 32, note: "Estimated sandwich" },
+  { id: "saigon-rice-bowl", restaurant: "Saigon Kitchen Raleigh", name: "Lemongrass Chicken Rice Bowl", slot: "Dinner", calories: 720, fat: 20, carbs: 92, protein: 42, note: "Estimated rice plate" },
+  { id: "saigon-spring-rolls", restaurant: "Saigon Kitchen Raleigh", name: "Fresh Spring Rolls", slot: "Snacks", calories: 280, fat: 7, carbs: 38, protein: 16, note: "Estimated two rolls" },
+  { id: "okami-hibachi-chicken", restaurant: "Okami Wilmington", name: "Hibachi Chicken", slot: "Dinner", calories: 760, fat: 28, carbs: 76, protein: 48, note: "Estimated dinner portion" },
+  { id: "okami-sushi-roll", restaurant: "Okami Wilmington", name: "California Roll", slot: "Lunch", calories: 310, fat: 9, carbs: 44, protein: 12, note: "Estimated roll" },
+  { id: "okami-salmon-roll", restaurant: "Okami Wilmington", name: "Spicy Salmon Roll", slot: "Dinner", calories: 370, fat: 14, carbs: 43, protein: 18, note: "Estimated roll" },
+  { id: "okami-spicy-tuna-roll", restaurant: "Okami Wilmington", name: "Spicy Tuna Roll", slot: "Lunch", calories: 330, fat: 11, carbs: 42, protein: 20, note: "Estimated roll" },
+  { id: "okami-shrimp-tempura-roll", restaurant: "Okami Wilmington", name: "Shrimp Tempura Roll", slot: "Dinner", calories: 520, fat: 22, carbs: 62, protein: 18, note: "Estimated fried roll" },
+  { id: "okami-philadelphia-roll", restaurant: "Okami Wilmington", name: "Philadelphia Roll", slot: "Lunch", calories: 410, fat: 17, carbs: 48, protein: 16, note: "Estimated salmon cream cheese roll" },
+  { id: "okami-eel-avocado-roll", restaurant: "Okami Wilmington", name: "Eel Avocado Roll", slot: "Dinner", calories: 420, fat: 14, carbs: 56, protein: 17, note: "Estimated roll with eel sauce" },
+  { id: "okami-rainbow-roll", restaurant: "Okami Wilmington", name: "Rainbow Roll", slot: "Dinner", calories: 480, fat: 15, carbs: 55, protein: 30, note: "Estimated assorted fish roll" },
+  { id: "ramen-tonkotsu", restaurant: "Ramen Bowl", name: "Tonkotsu Ramen Bowl", slot: "Dinner", calories: 780, fat: 34, carbs: 78, protein: 38, note: "Estimated pork broth ramen" },
+  { id: "ramen-shoyu-chicken", restaurant: "Ramen Bowl", name: "Chicken Shoyu Ramen Bowl", slot: "Lunch", calories: 650, fat: 20, carbs: 78, protein: 38, note: "Estimated soy broth ramen" },
+  { id: "ramen-miso", restaurant: "Ramen Bowl", name: "Miso Ramen Bowl", slot: "Dinner", calories: 720, fat: 26, carbs: 84, protein: 34, note: "Estimated miso broth ramen" },
+  { id: "ramen-spicy-miso", restaurant: "Ramen Bowl", name: "Spicy Miso Ramen Bowl", slot: "Dinner", calories: 820, fat: 34, carbs: 90, protein: 36, note: "Estimated spicy miso ramen" },
+  { id: "ramen-shrimp", restaurant: "Ramen Bowl", name: "Shrimp Ramen Bowl", slot: "Lunch", calories: 610, fat: 16, carbs: 82, protein: 34, note: "Estimated seafood ramen" },
+  { id: "okami-miso", restaurant: "Okami Wilmington", name: "Miso Soup", slot: "Other", calories: 60, fat: 2, carbs: 6, protein: 4, note: "Estimated bowl" }
+];
+const PROTEIN_DESSERTS = [
+  { name: "Greek Yogurt Cheesecake Bowl", calories: 310, fat: 6, carbs: 30, protein: 35, ingredients: ["225g nonfat Greek yogurt", "1 scoop vanilla protein powder", "8g sugar-free cheesecake pudding mix", "70g berries", "1 sheet graham cracker, crushed"], instructions: ["Stir yogurt, protein powder, and pudding mix until thick.", "Top with berries and graham crumbs.", "Chill 10 minutes for a cheesecake texture."], colors: ["#f6d6a8", "#9ccfdd", "#f9fbff"] },
+  { name: "Cottage Cheese Chocolate Pudding", calories: 280, fat: 7, carbs: 22, protein: 32, ingredients: ["220g low-fat cottage cheese", "10g cocoa powder", "1/2 scoop chocolate protein powder", "1/2 tsp vanilla", "Sweetener to taste"], instructions: ["Blend all ingredients until completely smooth.", "Taste and adjust sweetener.", "Chill 20-30 minutes before eating."], colors: ["#5a3428", "#d9a66c", "#fff3dc"] },
+  { name: "Casein Chocolate Pudding", calories: 260, fat: 4, carbs: 18, protein: 34, ingredients: ["1 scoop casein protein", "120ml almond milk", "8g cocoa powder", "80g Greek yogurt", "Pinch sea salt"], instructions: ["Whisk casein, cocoa, and milk slowly.", "Fold in Greek yogurt.", "Let it thicken in the fridge for 15 minutes."], colors: ["#2b1d24", "#774c60", "#d9b0c2"] },
+  { name: "Protein Ice Cream Base", calories: 320, fat: 8, carbs: 32, protein: 30, ingredients: ["240ml Fairlife milk", "100g Greek yogurt", "1 scoop vanilla protein powder", "8g pudding mix", "100g frozen berries"], instructions: ["Blend everything until smooth.", "Freeze in a shallow container.", "Let soften 5 minutes, then stir or re-blend."], colors: ["#bfe4ff", "#f9f2ff", "#6ca6dc"] },
+  { name: "Silken Tofu Mocha Mousse", calories: 300, fat: 9, carbs: 28, protein: 24, ingredients: ["200g silken tofu", "1 scoop plant protein", "10g cocoa powder", "30ml espresso", "15ml maple syrup"], instructions: ["Blend tofu, cocoa, espresso, protein, and syrup.", "Scrape sides and blend again until glossy.", "Chill until mousse-like."], colors: ["#3d2d25", "#9b7054", "#e6d1bf"] },
+  { name: "High-Protein Rice Pudding", calories: 380, fat: 6, carbs: 54, protein: 26, ingredients: ["150g cooked rice", "180ml ultra-filtered milk", "1/2 scoop casein protein", "1/2 tsp cinnamon", "1/2 tsp vanilla"], instructions: ["Warm rice and milk gently.", "Remove from heat and stir in casein, cinnamon, and vanilla.", "Chill or eat warm."], colors: ["#fff6d9", "#d9a441", "#8c6a2f"] },
+  { name: "Protein Brownie Bowl", calories: 390, fat: 10, carbs: 43, protein: 30, ingredients: ["1 scoop chocolate protein powder", "20g oat flour", "8g cocoa powder", "80g Greek yogurt", "40ml almond milk", "5g mini chocolate chips"], instructions: ["Mix dry ingredients in a microwave-safe bowl.", "Stir in yogurt and milk until thick.", "Microwave 45-60 seconds and top with chocolate chips."], colors: ["#3a211b", "#7b4a35", "#d8a06f"] },
+  { name: "Peanut Butter Protein Cookie", calories: 290, fat: 13, carbs: 24, protein: 25, ingredients: ["18g peanut butter powder", "12g creamy peanut butter", "1/2 scoop vanilla protein", "35g egg whites", "10g oat flour", "Sweetener to taste"], instructions: ["Mix everything into a thick dough.", "Shape into one large cookie.", "Bake at 350F for 8-10 minutes."], colors: ["#d7a14a", "#7b4d21", "#f7ddb0"] },
+  { name: "Cookies & Cream Protein Blondie", calories: 340, fat: 9, carbs: 38, protein: 28, ingredients: ["1 scoop vanilla protein", "60g Greek yogurt", "20g oat flour", "1 crushed Oreo thin", "1/2 tsp baking powder", "Sweetener to taste"], instructions: ["Stir batter until smooth.", "Fold in crushed cookie pieces.", "Bake in a small dish at 350F for 10-12 minutes."], colors: ["#eee7db", "#2f2a27", "#bca98f"] },
+  { name: "Fudgy Protein Brownie Bites", calories: 330, fat: 11, carbs: 34, protein: 29, ingredients: ["1 scoop chocolate protein", "60g pumpkin puree", "12g cocoa powder", "15g almond flour", "30g egg whites", "5g dark chocolate"], instructions: ["Mix until glossy and thick.", "Spoon into mini muffin cups.", "Bake at 350F for 9-11 minutes."], colors: ["#251616", "#5a2a24", "#a65f46"] },
+  { name: "Chocolate Chip Cookie Dough Bowl", calories: 360, fat: 12, carbs: 36, protein: 31, ingredients: ["170g low-fat cottage cheese", "1 scoop vanilla protein", "12g peanut butter powder", "8g sugar-free vanilla pudding mix", "8g mini chocolate chips"], instructions: ["Blend cottage cheese until smooth.", "Stir in protein, PB powder, and pudding mix.", "Fold in chocolate chips and chill."], colors: ["#e6c89e", "#7b5434", "#f9ecd7"] },
+  { name: "Double Chocolate Mug Brownie", calories: 315, fat: 8, carbs: 32, protein: 27, ingredients: ["1 scoop chocolate protein", "15g cocoa powder", "25g banana", "45g egg whites", "30ml almond milk", "5g chocolate chips"], instructions: ["Mash banana in a mug.", "Mix in remaining ingredients.", "Microwave 50-70 seconds, stopping while still fudgy."], colors: ["#1f1214", "#6b342f", "#d28b62"] }
+];
 
 function canonicalName(name) {
   const cleaned = String(name || "").trim().replace(/\s+/g, " ");
@@ -715,13 +1033,21 @@ function prepareData(phases) {
 }
 
 let DATA = prepareData(JSON.parse(localStorage.getItem(STORAGE_KEY) || "null") || clone(ORIGINAL_DATA));
+if (!DATA.some((phase) => phase.id === "food-bank-custom")) {
+  DATA.push({ id: "food-bank-custom", name: "Food Bank Custom", targets: { ...DEFAULT_TARGETS }, bankOnly: true, items: [] });
+}
 const state = {
   phaseId: localStorage.getItem("macroPhase") || DATA[0]?.id,
   query: "",
-  view: localStorage.getItem("macroView") || "phase",
+  view: localStorage.getItem("macroView") || "home",
   activeOnly: localStorage.getItem("macroActiveOnly") === "true",
   theme: localStorage.getItem(THEME_KEY) || "forest",
+  profileName: localStorage.getItem(PROFILE_KEY) || "",
+  profileData: JSON.parse(localStorage.getItem(PROFILE_DATA_KEY) || "{}"),
+  trainingLog: JSON.parse(localStorage.getItem(TRAINING_KEY) || "{}"),
+  cheatEntries: JSON.parse(localStorage.getItem(CHEAT_KEY) || "{}"),
   favoriteIds: JSON.parse(localStorage.getItem(FAVORITES_KEY) || "[]"),
+  editingProfile: false,
   modal: null
 };
 
@@ -732,6 +1058,7 @@ const fmt = (n) => {
 const saveData = () => localStorage.setItem(STORAGE_KEY, JSON.stringify(DATA));
 const getServings = (phase, item) => item?.servings ?? 0;
 const currentPhase = () => DATA.find((phase) => phase.id === state.phaseId) || DATA[0];
+const foodBankPhase = () => DATA.find((phase) => phase.id === "food-bank-custom") || DATA[0];
 
 function applyTheme() {
   document.documentElement.dataset.theme = state.theme;
@@ -853,11 +1180,12 @@ function groupedListHtml(phase, items, options = {}) {
 }
 
 function phaseOptions(phase) {
-  return DATA.map((entry) => `<option value="${esc(entry.id)}" ${entry.id === phase.id ? "selected" : ""}>${esc(entry.name)}</option>`).join("");
+  return DATA.filter((entry) => !entry.bankOnly).map((entry) => `<option value="${esc(entry.id)}" ${entry.id === phase.id ? "selected" : ""}>${esc(entry.name)}</option>`).join("");
 }
 
 function themeOptions() {
   const themes = [
+    ["original", "Original"],
     ["forest", "Forest"],
     ["ocean", "Ocean"],
     ["sunrise", "Sunrise"],
@@ -869,7 +1197,7 @@ function themeOptions() {
 }
 
 function favoriteTabs(phase) {
-  const favorites = state.favoriteIds.map((id) => DATA.find((entry) => entry.id === id)).filter(Boolean);
+  const favorites = state.favoriteIds.map((id) => DATA.find((entry) => entry.id === id && !entry.bankOnly)).filter(Boolean);
   if (!favorites.length) return `<div class="favorite-empty">Favorite pages will show here.</div>`;
   return favorites.map((entry) => `<button class="tab ${entry.id === phase.id ? "active" : ""}" data-phase="${esc(entry.id)}">${esc(entry.name)}</button>`).join("");
 }
@@ -1013,14 +1341,40 @@ function renderModal() {
   const item = state.modal.itemId ? phase.items.find((entry) => entry.id === state.modal.itemId) : null;
   const isTab = state.modal.type === "tab";
   const isGoals = state.modal.type === "goals";
-  const title = isGoals ? "Daily Goals" : isTab ? "Add Tab" : item ? "Edit Food" : "Add Food";
+  const isCheat = state.modal.type === "cheat";
+  const isTraining = state.modal.type === "training";
+  const title = isTraining ? "Training Day" : isCheat ? "Add Cheat Meal" : isGoals ? "Daily Goals" : isTab ? "Add Tab" : item ? "Edit Food" : "Add Food";
   const values = item || { name: "", category: "", servings: 0, calories: 0, fat: 0, carbs: 0, protein: 0 };
   const targets = { ...DEFAULT_TARGETS, ...(phase.targets || {}) };
+  const cheatItem = state.modal.cheatItem || { name: "", restaurant: "", slot: "Other", servings: 1, calories: 0, fat: 0, carbs: 0, protein: 0 };
+  const trainingDate = state.modal.trainingDate || "";
+  const trainingEntry = trainingDate ? (state.trainingLog[trainingDate] || {}) : {};
   modalRoot.innerHTML = `
     <div class="modal-backdrop open" data-close-modal>
-      <form class="modal" data-food-form data-form-type="${esc(state.modal.type)}" data-form-item="${esc(state.modal.itemId || "")}">
+      <form class="modal" data-food-form data-form-type="${esc(state.modal.type)}" data-form-item="${esc(state.modal.itemId || "")}" data-form-bank="${state.modal.bankItem ? "true" : "false"}">
         <h2>${title}</h2>
-        ${isGoals ? `
+        ${isTraining ? `
+          <div class="form-grid">
+            <label class="field full"><span>Date</span><input name="trainingDate" value="${esc(trainingDate)}" readonly></label>
+            <label class="field full"><span>Training</span><select name="trainingType">
+              <option value="">Clear day</option>
+              <option value="gym" ${trainingEntry.gym && !trainingEntry.cardio ? "selected" : ""}>Gym</option>
+              <option value="cardio" ${trainingEntry.cardio && !trainingEntry.gym ? "selected" : ""}>Cardio</option>
+              <option value="both" ${trainingEntry.gym && trainingEntry.cardio ? "selected" : ""}>Gym + Cardio</option>
+            </select></label>
+          </div>
+        ` : isCheat ? `
+          <div class="form-grid">
+            <label class="field full"><span>Meal name</span><input name="cheatName" required value="${esc(cheatItem.name)}"></label>
+            <label class="field full"><span>Restaurant / note</span><input name="cheatRestaurant" value="${esc(cheatItem.restaurant || "Manual")}" placeholder="Restaurant or note"></label>
+            <label class="field"><span>Meal slot</span><select name="cheatSlot">${MEAL_SLOTS.map((slot) => `<option value="${slot}" ${slot === (cheatItem.slot || "Other") ? "selected" : ""}>${slot}</option>`).join("")}</select></label>
+            <label class="field"><span>Servings</span><input name="cheatServings" inputmode="decimal" value="${fmt(cheatItem.servings || 1)}"></label>
+            <label class="field"><span>Calories</span><input name="cheatCalories" inputmode="decimal" value="${fmt(cheatItem.calories)}"></label>
+            <label class="field"><span>Fat</span><input name="cheatFat" inputmode="decimal" value="${fmt(cheatItem.fat)}"></label>
+            <label class="field"><span>Carbs</span><input name="cheatCarbs" inputmode="decimal" value="${fmt(cheatItem.carbs)}"></label>
+            <label class="field"><span>Protein</span><input name="cheatProtein" inputmode="decimal" value="${fmt(cheatItem.protein)}"></label>
+          </div>
+        ` : isGoals ? `
           <div class="form-grid">
             <label class="field"><span>Daily calories</span><input name="goalCalories" inputmode="decimal" value="${fmt(targets.calories)}"></label>
             <label class="field"><span>Daily fat</span><input name="goalFat" inputmode="decimal" value="${fmt(targets.fat)}"></label>
@@ -1062,6 +1416,10 @@ function renderFoodBank() {
       </div>
       <button class="ghost" data-back-phase>Back to Phases</button>
     </div>
+    <div class="action-row">
+      <button class="primary" data-open-bank-food>Add Food Bank Item</button>
+      <button class="ghost" data-view-target="home">Home</button>
+    </div>
     <div class="toolbar">
       <input class="search" type="search" placeholder="Search food bank" value="${esc(state.query)}" data-search>
       <button class="ghost" data-clear>Clear</button>
@@ -1074,13 +1432,306 @@ function renderFoodBank() {
   renderModal();
 }
 
+function topShell(title, extra = "") {
+  return `
+    <div class="topbar">
+      <div class="title-row">
+        <h1>${esc(title)}</h1>
+        <select class="theme-select" data-theme-select aria-label="Color theme">${themeOptions()}</select>
+      </div>
+      ${extra}
+    </div>
+  `;
+}
+
+function isoDate(date) {
+  return date.toISOString().slice(0, 10);
+}
+
+function ageFromBirthDate(birthDate) {
+  if (!birthDate) return 0;
+  const birth = new Date(`${birthDate}T00:00:00`);
+  if (Number.isNaN(birth.getTime())) return 0;
+  const now = new Date();
+  let age = now.getFullYear() - birth.getFullYear();
+  const beforeBirthday = now.getMonth() < birth.getMonth() || (now.getMonth() === birth.getMonth() && now.getDate() < birth.getDate());
+  if (beforeBirthday) age -= 1;
+  return Math.max(0, age);
+}
+
+function bmrValue(profile) {
+  const age = ageFromBirthDate(profile.birthDate);
+  const weightLb = parseNumber(profile.currentWeight);
+  const feet = parseNumber(profile.heightFeet);
+  const inches = parseNumber(profile.heightInches);
+  const heightIn = feet * 12 + inches;
+  if (!age || !weightLb || !heightIn || !profile.gender) return 0;
+  const kg = weightLb / 2.20462;
+  const cm = heightIn * 2.54;
+  return profile.gender === "female"
+    ? (10 * kg) + (6.25 * cm) - (5 * age) - 161
+    : (10 * kg) + (6.25 * cm) - (5 * age) + 5;
+}
+
+function trainingStreak() {
+  let streak = 0;
+  const day = new Date();
+  for (let i = 0; i < 365; i += 1) {
+    const key = isoDate(day);
+    const entry = state.trainingLog[key] || {};
+    if (entry.gym || entry.cardio) streak += 1;
+    else break;
+    day.setDate(day.getDate() - 1);
+  }
+  return streak;
+}
+
+function trainingCounts() {
+  return Object.values(state.trainingLog).reduce((totals, entry) => {
+    if (entry.gym) totals.gym += 1;
+    if (entry.cardio) totals.cardio += 1;
+    return totals;
+  }, { gym: 0, cardio: 0 });
+}
+
+function monthKeyFromDate(date) {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+}
+
+function monthLabel(monthKey) {
+  const [year, month] = monthKey.split("-").map(Number);
+  return new Date(year, month - 1, 1).toLocaleString(undefined, { month: "long", year: "numeric" });
+}
+
+function monthlyTrainingTotals() {
+  const start = new Date(2026, 6, 1);
+  const current = new Date();
+  const end = new Date(current.getFullYear(), current.getMonth(), 1);
+  const totals = new Map();
+  const cursor = new Date(start);
+  while (cursor <= end) {
+    totals.set(monthKeyFromDate(cursor), { gym: 0, cardio: 0 });
+    cursor.setMonth(cursor.getMonth() + 1);
+  }
+  Object.entries(state.trainingLog).forEach(([dateKey, entry]) => {
+    const monthKey = dateKey.slice(0, 7);
+    if (!totals.has(monthKey)) totals.set(monthKey, { gym: 0, cardio: 0 });
+    const total = totals.get(monthKey);
+    if (entry.gym) total.gym += 1;
+    if (entry.cardio) total.cardio += 1;
+  });
+  return [...totals.entries()].sort(([a], [b]) => a.localeCompare(b));
+}
+
+function renderMonthlyTrainingSummary() {
+  const rows = monthlyTrainingTotals().map(([monthKey, totals]) => `
+    <div class="month-row">
+      <strong>${monthLabel(monthKey)}</strong>
+      <span class="month-pill">G ${totals.gym}</span>
+      <span class="month-pill cardio">C ${totals.cardio}</span>
+    </div>
+  `).join("");
+  return `
+    <div class="month-summary">
+      <h3>Monthly Totals</h3>
+      ${rows}
+    </div>
+  `;
+}
+
+function renderTrainingCalendar() {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth();
+  const first = new Date(year, month, 1);
+  const days = new Date(year, month + 1, 0).getDate();
+  const blanks = first.getDay();
+  const cells = [];
+  for (let i = 0; i < blanks; i += 1) cells.push(`<div class="cal-cell muted"></div>`);
+  for (let day = 1; day <= days; day += 1) {
+    const date = new Date(year, month, day);
+    const key = isoDate(date);
+    const entry = state.trainingLog[key] || {};
+    const active = entry.gym || entry.cardio;
+    cells.push(`
+      <button type="button" class="cal-cell ${active ? "active" : ""}" data-training-day="${key}">
+        <span>${day}</span>
+        <small>${entry.gym ? "G" : ""}${entry.cardio ? "C" : ""}</small>
+      </button>
+    `);
+  }
+  return `
+    <section class="home-hero">
+      <h2>${today.toLocaleString(undefined, { month: "long" })} Training</h2>
+      <p>Tap a day to mark gym and/or cardio.</p>
+      <div class="cal-weekdays"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div>
+      <div class="calendar-grid">${cells.join("")}</div>
+      ${renderMonthlyTrainingSummary()}
+    </section>
+  `;
+}
+
+function renderHome() {
+  const name = state.profileName || "Tanner";
+  const profile = state.profileData || {};
+  const age = ageFromBirthDate(profile.birthDate);
+  const bmr = bmrValue(profile);
+  const counts = trainingCounts();
+  const showProfileForm = state.editingProfile || !state.profileName;
+  const profileSummary = [
+    age ? `${age} yrs` : "",
+    profile.currentWeight ? `${profile.currentWeight} lb` : "",
+    profile.goalWeight ? `goal ${profile.goalWeight} lb` : ""
+  ].filter(Boolean).join(" - ");
+  document.querySelector("#app").innerHTML = `
+    ${topShell("Macro Hub")}
+    <section class="home-hero">
+      <div class="profile-top">
+        <div>
+          <h2>Welcome, ${esc(name)}</h2>
+          <p>${profile.goal ? esc(profile.goal) : "Your phases, food bank, cheat-day meals, and training log in one spot."}</p>
+          ${profileSummary ? `<p>${esc(profileSummary)}</p>` : ""}
+        </div>
+        <div class="avatar">${esc(name.slice(0, 1).toUpperCase())}</div>
+      </div>
+      ${showProfileForm ? "" : `<div class="profile-actions"><button class="mini" data-edit-profile>Edit Profile</button></div>`}
+      ${showProfileForm ? `
+      <form class="profile-form" data-profile-form>
+        ${state.profileName ? "" : `<label class="full"><span>Name</span><input name="profileName" placeholder="Your name" value="${esc(state.profileName)}"></label>`}
+        <label><span>Birthday</span><input name="birthDate" type="date" value="${esc(profile.birthDate || "")}"></label>
+        <label><span>Gender</span><select name="gender"><option value="">Select</option><option value="male" ${profile.gender === "male" ? "selected" : ""}>Male</option><option value="female" ${profile.gender === "female" ? "selected" : ""}>Female</option></select></label>
+        <label><span>Height ft</span><input name="heightFeet" inputmode="numeric" value="${esc(profile.heightFeet || "")}"></label>
+        <label><span>Height in</span><input name="heightInches" inputmode="numeric" value="${esc(profile.heightInches || "")}"></label>
+        <label><span>Current weight</span><input name="currentWeight" inputmode="decimal" value="${esc(profile.currentWeight || "")}"></label>
+        <label><span>Goal weight</span><input name="goalWeight" inputmode="decimal" value="${esc(profile.goalWeight || "")}"></label>
+        <label class="full"><span>Goal</span><select name="goal"><option value="">Select goal</option>${["Lose weight", "Gain muscle", "Gain weight", "Maintain", "Improve conditioning"].map((goal) => `<option value="${goal}" ${profile.goal === goal ? "selected" : ""}>${goal}</option>`).join("")}</select></label>
+        <button class="primary full" type="submit">Save Profile</button>
+      </form>
+      ` : ""}
+    </section>
+    <section class="stat-grid">
+      <div class="metric"><span>Age</span><strong>${age || "--"}</strong></div>
+      <div class="metric"><span>BMR</span><strong>${bmr ? fmt(bmr) : "--"}</strong><span>Mifflin-St Jeor</span></div>
+      <div class="metric"><span>Gym Streak</span><strong>${trainingStreak()}</strong></div>
+      <div class="metric"><span>Gym / Cardio</span><strong>${counts.gym} / ${counts.cardio}</strong></div>
+    </section>
+    <main class="home-grid">
+      <button class="home-card" data-view-target="phase"><strong>Phases</strong><span>Daily macros, goals, servings, favorites, and phase tabs.</span></button>
+      <button class="home-card" data-view-target="bank"><strong>Food Bank</strong><span>All saved foods grouped by food type.</span></button>
+      <button class="home-card" data-view-target="cheat"><strong>Cheat Day Entry</strong><span>Restaurant meals plus normal Food Bank items by meal slot.</span></button>
+      <button class="home-card" data-view-target="desserts"><strong>Protein Dessert Options</strong><span>Six macro-friendly dessert ideas with ingredients and visuals.</span></button>
+    </main>
+    ${renderTrainingCalendar()}
+    <div data-modal-root></div>
+  `;
+  renderModal();
+}
+
+function mealLikeCard(item, options = {}) {
+  const source = item.restaurant || item.category || "Food Bank";
+  return `
+    <article class="item">
+      ${options.image ? `<div class="dessert-image" style="background: radial-gradient(circle at 25% 25%, rgba(255,255,255,.78), transparent 18%), linear-gradient(135deg, ${options.image.join(", ")});"></div>` : ""}
+      <div class="item-head">
+        <div>
+          <div class="item-name">${esc(item.name)}</div>
+          <div class="item-cat">${esc(source)} - ${fmt(item.calories)} cal${item.note ? " - " + esc(item.note) : ""}</div>
+        </div>
+        ${options.add ? `<button class="mini add" data-cheat-add="${esc(item.id)}" data-cheat-source="${esc(options.source)}">Add</button>` : ""}
+      </div>
+      <div class="macro-grid">
+        <div class="macro"><span>Cal</span><b>${fmt(item.calories)}</b></div>
+        <div class="macro"><span>Fat</span><b>${fmt(item.fat)}g</b></div>
+        <div class="macro"><span>Carbs</span><b>${fmt(item.carbs)}g</b></div>
+        <div class="macro"><span>Protein</span><b>${fmt(item.protein)}g</b></div>
+      </div>
+      ${options.ingredients ? `<ul class="ingredients">${options.ingredients.map((ingredient) => `<li>${esc(ingredient)}</li>`).join("")}</ul>` : ""}
+      ${options.instructions ? `<div class="section-label">How to make</div><ol class="ingredients">${options.instructions.map((step) => `<li>${esc(step)}</li>`).join("")}</ol>` : ""}
+    </article>
+  `;
+}
+
+function cheatTotals() {
+  return MEAL_SLOTS.flatMap((slot) => state.cheatEntries[slot] || []).reduce((totals, item) => {
+    const servings = parseNumber(item.servings || 1);
+    totals.calories += item.calories * servings;
+    totals.fat += item.fat * servings;
+    totals.carbs += item.carbs * servings;
+    totals.protein += item.protein * servings;
+    return totals;
+  }, { calories: 0, fat: 0, carbs: 0, protein: 0 });
+}
+
+function renderCheat() {
+  const query = state.query.trim().toLowerCase();
+  const restaurantItems = RESTAURANT_MEALS.filter((item) => !query || item.name.toLowerCase().includes(query) || item.restaurant.toLowerCase().includes(query));
+  const bankItems = foodLibrary().filter((item) => !query || item.name.toLowerCase().includes(query) || item.category.toLowerCase().includes(query));
+  const totals = cheatTotals();
+  document.querySelector("#app").innerHTML = `
+    ${topShell("Cheat Day", `<button class="ghost" data-view-target="home">Home</button>`)}
+    <section class="summary">
+      <div class="metric"><span>Total Calories</span><strong>${fmt(totals.calories)}</strong></div>
+      <div class="metric"><span>Protein</span><strong>${fmt(totals.protein)}g</strong></div>
+      <div class="metric"><span>Carbs</span><strong>${fmt(totals.carbs)}g</strong></div>
+      <div class="metric"><span>Fat</span><strong>${fmt(totals.fat)}g</strong></div>
+    </section>
+    <div class="toolbar">
+      <input class="search" type="search" placeholder="Search restaurants or food bank" value="${esc(state.query)}" data-search>
+      <button class="ghost" data-clear>Clear</button>
+    </div>
+    <div class="action-row">
+      <button class="primary" data-open-manual-cheat>Add Manual Meal</button>
+      <button class="ghost" data-clear-cheat>Clear Cheat Day</button>
+    </div>
+    <main class="items">
+      ${MEAL_SLOTS.map((slot) => `
+        <section class="slot-card">
+          <h3>${slot}</h3>
+          <div class="slot-items">
+            ${(state.cheatEntries[slot] || []).length ? state.cheatEntries[slot].map((item, index) => `
+              <div class="slot-item"><span>${esc(item.name)} x ${fmt(item.servings || 1)} - ${fmt(item.calories * (item.servings || 1))} cal</span><button class="mini danger" data-cheat-remove="${slot}" data-cheat-index="${index}">Remove</button></div>
+            `).join("") : `<div class="empty">No ${slot.toLowerCase()} items yet.</div>`}
+          </div>
+        </section>
+      `).join("")}
+      <div class="section-label">Restaurant meal database - estimated macros</div>
+      ${restaurantItems.map((item) => mealLikeCard(item, { add: true, source: "restaurant" })).join("")}
+      <div class="section-label">Food bank items</div>
+      ${bankItems.map((item) => mealLikeCard({ ...item, restaurant: "Food Bank" }, { add: true, source: "bank" })).join("")}
+    </main>
+    <div data-modal-root></div>
+  `;
+  renderModal();
+}
+
+function renderDesserts() {
+  document.querySelector("#app").innerHTML = `
+    ${topShell("Protein Desserts", `<button class="ghost" data-view-target="home">Home</button>`)}
+    <main class="items">
+      ${PROTEIN_DESSERTS.map((dessert) => mealLikeCard(dessert, { ingredients: dessert.ingredients, instructions: dessert.instructions, image: dessert.colors })).join("")}
+    </main>
+  `;
+}
+
 function render() {
   const phase = currentPhase();
   if (!phase) return;
   applyTheme();
   saveFavorites();
+  if (state.view === "home") {
+    renderHome();
+    return;
+  }
   if (state.view === "bank") {
     renderFoodBank();
+    return;
+  }
+  if (state.view === "cheat") {
+    renderCheat();
+    return;
+  }
+  if (state.view === "desserts") {
+    renderDesserts();
     return;
   }
   const isFavorite = state.favoriteIds.includes(phase.id);
@@ -1094,7 +1745,7 @@ function render() {
       <select class="phase-select" data-select>${phaseOptions(phase)}</select>
       <div class="top-actions">
         <button class="ghost favorite-toggle ${isFavorite ? "active" : ""}" data-toggle-favorite>${isFavorite ? "Favorited" : "Favorite Page"}</button>
-        <button class="ghost" data-open-bank>Food Bank</button>
+        <button class="ghost" data-view-target="home">Home</button>
       </div>
       <div class="tabs">${favoriteTabs(phase)}</div>
     </div>
@@ -1131,6 +1782,35 @@ document.addEventListener("click", (event) => {
     renderModal();
     return;
   }
+  const trainingDay = event.target.closest("[data-training-day]");
+  if (trainingDay) {
+    const key = trainingDay.dataset.trainingDay;
+    const current = state.trainingLog[key] || {};
+    if (!current.gym && !current.cardio) {
+      state.trainingLog[key] = { gym: true, cardio: false };
+    } else if (current.gym && !current.cardio) {
+      state.trainingLog[key] = { gym: false, cardio: true };
+    } else if (!current.gym && current.cardio) {
+      state.trainingLog[key] = { gym: true, cardio: true };
+    } else {
+      delete state.trainingLog[key];
+    }
+    localStorage.setItem(TRAINING_KEY, JSON.stringify(state.trainingLog));
+    render();
+    return;
+  }
+  const viewButton = event.target.closest("[data-view-target]");
+  if (viewButton) {
+    setView(viewButton.dataset.viewTarget);
+    state.query = "";
+    render();
+    return;
+  }
+  if (event.target.closest("[data-edit-profile]")) {
+    state.editingProfile = true;
+    render();
+    return;
+  }
   if (event.target.closest("[data-open-bank]")) {
     setView("bank");
     state.query = "";
@@ -1138,7 +1818,7 @@ document.addEventListener("click", (event) => {
     return;
   }
   if (event.target.closest("[data-back-phase]")) {
-    setView("phase");
+    setView("home");
     state.query = "";
     render();
     return;
@@ -1213,6 +1893,44 @@ document.addEventListener("click", (event) => {
     }
     return;
   }
+  const cheatAdd = event.target.closest("[data-cheat-add]");
+  if (cheatAdd) {
+    const source = cheatAdd.dataset.cheatSource;
+    const item = source === "restaurant"
+      ? RESTAURANT_MEALS.find((entry) => entry.id === cheatAdd.dataset.cheatAdd)
+      : foodLibrary().find((entry) => entry.id === cheatAdd.dataset.cheatAdd);
+    if (!item) return;
+    state.modal = { type: "cheat", cheatItem: { ...item, servings: 1, restaurant: item.restaurant || "Food Bank", slot: item.slot || "Other" } };
+    renderModal();
+    return;
+  }
+  if (event.target.closest("[data-open-manual-cheat]")) {
+    state.modal = { type: "cheat", cheatItem: { name: "", restaurant: "Manual", slot: "Other", servings: 1, calories: 0, fat: 0, carbs: 0, protein: 0 } };
+    renderModal();
+    return;
+  }
+  if (event.target.closest("[data-open-bank-food]")) {
+    state.modal = { type: "food", bankItem: true };
+    renderModal();
+    return;
+  }
+  if (event.target.closest("[data-clear-cheat]")) {
+    if (confirm("Clear all cheat day entries?")) {
+      state.cheatEntries = {};
+      localStorage.removeItem(CHEAT_KEY);
+      render();
+    }
+    return;
+  }
+  const cheatRemove = event.target.closest("[data-cheat-remove]");
+  if (cheatRemove) {
+    const slot = cheatRemove.dataset.cheatRemove;
+    const index = Number(cheatRemove.dataset.cheatIndex);
+    state.cheatEntries[slot] = (state.cheatEntries[slot] || []).filter((_, itemIndex) => itemIndex !== index);
+    localStorage.setItem(CHEAT_KEY, JSON.stringify(state.cheatEntries));
+    render();
+    return;
+  }
   if (event.target.closest("[data-open-add-food]")) {
     state.modal = { type: "food" };
     renderModal();
@@ -1234,11 +1952,13 @@ document.addEventListener("click", (event) => {
       localStorage.removeItem(STORAGE_KEY);
       localStorage.removeItem("macroServings");
       localStorage.removeItem("macroActiveOnly");
+      localStorage.removeItem(CHEAT_KEY);
       state.favoriteIds = [];
+      state.cheatEntries = {};
       localStorage.removeItem(FAVORITES_KEY);
       state.phaseId = DATA[0]?.id;
       state.activeOnly = false;
-      setView("phase");
+      setView("home");
       render();
     }
   }
@@ -1248,6 +1968,7 @@ document.addEventListener("input", (event) => {
   if (event.target.matches("[data-search]")) {
     state.query = event.target.value;
     if (state.view === "bank") renderFoodBank();
+    else if (state.view === "cheat") renderCheat();
     else renderItems();
   }
 });
@@ -1256,7 +1977,7 @@ document.addEventListener("change", (event) => {
   if (event.target.matches("[data-theme-select]")) {
     state.theme = event.target.value;
     applyTheme();
-    renderSummary();
+    if (state.view === "phase") renderSummary();
     return;
   }
   if (event.target.matches("[data-select]")) {
@@ -1272,12 +1993,44 @@ document.addEventListener("change", (event) => {
 });
 
 document.addEventListener("submit", (event) => {
+  const profileForm = event.target.closest("[data-profile-form]");
+  if (profileForm) {
+    event.preventDefault();
+    const formData = new FormData(profileForm);
+    const submittedName = String(formData.get("profileName") || "").trim();
+    if (submittedName) state.profileName = submittedName;
+    state.profileData = {
+      birthDate: String(formData.get("birthDate") || ""),
+      gender: String(formData.get("gender") || ""),
+      heightFeet: String(formData.get("heightFeet") || ""),
+      heightInches: String(formData.get("heightInches") || ""),
+      currentWeight: String(formData.get("currentWeight") || ""),
+      goalWeight: String(formData.get("goalWeight") || ""),
+      goal: String(formData.get("goal") || "")
+    };
+    localStorage.setItem(PROFILE_KEY, state.profileName);
+    localStorage.setItem(PROFILE_DATA_KEY, JSON.stringify(state.profileData));
+    state.editingProfile = false;
+    render();
+    return;
+  }
   const form = event.target.closest("[data-food-form]");
   if (!form) return;
   event.preventDefault();
-  const phase = currentPhase();
+  const phase = form.dataset.formBank === "true" ? foodBankPhase() : currentPhase();
   const formData = new FormData(form);
-  if (form.dataset.formType === "tab") {
+  if (form.dataset.formType === "training") {
+    const date = String(formData.get("trainingDate") || "");
+    const type = String(formData.get("trainingType") || "");
+    if (date) {
+      if (!type) delete state.trainingLog[date];
+      else state.trainingLog[date] = {
+        gym: type === "gym" || type === "both",
+        cardio: type === "cardio" || type === "both"
+      };
+      localStorage.setItem(TRAINING_KEY, JSON.stringify(state.trainingLog));
+    }
+  } else if (form.dataset.formType === "tab") {
     const name = String(formData.get("tabName") || "").trim();
     if (!name) return;
     const id = `${slug(name)}-${Date.now()}`;
@@ -1290,6 +2043,22 @@ document.addEventListener("submit", (event) => {
       carbs: parseNumber(formData.get("goalCarbs")),
       protein: parseNumber(formData.get("goalProtein"))
     };
+  } else if (form.dataset.formType === "cheat") {
+    const slot = String(formData.get("cheatSlot") || "Other");
+    const servings = Math.max(0, parseNumber(formData.get("cheatServings")) || 1);
+    const itemData = {
+      id: `${slug(formData.get("cheatName"))}-${Date.now()}`,
+      name: String(formData.get("cheatName") || "").trim() || "Cheat meal",
+      restaurant: String(formData.get("cheatRestaurant") || "").trim() || "Manual",
+      servings,
+      calories: parseNumber(formData.get("cheatCalories")),
+      fat: parseNumber(formData.get("cheatFat")),
+      carbs: parseNumber(formData.get("cheatCarbs")),
+      protein: parseNumber(formData.get("cheatProtein"))
+    };
+    state.cheatEntries[slot] = state.cheatEntries[slot] || [];
+    state.cheatEntries[slot].push(itemData);
+    localStorage.setItem(CHEAT_KEY, JSON.stringify(state.cheatEntries));
   } else {
     const itemData = {
       id: form.dataset.formItem || `${slug(formData.get("name"))}-${Date.now()}`,
