@@ -124,6 +124,27 @@ h1 {
   background: var(--panel);
   color: var(--accent-dark);
 }
+.action-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 12px 0;
+}
+.primary {
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  padding: 12px;
+  background: var(--accent);
+  color: white;
+}
+.section-label {
+  grid-column: 1 / -1;
+  color: var(--muted);
+  font-size: .78rem;
+  font-weight: 750;
+  padding: 4px 2px 0;
+  text-transform: uppercase;
+}
 .items {
   display: grid;
   gap: 10px;
@@ -148,6 +169,27 @@ h1 {
   margin-top: 3px;
   color: var(--muted);
   font-size: .78rem;
+}
+.item-tools {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+}
+.mini {
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: #f7faf5;
+  color: var(--accent-dark);
+  min-height: 34px;
+  padding: 0 10px;
+}
+.mini.danger {
+  color: var(--danger);
+}
+.mini.add {
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--line));
+  color: white;
+  background: var(--accent);
 }
 .macro-grid {
   display: grid;
@@ -241,6 +283,58 @@ h1 {
   text-align: center;
   color: var(--muted);
 }
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: none;
+  align-items: end;
+  background: rgba(16, 35, 29, .42);
+}
+.modal-backdrop.open {
+  display: flex;
+}
+.modal {
+  width: 100%;
+  max-height: 88vh;
+  overflow: auto;
+  background: var(--panel);
+  border-radius: 14px 14px 0 0;
+  padding: 16px;
+  box-shadow: 0 -18px 40px rgba(0,0,0,.18);
+}
+.modal h2 {
+  margin: 0 0 12px;
+  font-size: 1.05rem;
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.field {
+  display: grid;
+  gap: 5px;
+}
+.field.full {
+  grid-column: 1 / -1;
+}
+.field span {
+  color: var(--muted);
+  font-size: .75rem;
+}
+.field input {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 11px;
+}
+.modal-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 14px;
+}
 @media (min-width: 720px) {
   .app {
     max-width: 760px;
@@ -250,70 +344,141 @@ h1 {
   .topbar { margin-inline: -20px; padding-inline: 20px; }
   .summary { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .items { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .modal {
+    max-width: 520px;
+    margin: auto;
+    border-radius: 12px;
+  }
+  .modal-backdrop {
+    align-items: center;
+  }
 }
 </style>
 </head>
 <body>
   <div class="app" id="app"></div>
   <script>
-const DATA = [{"id":"summer2k24cut","name":"summer2k24cut","items":[{"name":"Egg","category":"","servings":1.0,"calories":80.0,"fat":5.0,"carbs":0.0,"protein":7.0},{"name":"Egg White","category":"","servings":1.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"Spinach","category":"","servings":1.0,"calories":25.0,"fat":0.0,"carbs":3.0,"protein":2.0},{"name":"Almond Milk","category":"","servings":1.0,"calories":30.0,"fat":2.5,"carbs":1.0,"protein":1.0},{"name":"Protein Powder","category":"","servings":1.0,"calories":120.0,"fat":1.0,"carbs":2.0,"protein":25.0},{"name":"PB Powder","category":"","servings":1.0,"calories":50.0,"fat":1.5,"carbs":4.0,"protein":6.0},{"name":"Ground Tky","category":"","servings":1.0,"calories":150.0,"fat":8.0,"carbs":0.0,"protein":22.0},{"name":"Crushed Tom","category":"","servings":1.0,"calories":20.0,"fat":0.0,"carbs":4.0,"protein":1.0},{"name":"Pinto Bean","category":"","servings":1.0,"calories":110.0,"fat":0.5,"carbs":20.0,"protein":6.0},{"name":"Green Pepper","category":"","servings":1.0,"calories":30.0,"fat":0.0,"carbs":4.0,"protein":1.0},{"name":"Onion","category":"","servings":1.0,"calories":40.0,"fat":0.0,"carbs":10.0,"protein":1.0},{"name":"Chicken","category":"","servings":1.0,"calories":110.0,"fat":0.5,"carbs":0.0,"protein":26.0},{"name":"Squash","category":"","servings":1.0,"calories":68.0,"fat":1.0,"carbs":15.0,"protein":3.0},{"name":"Zuccini","category":"","servings":1.0,"calories":30.0,"fat":1.0,"carbs":5.0,"protein":2.0},{"name":"Rice","category":"","servings":1.0,"calories":170.0,"fat":0.0,"carbs":36.0,"protein":3.0}]},{"id":"macros","name":"macros","items":[{"name":"Egg","category":"Meat","servings":14.0,"calories":80.0,"fat":5.0,"carbs":0.0,"protein":7.0},{"name":"Egg white","category":"Meat","servings":14.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"Rice","category":"Grain","servings":12.0,"calories":170.0,"fat":0.0,"carbs":36.0,"protein":3.0},{"name":"Crushed Tom","category":"Veg","servings":20.0,"calories":20.0,"fat":0.0,"carbs":4.0,"protein":1.0},{"name":"Pinto Bean","category":"Veg","servings":3.5,"calories":110.0,"fat":0.5,"carbs":20.0,"protein":6.0},{"name":"Broccli","category":"Veg","servings":11.0,"calories":25.0,"fat":0.0,"carbs":4.0,"protein":3.0},{"name":"Chicken","category":"Meat","servings":8.0,"calories":110.0,"fat":0.5,"carbs":0.0,"protein":26.0},{"name":"Ground Tky","category":"Meat","servings":12.0,"calories":150.0,"fat":8.0,"carbs":0.0,"protein":22.0},{"name":"Onion","category":"Veg","servings":2.5,"calories":40.0,"fat":0.0,"carbs":10.0,"protein":1.0},{"name":"PB Powder","category":"Misc","servings":0,"calories":50.0,"fat":1.5,"carbs":4.0,"protein":6.0},{"name":"Protein Powder","category":"Misc","servings":7.0,"calories":120.0,"fat":1.0,"carbs":2.0,"protein":25.0},{"name":"Almond Milk","category":"Dairy","servings":8.0,"calories":30.0,"fat":2.5,"carbs":1.0,"protein":1.0},{"name":"Green Pepper","category":"Veg","servings":4.0,"calories":30.0,"fat":0.0,"carbs":4.0,"protein":1.0},{"name":"Squash","category":"Veg","servings":2.0,"calories":68.0,"fat":1.0,"carbs":15.0,"protein":3.0},{"name":"Zuccini","category":"Veg","servings":2.0,"calories":30.0,"fat":1.0,"carbs":5.0,"protein":2.0},{"name":"Spinach","category":"Veg","servings":3.5,"calories":25.0,"fat":0.0,"carbs":3.0,"protein":2.0},{"name":"Greek Yogurt","category":"Dairy","servings":5.0,"calories":100.0,"fat":0.0,"carbs":9.0,"protein":14.0},{"name":"Cottage Cheese","category":"Dairy","servings":8.0,"calories":110.0,"fat":5.0,"carbs":5.0,"protein":12.0}]},{"id":"grocerys","name":"grocerys","items":[{"name":"egg","category":"","servings":14.0,"calories":70.0,"fat":5.0,"carbs":0.0,"protein":6.0},{"name":"egg whites","category":"","servings":14.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"grd tky","category":"","servings":12.0,"calories":150.0,"fat":8.0,"carbs":0.0,"protein":22.0},{"name":"chicken tend","category":"","servings":10.0,"calories":110.0,"fat":1.0,"carbs":0.0,"protein":25.0},{"name":"almond milk","category":"","servings":7.0,"calories":30.0,"fat":2.5,"carbs":1.0,"protein":1.0},{"name":"rice cake","category":"","servings":14.0,"calories":50.0,"fat":0.0,"carbs":11.0,"protein":0.0},{"name":"banana","category":"","servings":7.0,"calories":140.0,"fat":6.0,"carbs":30.0,"protein":2.0},{"name":"pinot beans","category":"","servings":3.5,"calories":110.0,"fat":0.0,"carbs":20.0,"protein":7.0},{"name":"petite diced","category":"","servings":7.0,"calories":25.0,"fat":1.0,"carbs":5.0,"protein":1.0},{"name":"crsuhed tom","category":"","servings":13.0,"calories":20.0,"fat":0.0,"carbs":4.0,"protein":1.0},{"name":"cottage ch","category":"","servings":6.0,"calories":80.0,"fat":0.0,"carbs":6.0,"protein":12.0},{"name":"rice","category":"","servings":12.5,"calories":210.0,"fat":0.0,"carbs":49.0,"protein":4.0},{"name":"protein powder","category":"","servings":14.0,"calories":120.0,"fat":1.0,"carbs":2.0,"protein":25.0},{"name":"pb powder","category":"","servings":14.0,"calories":50.0,"fat":1.5,"carbs":4.0,"protein":6.0},{"name":"green beans","category":"","servings":3.5,"calories":15.0,"fat":0.0,"carbs":3.0,"protein":0.0},{"name":"popcorn","category":"","servings":7.0,"calories":160.0,"fat":6.0,"carbs":25.0,"protein":3.0},{"name":"blueberries","category":"","servings":7.0,"calories":40.0,"fat":1.0,"carbs":4.0,"protein":1.0},{"name":"vegs","category":"","servings":1.0,"calories":300.0,"fat":2.0,"carbs":30.0,"protein":5.0}]},{"id":"maintanence-2024","name":"maintanence 2024","items":[{"name":"eggs","category":"","servings":35.0,"calories":80.0,"fat":5.0,"carbs":0.0,"protein":7.0},{"name":"rice","category":"","servings":10.0,"calories":210.0,"fat":0.0,"carbs":49.0,"protein":4.0},{"name":"chicken","category":"","servings":14.25,"calories":110.0,"fat":1.0,"carbs":0.0,"protein":25.0},{"name":"ground turk","category":"","servings":0.0,"calories":150.0,"fat":8.0,"carbs":0.0,"protein":22.0},{"name":"yogurt","category":"","servings":5.0,"calories":100.0,"fat":0.0,"carbs":9.0,"protein":14.0},{"name":"pasta","category":"","servings":0.0,"calories":200.0,"fat":1.0,"carbs":42.0,"protein":7.0},{"name":"pinto","category":"","servings":7.0,"calories":110.0,"fat":0.0,"carbs":20.0,"protein":7.0},{"name":"bb","category":"","servings":7.0,"calories":120.0,"fat":0.5,"carbs":22.0,"protein":7.0},{"name":"marina","category":"","servings":0.0,"calories":60.0,"fat":2.0,"carbs":9.0,"protein":2.0},{"name":"protein powder","category":"","servings":7.0,"calories":120.0,"fat":0.0,"carbs":2.0,"protein":25.0},{"name":"milk","category":"","servings":12.0,"calories":30.0,"fat":2.5,"carbs":1.0,"protein":1.0},{"name":"cottage cheese","category":"","servings":6.0,"calories":80.0,"fat":0.0,"carbs":6.0,"protein":12.0},{"name":"frozen fruit","category":"","servings":9.0,"calories":70.0,"fat":0.0,"carbs":17.0,"protein":0.0},{"name":"tom","category":"","servings":3.5,"calories":25.0,"fat":0.0,"carbs":5.0,"protein":1.0},{"name":"broc","category":"","servings":11.0,"calories":30.0,"fat":0.0,"carbs":5.0,"protein":3.0},{"name":"corn","category":"","servings":7.0,"calories":70.0,"fat":1.0,"carbs":13.0,"protein":2.0},{"name":"oatmeal","category":"","servings":0.0,"calories":150.0,"fat":2.5,"carbs":27.0,"protein":5.0},{"name":"grits","category":"","servings":14.0,"calories":170.0,"fat":0.5,"carbs":38.0,"protein":3.0},{"name":"banana","category":"","servings":7.0,"calories":121.0,"fat":0.5,"carbs":30.0,"protein":1.5},{"name":"raisins","category":"","servings":0,"calories":140.0,"fat":2.0,"carbs":27.0,"protein":1.0},{"name":"pb2","category":"","servings":14.0,"calories":60.0,"fat":1.5,"carbs":5.0,"protein":6.0},{"name":"granola","category":"","servings":0.0,"calories":300.0,"fat":11.25,"carbs":47.5,"protein":5.0}]},{"id":"bulk","name":"bulk","items":[{"name":"eggs","category":"","servings":35.0,"calories":80.0,"fat":5.0,"carbs":0.0,"protein":7.0},{"name":"rice","category":"","servings":12.0,"calories":210.0,"fat":0.0,"carbs":49.0,"protein":4.0},{"name":"chicken","category":"","servings":9.5,"calories":110.0,"fat":1.0,"carbs":0.0,"protein":25.0},{"name":"ground turk","category":"","servings":12.0,"calories":150.0,"fat":8.0,"carbs":0.0,"protein":22.0},{"name":"yogurt","category":"","servings":10.0,"calories":80.0,"fat":0.0,"carbs":15.0,"protein":5.0},{"name":"pasta","category":"","servings":10.0,"calories":200.0,"fat":1.0,"carbs":42.0,"protein":7.0},{"name":"pinto","category":"","servings":3.5,"calories":110.0,"fat":0.0,"carbs":20.0,"protein":7.0},{"name":"bb","category":"","servings":3.5,"calories":120.0,"fat":0.5,"carbs":22.0,"protein":7.0},{"name":"marina","category":"","servings":5.0,"calories":60.0,"fat":2.0,"carbs":9.0,"protein":2.0},{"name":"protein powder","category":"","servings":7.0,"calories":120.0,"fat":0.0,"carbs":2.0,"protein":25.0},{"name":"milk","category":"","servings":24.0,"calories":30.0,"fat":2.5,"carbs":1.0,"protein":1.0},{"name":"cottage cheese","category":"","servings":8.0,"calories":110.0,"fat":5.0,"carbs":5.0,"protein":12.0},{"name":"frozen fruit","category":"","servings":9.0,"calories":70.0,"fat":0.0,"carbs":17.0,"protein":0.0},{"name":"tom","category":"","servings":3.5,"calories":25.0,"fat":0.0,"carbs":5.0,"protein":0.0},{"name":"tom ch","category":"","servings":3.5,"calories":25.0,"fat":0.0,"carbs":6.0,"protein":1.0},{"name":"corn","category":"","servings":3.5,"calories":80.0,"fat":1.0,"carbs":14.0,"protein":1.0},{"name":"oatmeal","category":"","servings":0,"calories":150.0,"fat":2.5,"carbs":27.0,"protein":5.0},{"name":"grits","category":"","servings":14.0,"calories":170.0,"fat":0.5,"carbs":38.0,"protein":3.0},{"name":"banana","category":"","servings":7.0,"calories":121.0,"fat":0.5,"carbs":30.0,"protein":1.5},{"name":"raisins","category":"","servings":0,"calories":140.0,"fat":2.0,"carbs":27.0,"protein":1.0},{"name":"pb2","category":"","servings":7.0,"calories":60.0,"fat":1.5,"carbs":5.0,"protein":6.0},{"name":"granola","category":"","servings":7.0,"calories":300.0,"fat":11.25,"carbs":47.5,"protein":5.0}]},{"id":"fall-cut-2k23","name":"fall cut 2k23","items":[{"name":"Eggs","category":"","servings":3.0,"calories":270.0,"fat":18.0,"carbs":0.0,"protein":24.0},{"name":"Egg Whites","category":"","servings":1.0,"calories":36.0,"fat":0.0,"carbs":0.0,"protein":7.0},{"name":"Pepper Mix","category":"","servings":1.0,"calories":20.0,"fat":0.0,"carbs":4.0,"protein":1.0},{"name":"Protein Powder","category":"","servings":1.0,"calories":120.0,"fat":1.0,"carbs":2.0,"protein":25.0},{"name":"Almond Milk","category":"","servings":1.0,"calories":15.0,"fat":1.25,"carbs":0.5,"protein":0.5},{"name":"Oats","category":"","servings":1.0,"calories":150.0,"fat":2.5,"carbs":27.0,"protein":5.0},{"name":"Banana","category":"","servings":1.0,"calories":121.0,"fat":0.5,"carbs":30.0,"protein":1.5},{"name":"Ground Turkey","category":"","servings":1.0,"calories":257.0,"fat":14.0,"carbs":0.0,"protein":38.0},{"name":"Rice","category":"","servings":1.0,"calories":154.0,"fat":0.0,"carbs":35.0,"protein":3.0},{"name":"Broccili","category":"","servings":1.0,"calories":30.0,"fat":0.0,"carbs":5.0,"protein":3.0},{"name":"Cottage Cheese","category":"","servings":1.0,"calories":69.0,"fat":0.0,"carbs":5.0,"protein":10.0},{"name":"Strawberries","category":"","servings":1.0,"calories":22.0,"fat":0.0,"carbs":5.3,"protein":0.0},{"name":"Blueberries","category":"","servings":1.0,"calories":25.0,"fat":0.0,"carbs":7.0,"protein":0.0},{"name":"Chicken","category":"","servings":1.0,"calories":138.0,"fat":1.25,"carbs":0.0,"protein":31.0},{"name":"Squash","category":"","servings":1.0,"calories":11.0,"fat":0.0,"carbs":2.0,"protein":0.0},{"name":"Zucchini","category":"","servings":1.0,"calories":7.0,"fat":0.0,"carbs":1.3,"protein":0.0},{"name":"Carrots","category":"","servings":1.0,"calories":12.0,"fat":0.0,"carbs":3.0,"protein":0.0},{"name":"Onion","category":"","servings":1.0,"calories":22.0,"fat":0.0,"carbs":5.0,"protein":0.0},{"name":"Pepper","category":"","servings":1.0,"calories":7.0,"fat":0.0,"carbs":1.3,"protein":0.0}]},{"id":"cut-spring-25-pt-1","name":"Cut Spring 25 pt 1","items":[{"name":"Eggs","category":"","servings":14.0,"calories":70.0,"fat":5.0,"carbs":0.0,"protein":6.0},{"name":"Egg Whites","category":"","servings":20.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"Grits","category":"","servings":7.0,"calories":170.0,"fat":0.5,"carbs":38.0,"protein":3.0},{"name":"Rice","category":"","servings":10.0,"calories":210.0,"fat":0.0,"carbs":49.0,"protein":4.0},{"name":"Ground Tky","category":"","servings":12.0,"calories":160.0,"fat":8.0,"carbs":0.0,"protein":22.0},{"name":"Cottage Chse","category":"","servings":6.0,"calories":80.0,"fat":0.0,"carbs":6.0,"protein":12.0},{"name":"Banana","category":"","servings":7.0,"calories":105.0,"fat":0.0,"carbs":27.0,"protein":1.0},{"name":"Protein Pwd","category":"","servings":14.0,"calories":110.0,"fat":1.0,"carbs":2.0,"protein":25.0},{"name":"Oatmeal","category":"","servings":7.0,"calories":150.0,"fat":2.5,"carbs":27.0,"protein":5.0},{"name":"Greek Yogurt","category":"","servings":5.0,"calories":100.0,"fat":0.0,"carbs":9.0,"protein":14.0},{"name":"Ground Beef","category":"","servings":18.0,"calories":280.0,"fat":22.0,"carbs":0.0,"protein":19.0},{"name":"Russet Pot","category":"","servings":8.0,"calories":110.0,"fat":0.0,"carbs":26.0,"protein":3.0},{"name":"Shrd Cheese","category":"","servings":7.0,"calories":90.0,"fat":6.0,"carbs":2.0,"protein":7.0},{"name":"Ketchup","category":"","servings":33.0,"calories":20.0,"fat":0.0,"carbs":5.0,"protein":0.0},{"name":"Beans","category":"","servings":3.5,"calories":110.0,"fat":0.0,"carbs":20.0,"protein":7.0}]},{"id":"cut-spring-25-pt2","name":"Cut Spring 25 pt2","items":[{"name":"Eggs","category":"","servings":28.0,"calories":70.0,"fat":5.0,"carbs":0.0,"protein":6.0},{"name":"Egg Whites","category":"","servings":0.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"Grits","category":"","servings":7.0,"calories":170.0,"fat":0.5,"carbs":38.0,"protein":3.0},{"name":"Rice","category":"","servings":10.0,"calories":210.0,"fat":0.0,"carbs":49.0,"protein":4.0},{"name":"Ground Tky","category":"","servings":12.0,"calories":160.0,"fat":8.0,"carbs":0.0,"protein":22.0},{"name":"Cottage Chse","category":"","servings":6.0,"calories":80.0,"fat":0.0,"carbs":6.0,"protein":12.0},{"name":"Banana","category":"","servings":7.0,"calories":105.0,"fat":0.0,"carbs":27.0,"protein":1.0},{"name":"Protein Pwd","category":"","servings":14.0,"calories":110.0,"fat":1.0,"carbs":2.0,"protein":25.0},{"name":"Oatmeal","category":"","servings":7.0,"calories":150.0,"fat":2.5,"carbs":27.0,"protein":5.0},{"name":"Greek Yogurt","category":"","servings":0.0,"calories":100.0,"fat":0.0,"carbs":9.0,"protein":14.0},{"name":"Ground Beef","category":"","servings":18.0,"calories":170.0,"fat":8.0,"carbs":0.0,"protein":23.0},{"name":"Russet Pot","category":"","servings":5.05,"calories":110.0,"fat":0.0,"carbs":26.0,"protein":3.0},{"name":"Shrd Cheese","category":"","servings":7.0,"calories":90.0,"fat":6.0,"carbs":2.0,"protein":7.0},{"name":"Ketchup","category":"","servings":20.0,"calories":20.0,"fat":0.0,"carbs":5.0,"protein":0.0},{"name":"Beans","category":"","servings":3.5,"calories":110.0,"fat":0.0,"carbs":20.0,"protein":7.0}]},{"id":"cut-spring-25-pt-3","name":"Cut Spring 25 pt 3","items":[{"name":"Eggs","category":"","servings":14.0,"calories":70.0,"fat":5.0,"carbs":0.0,"protein":6.0},{"name":"Egg Whites","category":"","servings":14.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"Grits","category":"","servings":7.0,"calories":170.0,"fat":0.5,"carbs":38.0,"protein":3.0},{"name":"Rice","category":"","servings":15.0,"calories":210.0,"fat":0.0,"carbs":49.0,"protein":4.0},{"name":"Ground Tky","category":"","servings":24.0,"calories":160.0,"fat":8.0,"carbs":0.0,"protein":22.0},{"name":"Cottage Chse","category":"","servings":12.0,"calories":80.0,"fat":0.0,"carbs":6.0,"protein":12.0},{"name":"Banana","category":"","servings":7.0,"calories":105.0,"fat":0.0,"carbs":27.0,"protein":1.0},{"name":"Protein Pwd","category":"","servings":14.0,"calories":110.0,"fat":1.0,"carbs":2.0,"protein":25.0},{"name":"Oatmeal","category":"","servings":7.0,"calories":150.0,"fat":2.5,"carbs":27.0,"protein":5.0},{"name":"Greek Yogurt","category":"","servings":0.0,"calories":100.0,"fat":0.0,"carbs":9.0,"protein":14.0},{"name":"Ground Beef","category":"","servings":0.0,"calories":170.0,"fat":8.0,"carbs":0.0,"protein":23.0},{"name":"Russet Pot","category":"","servings":0.0,"calories":110.0,"fat":0.0,"carbs":26.0,"protein":3.0},{"name":"Shrd Cheese","category":"","servings":0.0,"calories":90.0,"fat":6.0,"carbs":2.0,"protein":7.0},{"name":"Ketchup","category":"","servings":0.0,"calories":20.0,"fat":0.0,"carbs":5.0,"protein":0.0},{"name":"Beans","category":"","servings":7.0,"calories":110.0,"fat":0.0,"carbs":20.0,"protein":7.0},{"name":"rice cake","category":"","servings":14.0,"calories":50.0,"fat":0.0,"carbs":11.0,"protein":0.0}]},{"id":"cut-spring-25-pt-4","name":"Cut Spring 25 pt 4","items":[{"name":"Eggs","category":"","servings":14.0,"calories":70.0,"fat":5.0,"carbs":0.0,"protein":6.0},{"name":"Egg Whites","category":"","servings":16.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"Grits","category":"","servings":7.0,"calories":170.0,"fat":0.5,"carbs":38.0,"protein":3.0},{"name":"Rice","category":"","servings":7.5,"calories":210.0,"fat":0.0,"carbs":49.0,"protein":4.0},{"name":"Ground Tky","category":"","servings":12.0,"calories":160.0,"fat":8.0,"carbs":0.0,"protein":22.0},{"name":"Cottage Chse","category":"","servings":6.0,"calories":80.0,"fat":0.0,"carbs":6.0,"protein":12.0},{"name":"chicken","category":"","servings":11.0,"calories":110.0,"fat":1.0,"carbs":0.0,"protein":25.0},{"name":"Banana","category":"","servings":7.0,"calories":105.0,"fat":0.0,"carbs":27.0,"protein":1.0},{"name":"Protein Pwd","category":"","servings":14.0,"calories":110.0,"fat":1.0,"carbs":2.0,"protein":25.0},{"name":"Oatmeal","category":"","servings":7.0,"calories":150.0,"fat":2.5,"carbs":27.0,"protein":5.0},{"name":"Greek Yogurt","category":"","servings":0.0,"calories":100.0,"fat":0.0,"carbs":9.0,"protein":14.0},{"name":"Ground Beef","category":"","servings":0.0,"calories":170.0,"fat":8.0,"carbs":0.0,"protein":23.0},{"name":"Russet Pot","category":"","servings":14.0,"calories":110.0,"fat":0.0,"carbs":26.0,"protein":3.0},{"name":"Shrd Cheese","category":"","servings":0.0,"calories":90.0,"fat":6.0,"carbs":2.0,"protein":7.0},{"name":"Ketchup","category":"","servings":7.0,"calories":20.0,"fat":0.0,"carbs":5.0,"protein":0.0},{"name":"Beans","category":"","servings":14.0,"calories":110.0,"fat":0.0,"carbs":20.0,"protein":7.0},{"name":"rice cake","category":"","servings":7.0,"calories":50.0,"fat":0.0,"carbs":11.0,"protein":0.0}]},{"id":"cut-spring-25-pt-5","name":"Cut Spring 25 pt 5","items":[{"name":"Eggs","category":"","servings":14.0,"calories":70.0,"fat":5.0,"carbs":0.0,"protein":6.0},{"name":"Egg Whites","category":"","servings":14.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"Grits","category":"","servings":0.0,"calories":170.0,"fat":0.5,"carbs":38.0,"protein":3.0},{"name":"Rice","category":"","servings":0.0,"calories":210.0,"fat":0.0,"carbs":49.0,"protein":4.0},{"name":"Ground Tky","category":"","servings":12.0,"calories":160.0,"fat":5.0,"carbs":0.0,"protein":21.0},{"name":"Cottage Chse","category":"","servings":0.0,"calories":80.0,"fat":0.0,"carbs":6.0,"protein":12.0},{"name":"chicken","category":"","servings":17.0,"calories":130.0,"fat":3.0,"carbs":0.0,"protein":25.0},{"name":"Banana","category":"","servings":4.0,"calories":105.0,"fat":0.0,"carbs":27.0,"protein":1.0},{"name":"Protein Pwd","category":"","servings":14.0,"calories":110.0,"fat":1.0,"carbs":2.0,"protein":25.0},{"name":"berries","category":"","servings":0.0,"calories":80.0,"fat":0.0,"carbs":19.0,"protein":1.0},{"name":"mango mix","category":"","servings":7.0,"calories":70.0,"fat":0.0,"carbs":19.0,"protein":0.0},{"name":"Greek Yogurt","category":"","servings":0.0,"calories":100.0,"fat":0.0,"carbs":9.0,"protein":14.0},{"name":"plain yogurt","category":"","servings":5.0,"calories":100.0,"fat":0.0,"carbs":7.0,"protein":17.0},{"name":"Ground Beef","category":"","servings":0.0,"calories":170.0,"fat":8.0,"carbs":0.0,"protein":23.0},{"name":"Russet Pot","category":"","servings":10.0,"calories":110.0,"fat":0.0,"carbs":26.0,"protein":3.0},{"name":"Shrd Cheese","category":"","servings":0.0,"calories":90.0,"fat":6.0,"carbs":2.0,"protein":7.0},{"name":"Ketchup","category":"","servings":0.0,"calories":20.0,"fat":0.0,"carbs":5.0,"protein":0.0},{"name":"Beans","category":"","servings":7.0,"calories":110.0,"fat":0.0,"carbs":20.0,"protein":7.0},{"name":"rice cake","category":"","servings":7.0,"calories":60.0,"fat":0.0,"carbs":11.0,"protein":0.0}]},{"id":"sheet2","name":"Sheet2","items":[{"name":"1120","category":"","servings":98.0,"calories":80.0,"fat":5.0,"carbs":0.0,"protein":70.0},{"name":"350","category":"","servings":70.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"1190","category":"","servings":21.0,"calories":266.0,"fat":0.5,"carbs":38.0,"protein":3.5},{"name":"2660","category":"","servings":189.0,"calories":266.0,"fat":0,"carbs":0,"protein":73.5},{"name":"380","category":"","servings":27.0,"calories":38.0,"fat":0,"carbs":0,"protein":10.5},{"name":"770","category":"","servings":175.0,"calories":14.0,"fat":1.0,"carbs":2.0,"protein":7.0},{"name":"105","category":"","servings":3.5,"calories":3.5,"fat":2.5,"carbs":1.0,"protein":8.75},{"name":"420","category":"","servings":7.0,"calories":105.0,"fat":0.0,"carbs":15.0,"protein":1.0},{"name":"1995","category":"","servings":229.6,"calories":227.5,"fat":0,"carbs":0,"protein":26.25},{"name":"285","category":"","servings":32.8,"calories":32.5,"fat":0,"carbs":0,"protein":3.75},{"name":"1800","category":"","servings":264.0,"calories":150.0,"fat":8.0,"carbs":0.0,"protein":96.0},{"name":"1260","category":"","servings":24.0,"calories":294.0,"fat":0.0,"carbs":49.0,"protein":4.0},{"name":"300","category":"","servings":30.0,"calories":50.0,"fat":0.0,"carbs":5.0,"protein":3.0},{"name":"40","category":"","servings":4.0,"calories":6.0,"fat":0.0,"carbs":3.0,"protein":2.0},{"name":"240","category":"","servings":36.0,"calories":18.0,"fat":0.0,"carbs":6.0,"protein":12.0},{"name":"150","category":"","servings":30.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"3790","category":"","servings":388.0,"calories":368.0,"fat":0,"carbs":0,"protein":96.0},{"name":"541.4285714285714","category":"","servings":55.43,"calories":52.57,"fat":0,"carbs":0,"protein":13.71},{"name":"210","category":"","servings":7.0,"calories":7.0,"fat":2.5,"carbs":1.0,"protein":17.5},{"name":"2100","category":"","servings":233.1,"calories":231.0,"fat":0,"carbs":0,"protein":35.0},{"name":"935","category":"","servings":212.5,"calories":110.0,"fat":1.0,"carbs":0.0,"protein":8.5},{"name":"120","category":"","servings":1.0,"calories":42.0,"fat":0.0,"carbs":7.0,"protein":0.0},{"name":"220","category":"","servings":1.0,"calories":50.0,"fat":0.0,"carbs":5.0,"protein":0.0},{"name":"480","category":"","servings":24.0,"calories":120.0,"fat":1.5,"carbs":15.0,"protein":12.0},{"name":"3255","category":"","servings":296.5,"calories":524.0,"fat":0,"carbs":0,"protein":20.5},{"name":"465","category":"","servings":42.36,"calories":74.86,"fat":0,"carbs":0,"protein":2.93},{"name":"700","category":"","servings":98.0,"calories":63.0,"fat":0.0,"carbs":9.0,"protein":14.0},{"name":"14500","category":"","servings":1434.2,"calories":1679.5,"fat":0,"carbs":0,"protein":251.25},{"name":"2071.4285714285716","category":"","servings":204.89,"calories":239.93,"fat":0,"carbs":0,"protein":35.89}]},{"id":"lean-bulk-winter-25","name":"lean bulk winter 25","items":[{"name":"Eggs","category":"","servings":14.0,"calories":70.0,"fat":5.0,"carbs":0.0,"protein":6.0},{"name":"Egg Whites","category":"","servings":14.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"corn","category":"","servings":3.5,"calories":60.0,"fat":1.0,"carbs":12.0,"protein":2.0},{"name":"carrot","category":"","servings":3.5,"calories":30.0,"fat":0.0,"carbs":6.0,"protein":1.0},{"name":"Ground Tky","category":"","servings":12.0,"calories":200.0,"fat":14.0,"carbs":0.0,"protein":20.0},{"name":"sauce","category":"","servings":5.0,"calories":90.0,"fat":3.5,"carbs":12.0,"protein":3.0},{"name":"chicken","category":"","servings":11.6,"calories":120.0,"fat":3.0,"carbs":0.0,"protein":24.0},{"name":"broth","category":"","servings":4.0,"calories":40.0,"fat":0.0,"carbs":0.0,"protein":9.0},{"name":"Protein Pwd","category":"","servings":14.0,"calories":110.0,"fat":1.0,"carbs":2.0,"protein":25.0},{"name":"tom","category":"","servings":3.5,"calories":25.0,"fat":0.0,"carbs":5.0,"protein":1.0},{"name":"mango mix","category":"","servings":0.0,"calories":70.0,"fat":0.0,"carbs":19.0,"protein":0.0},{"name":"pasta","category":"","servings":8.0,"calories":200.0,"fat":1.0,"carbs":41.0,"protein":8.0},{"name":"plain yogurt","category":"","servings":0.0,"calories":100.0,"fat":0.0,"carbs":7.0,"protein":17.0},{"name":"bread","category":"","servings":12.0,"calories":120.0,"fat":0.0,"carbs":25.0,"protein":4.0},{"name":"Russet Pot","category":"","servings":11.0,"calories":110.0,"fat":0.0,"carbs":26.0,"protein":3.0},{"name":"Shrd Cheese","category":"","servings":12.0,"calories":110.0,"fat":8.0,"carbs":1.0,"protein":7.0},{"name":"bagels","category":"","servings":6.0,"calories":260.0,"fat":3.5,"carbs":45.0,"protein":11.0},{"name":"Beans","category":"","servings":6.0,"calories":90.0,"fat":0.5,"carbs":20.0,"protein":6.0},{"name":"rice cake","category":"","servings":7.0,"calories":110.0,"fat":0.0,"carbs":24.0,"protein":2.0}]},{"id":"cut-spring-26","name":"Cut Spring 26","items":[{"name":"Eggs","category":"","servings":14.0,"calories":70.0,"fat":5.0,"carbs":0.0,"protein":6.0},{"name":"Egg Whites","category":"","servings":14.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"Grits","category":"","servings":7.0,"calories":170.0,"fat":0.5,"carbs":38.0,"protein":3.0},{"name":"Rice","category":"","servings":8.0,"calories":160.0,"fat":0.0,"carbs":36.0,"protein":4.0},{"name":"Ground Tky","category":"","servings":12.0,"calories":200.0,"fat":14.0,"carbs":0.0,"protein":20.0},{"name":"Cottage Chse","category":"","servings":12.0,"calories":90.0,"fat":1.0,"carbs":6.0,"protein":13.0},{"name":"chicken","category":"","servings":17.0,"calories":130.0,"fat":3.0,"carbs":0.0,"protein":25.0},{"name":"Banana","category":"","servings":7.0,"calories":105.0,"fat":0.0,"carbs":27.0,"protein":1.0},{"name":"Protein Pwd","category":"","servings":14.0,"calories":147.0,"fat":3.0,"carbs":5.0,"protein":25.0},{"name":"Russet Pot","category":"","servings":13.0,"calories":110.0,"fat":0.0,"carbs":26.0,"protein":3.0},{"name":"Shrd M Cheese","category":"","servings":10.0,"calories":80.0,"fat":6.0,"carbs":2.0,"protein":6.0},{"name":"Ketchup","category":"","servings":15.0,"calories":15.0,"fat":0.0,"carbs":4.0,"protein":0.0},{"name":"Beans","category":"","servings":12.0,"calories":90.0,"fat":0.5,"carbs":20.0,"protein":6.0},{"name":"almond milk","category":"","servings":8.0,"calories":35.0,"fat":3.0,"carbs":1.0,"protein":1.0},{"name":"rice cake","category":"","servings":7.0,"calories":60.0,"fat":0.0,"carbs":11.0,"protein":0.0}]},{"id":"cut-spring-26-pt-2","name":"Cut Spring 26 pt 2","items":[{"name":"Eggs","category":"","servings":14.0,"calories":70.0,"fat":5.0,"carbs":0.0,"protein":6.0},{"name":"Egg Whites","category":"","servings":14.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"Grits","category":"","servings":0.0,"calories":170.0,"fat":0.5,"carbs":38.0,"protein":3.0},{"name":"Rice","category":"","servings":0.0,"calories":160.0,"fat":0.0,"carbs":36.0,"protein":4.0},{"name":"Ground Tky","category":"","servings":12.0,"calories":160.0,"fat":9.0,"carbs":0.0,"protein":22.0},{"name":"Cottage Chse","category":"","servings":12.0,"calories":90.0,"fat":1.0,"carbs":6.0,"protein":13.0},{"name":"chicken","category":"","servings":24.0,"calories":130.0,"fat":3.0,"carbs":0.0,"protein":25.0},{"name":"Banana","category":"","servings":7.0,"calories":105.0,"fat":0.0,"carbs":27.0,"protein":1.0},{"name":"Protein Pwd","category":"","servings":14.0,"calories":147.0,"fat":3.0,"carbs":5.0,"protein":25.0},{"name":"Russet Pot","category":"","servings":20.0,"calories":110.0,"fat":0.0,"carbs":26.0,"protein":3.0},{"name":"Shrd M Cheese","category":"","servings":10.0,"calories":80.0,"fat":6.0,"carbs":2.0,"protein":6.0},{"name":"Ketchup","category":"","servings":8.0,"calories":15.0,"fat":0.0,"carbs":4.0,"protein":0.0},{"name":"Beans","category":"","servings":12.0,"calories":90.0,"fat":0.5,"carbs":20.0,"protein":6.0},{"name":"almond milk","category":"","servings":8.0,"calories":35.0,"fat":3.0,"carbs":1.0,"protein":1.0},{"name":"rice cake","category":"","servings":7.0,"calories":60.0,"fat":0.0,"carbs":11.0,"protein":0.0}]},{"id":"cut-spring-26-pt-3","name":"Cut Spring 26 pt 3","items":[{"name":"Eggs","category":"","servings":14.0,"calories":70.0,"fat":5.0,"carbs":0.0,"protein":6.0},{"name":"Egg Whites","category":"","servings":14.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"Grits","category":"","servings":0.0,"calories":170.0,"fat":0.5,"carbs":38.0,"protein":3.0},{"name":"Rice","category":"","servings":0.0,"calories":160.0,"fat":0.0,"carbs":36.0,"protein":4.0},{"name":"Ground Tky","category":"","servings":12.0,"calories":160.0,"fat":9.0,"carbs":0.0,"protein":22.0},{"name":"Cottage Chse","category":"","servings":12.0,"calories":90.0,"fat":1.0,"carbs":6.0,"protein":13.0},{"name":"chicken","category":"","servings":19.0,"calories":130.0,"fat":3.0,"carbs":0.0,"protein":25.0},{"name":"Banana","category":"","servings":7.0,"calories":105.0,"fat":0.0,"carbs":27.0,"protein":1.0},{"name":"Protein Pwd","category":"","servings":14.0,"calories":147.0,"fat":3.0,"carbs":5.0,"protein":25.0},{"name":"Russet Pot","category":"","servings":20.0,"calories":110.0,"fat":0.0,"carbs":26.0,"protein":3.0},{"name":"Shrd M Cheese","category":"","servings":0.0,"calories":80.0,"fat":6.0,"carbs":2.0,"protein":6.0},{"name":"Ketchup","category":"","servings":0.0,"calories":15.0,"fat":0.0,"carbs":4.0,"protein":0.0},{"name":"Beans","category":"","servings":13.0,"calories":90.0,"fat":0.5,"carbs":20.0,"protein":6.0},{"name":"almond milk","category":"","servings":8.0,"calories":35.0,"fat":3.0,"carbs":1.0,"protein":1.0},{"name":"rice cake","category":"","servings":7.0,"calories":60.0,"fat":0.0,"carbs":11.0,"protein":0.0}]},{"id":"cut-spring-26-pt-4","name":"Cut Spring 26 pt 4","items":[{"name":"Eggs","category":"","servings":7.0,"calories":70.0,"fat":5.0,"carbs":0.0,"protein":6.0},{"name":"Egg Whites","category":"","servings":21.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"Grits","category":"","servings":0.0,"calories":170.0,"fat":0.5,"carbs":38.0,"protein":3.0},{"name":"Rice","category":"","servings":0.0,"calories":160.0,"fat":0.0,"carbs":36.0,"protein":4.0},{"name":"Ground Tky","category":"","servings":12.0,"calories":160.0,"fat":9.0,"carbs":0.0,"protein":22.0},{"name":"Cottage Chse","category":"","servings":6.0,"calories":90.0,"fat":1.0,"carbs":6.0,"protein":13.0},{"name":"chicken","category":"","servings":14.0,"calories":130.0,"fat":3.0,"carbs":0.0,"protein":25.0},{"name":"Banana","category":"","servings":7.0,"calories":105.0,"fat":0.0,"carbs":27.0,"protein":1.0},{"name":"Protein Pwd","category":"","servings":14.0,"calories":147.0,"fat":3.0,"carbs":5.0,"protein":25.0},{"name":"Russet Pot","category":"","servings":22.0,"calories":110.0,"fat":0.0,"carbs":26.0,"protein":3.0},{"name":"Shrd M Cheese","category":"","servings":0.0,"calories":80.0,"fat":6.0,"carbs":2.0,"protein":6.0},{"name":"Ketchup","category":"","servings":0.0,"calories":15.0,"fat":0.0,"carbs":4.0,"protein":0.0},{"name":"Beans","category":"","servings":14.0,"calories":90.0,"fat":0.5,"carbs":18.0,"protein":6.0},{"name":"almond milk","category":"","servings":8.0,"calories":35.0,"fat":3.0,"carbs":1.0,"protein":1.0},{"name":"rice cake","category":"","servings":7.0,"calories":60.0,"fat":0.0,"carbs":11.0,"protein":0.0}]},{"id":"cut-spring-26-pt-5","name":"Cut Spring 26 pt 5","items":[{"name":"Eggs","category":"","servings":7.0,"calories":70.0,"fat":5.0,"carbs":0.0,"protein":6.0},{"name":"Egg Whites","category":"","servings":21.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"Grits","category":"","servings":0.0,"calories":170.0,"fat":0.5,"carbs":38.0,"protein":3.0},{"name":"Rice","category":"","servings":0.0,"calories":160.0,"fat":0.0,"carbs":36.0,"protein":4.0},{"name":"Ground Tky","category":"","servings":12.0,"calories":120.0,"fat":1.0,"carbs":0.0,"protein":26.0},{"name":"Cottage Chse","category":"","servings":6.0,"calories":110.0,"fat":1.0,"carbs":6.0,"protein":13.0},{"name":"chicken","category":"","servings":14.0,"calories":130.0,"fat":3.0,"carbs":0.0,"protein":25.0},{"name":"Banana","category":"","servings":7.0,"calories":105.0,"fat":0.0,"carbs":27.0,"protein":1.0},{"name":"Protein Pwd","category":"","servings":14.0,"calories":147.0,"fat":3.0,"carbs":5.0,"protein":25.0},{"name":"Russet Pot","category":"","servings":20.0,"calories":110.0,"fat":0.0,"carbs":26.0,"protein":3.0},{"name":"Shrd M Cheese","category":"","servings":0.0,"calories":80.0,"fat":6.0,"carbs":2.0,"protein":6.0},{"name":"Ketchup","category":"","servings":0.0,"calories":15.0,"fat":0.0,"carbs":4.0,"protein":0.0},{"name":"Beans","category":"","servings":14.0,"calories":90.0,"fat":0.5,"carbs":18.0,"protein":6.0},{"name":"almond milk","category":"","servings":8.0,"calories":35.0,"fat":3.0,"carbs":1.0,"protein":1.0},{"name":"rice cake","category":"","servings":7.0,"calories":60.0,"fat":0.0,"carbs":11.0,"protein":0.0}]},{"id":"cut-spring-26-pt-5-2","name":"Cut Spring 26 pt 5.2","items":[{"name":"Eggs","category":"","servings":14.0,"calories":70.0,"fat":5.0,"carbs":0.0,"protein":6.0},{"name":"Egg Whites","category":"","servings":14.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"Grits","category":"","servings":0.0,"calories":170.0,"fat":0.5,"carbs":38.0,"protein":3.0},{"name":"Rice","category":"","servings":0.0,"calories":160.0,"fat":0.0,"carbs":36.0,"protein":4.0},{"name":"Ground Tky","category":"","servings":12.0,"calories":160.0,"fat":8.0,"carbs":0.0,"protein":22.0},{"name":"Cottage Chse","category":"","servings":6.0,"calories":110.0,"fat":1.0,"carbs":6.0,"protein":13.0},{"name":"chicken","category":"","servings":12.0,"calories":130.0,"fat":3.0,"carbs":0.0,"protein":25.0},{"name":"Banana","category":"","servings":7.0,"calories":105.0,"fat":0.0,"carbs":27.0,"protein":1.0},{"name":"Protein Pwd","category":"","servings":10.0,"calories":147.0,"fat":3.0,"carbs":5.0,"protein":25.0},{"name":"Russet Pot","category":"","servings":24.0,"calories":110.0,"fat":0.0,"carbs":26.0,"protein":3.0},{"name":"Shrd M Cheese","category":"","servings":7.0,"calories":80.0,"fat":6.0,"carbs":2.0,"protein":6.0},{"name":"Ketchup","category":"","servings":0.0,"calories":15.0,"fat":0.0,"carbs":4.0,"protein":0.0},{"name":"Beans","category":"","servings":14.0,"calories":90.0,"fat":0.5,"carbs":18.0,"protein":6.0},{"name":"almond milk","category":"","servings":8.0,"calories":35.0,"fat":3.0,"carbs":1.0,"protein":1.0},{"name":"cream of rice","category":"","servings":7.0,"calories":120.0,"fat":0.0,"carbs":27.0,"protein":2.0},{"name":"rice cake","category":"","servings":7.0,"calories":60.0,"fat":0.0,"carbs":11.0,"protein":0.0}]},{"id":"cut-spring-26-pt-6","name":"Cut Spring 26 pt 6","items":[{"name":"Eggs","category":"","servings":0.0,"calories":70.0,"fat":5.0,"carbs":0.0,"protein":6.0},{"name":"Egg Whites","category":"","servings":21.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"Grits","category":"","servings":0.0,"calories":170.0,"fat":0.5,"carbs":38.0,"protein":3.0},{"name":"Rice","category":"","servings":0.0,"calories":160.0,"fat":0.0,"carbs":36.0,"protein":4.0},{"name":"Ground Tky","category":"","servings":12.0,"calories":120.0,"fat":1.0,"carbs":0.0,"protein":26.0},{"name":"Cottage Chse","category":"","servings":0.0,"calories":110.0,"fat":1.0,"carbs":6.0,"protein":13.0},{"name":"chicken","category":"","servings":14.0,"calories":130.0,"fat":3.0,"carbs":0.0,"protein":25.0},{"name":"Banana","category":"","servings":7.0,"calories":105.0,"fat":0.0,"carbs":27.0,"protein":1.0},{"name":"Protein Pwd","category":"","servings":14.0,"calories":147.0,"fat":3.0,"carbs":5.0,"protein":25.0},{"name":"Russet Pot","category":"","servings":20.0,"calories":110.0,"fat":0.0,"carbs":26.0,"protein":3.0},{"name":"Shrd M Cheese","category":"","servings":0.0,"calories":80.0,"fat":6.0,"carbs":2.0,"protein":6.0},{"name":"Ketchup","category":"","servings":0.0,"calories":15.0,"fat":0.0,"carbs":4.0,"protein":0.0},{"name":"Beans","category":"","servings":7.0,"calories":90.0,"fat":0.5,"carbs":18.0,"protein":6.0},{"name":"almond milk","category":"","servings":8.0,"calories":35.0,"fat":3.0,"carbs":1.0,"protein":1.0},{"name":"rice cake","category":"","servings":7.0,"calories":60.0,"fat":0.0,"carbs":11.0,"protein":0.0}]},{"id":"reverse-diet-cut-summer-26","name":"Reverse Diet Cut Summer 26","items":[{"name":"Eggs","category":"","servings":14.0,"calories":70.0,"fat":5.0,"carbs":0.0,"protein":6.0},{"name":"Egg Whites","category":"","servings":14.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"Grits","category":"","servings":0.0,"calories":170.0,"fat":0.5,"carbs":38.0,"protein":3.0},{"name":"Rice","category":"","servings":8.0,"calories":160.0,"fat":0.0,"carbs":36.0,"protein":4.0},{"name":"Ground Tky","category":"","servings":12.0,"calories":160.0,"fat":8.0,"carbs":0.0,"protein":22.0},{"name":"Cottage Chse","category":"","servings":7.0,"calories":110.0,"fat":1.0,"carbs":6.0,"protein":13.0},{"name":"chicken","category":"","servings":18.0,"calories":130.0,"fat":3.0,"carbs":0.0,"protein":25.0},{"name":"Banana","category":"","servings":7.0,"calories":105.0,"fat":0.0,"carbs":27.0,"protein":1.0},{"name":"Protein Pwd","category":"","servings":14.0,"calories":147.0,"fat":3.0,"carbs":5.0,"protein":25.0},{"name":"Russet Pot","category":"","servings":15.0,"calories":110.0,"fat":0.0,"carbs":26.0,"protein":3.0},{"name":"Shrd M Cheese","category":"","servings":0.0,"calories":80.0,"fat":6.0,"carbs":2.0,"protein":6.0},{"name":"Ketchup","category":"","servings":0.0,"calories":15.0,"fat":0.0,"carbs":4.0,"protein":0.0},{"name":"Beans","category":"","servings":14.0,"calories":90.0,"fat":0.5,"carbs":18.0,"protein":6.0},{"name":"almond milk","category":"","servings":8.0,"calories":35.0,"fat":3.0,"carbs":1.0,"protein":1.0},{"name":"cream of rice","category":"","servings":7.0,"calories":120.0,"fat":0.0,"carbs":26.0,"protein":2.0},{"name":"oatmeal","category":"","servings":0.0,"calories":150.0,"fat":3.0,"carbs":27.0,"protein":5.0},{"name":"bagel","category":"","servings":0.0,"calories":270.0,"fat":2.0,"carbs":47.0,"protein":9.0},{"name":"rice cake","category":"","servings":7.0,"calories":60.0,"fat":0.0,"carbs":11.0,"protein":0.0}]},{"id":"reverse-diet-cut-summer-26-pt-2","name":"Reverse Diet Cut Summer 26 pt 2","items":[{"name":"Eggs","category":"","servings":14.0,"calories":70.0,"fat":5.0,"carbs":0.0,"protein":6.0},{"name":"Egg Whites","category":"","servings":14.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"Grits","category":"","servings":0.0,"calories":170.0,"fat":0.5,"carbs":38.0,"protein":3.0},{"name":"Rice","category":"","servings":8.0,"calories":160.0,"fat":0.0,"carbs":36.0,"protein":4.0},{"name":"Ground Tky","category":"","servings":12.0,"calories":160.0,"fat":8.0,"carbs":0.0,"protein":22.0},{"name":"Cottage Chse","category":"","servings":7.0,"calories":110.0,"fat":1.0,"carbs":6.0,"protein":13.0},{"name":"chicken","category":"","servings":18.0,"calories":130.0,"fat":3.0,"carbs":0.0,"protein":25.0},{"name":"Banana","category":"","servings":7.0,"calories":105.0,"fat":0.0,"carbs":27.0,"protein":1.0},{"name":"Protein Pwd","category":"","servings":14.0,"calories":147.0,"fat":3.0,"carbs":5.0,"protein":25.0},{"name":"Russet Pot","category":"","servings":15.0,"calories":110.0,"fat":0.0,"carbs":26.0,"protein":3.0},{"name":"Shrd M Cheese","category":"","servings":0.0,"calories":80.0,"fat":6.0,"carbs":2.0,"protein":6.0},{"name":"Ketchup","category":"","servings":0.0,"calories":15.0,"fat":0.0,"carbs":4.0,"protein":0.0},{"name":"Beans","category":"","servings":14.0,"calories":90.0,"fat":0.5,"carbs":18.0,"protein":6.0},{"name":"almond milk","category":"","servings":8.0,"calories":35.0,"fat":3.0,"carbs":1.0,"protein":1.0},{"name":"cream of rice","category":"","servings":7.0,"calories":120.0,"fat":0.0,"carbs":26.0,"protein":2.0},{"name":"oatmeal","category":"","servings":0.0,"calories":150.0,"fat":3.0,"carbs":27.0,"protein":5.0},{"name":"bagel","category":"","servings":7.0,"calories":270.0,"fat":2.0,"carbs":47.0,"protein":9.0},{"name":"rice cake","category":"","servings":7.0,"calories":60.0,"fat":0.0,"carbs":11.0,"protein":0.0}]},{"id":"reverse-diet-cut-summer-26-pt-3","name":"Reverse Diet Cut Summer 26 pt 3","items":[{"name":"Eggs","category":"","servings":14.0,"calories":70.0,"fat":5.0,"carbs":0.0,"protein":6.0},{"name":"Egg Whites","category":"","servings":14.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"Grits","category":"","servings":0.0,"calories":170.0,"fat":0.5,"carbs":38.0,"protein":3.0},{"name":"Rice","category":"","servings":8.0,"calories":160.0,"fat":0.0,"carbs":36.0,"protein":4.0},{"name":"Ground Tky","category":"","servings":12.0,"calories":160.0,"fat":8.0,"carbs":0.0,"protein":22.0},{"name":"Cottage Chse","category":"","servings":7.0,"calories":110.0,"fat":1.0,"carbs":6.0,"protein":13.0},{"name":"chicken","category":"","servings":18.0,"calories":130.0,"fat":3.0,"carbs":0.0,"protein":25.0},{"name":"Banana","category":"","servings":7.0,"calories":105.0,"fat":0.0,"carbs":27.0,"protein":1.0},{"name":"Protein Pwd","category":"","servings":14.0,"calories":147.0,"fat":3.0,"carbs":5.0,"protein":25.0},{"name":"Russet Pot","category":"","servings":15.0,"calories":110.0,"fat":0.0,"carbs":26.0,"protein":3.0},{"name":"Shrd M Cheese","category":"","servings":0.0,"calories":80.0,"fat":6.0,"carbs":2.0,"protein":6.0},{"name":"Ketchup","category":"","servings":0.0,"calories":15.0,"fat":0.0,"carbs":4.0,"protein":0.0},{"name":"Beans","category":"","servings":14.0,"calories":90.0,"fat":0.5,"carbs":18.0,"protein":6.0},{"name":"almond milk","category":"","servings":8.0,"calories":35.0,"fat":3.0,"carbs":1.0,"protein":1.0},{"name":"cream of rice","category":"","servings":7.0,"calories":120.0,"fat":0.0,"carbs":26.0,"protein":2.0},{"name":"oatmeal","category":"","servings":7.0,"calories":150.0,"fat":3.0,"carbs":27.0,"protein":5.0},{"name":"bagel","category":"","servings":14.0,"calories":270.0,"fat":2.0,"carbs":47.0,"protein":9.0},{"name":"rice cake","category":"","servings":7.0,"calories":60.0,"fat":0.0,"carbs":11.0,"protein":0.0}]},{"id":"maintenance-race-prep","name":"Maintenance Race Prep","items":[{"name":"Eggs","category":"","servings":14.0,"calories":70.0,"fat":5.0,"carbs":0.0,"protein":6.0},{"name":"Egg Whites","category":"","servings":14.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"Grits","category":"","servings":0.0,"calories":170.0,"fat":0.5,"carbs":38.0,"protein":3.0},{"name":"Rice","category":"","servings":8.0,"calories":160.0,"fat":0.0,"carbs":36.0,"protein":4.0},{"name":"Ground Tky","category":"","servings":12.0,"calories":160.0,"fat":8.0,"carbs":0.0,"protein":22.0},{"name":"Cottage Chse","category":"","servings":7.0,"calories":110.0,"fat":1.0,"carbs":6.0,"protein":13.0},{"name":"chicken","category":"","servings":15.0,"calories":130.0,"fat":3.0,"carbs":0.0,"protein":25.0},{"name":"Banana","category":"","servings":7.0,"calories":105.0,"fat":0.0,"carbs":27.0,"protein":1.0},{"name":"Protein Pwd","category":"","servings":14.0,"calories":147.0,"fat":3.0,"carbs":5.0,"protein":25.0},{"name":"Russet Pot","category":"","servings":15.0,"calories":110.0,"fat":0.0,"carbs":26.0,"protein":3.0},{"name":"Shrd M Cheese","category":"","servings":0.0,"calories":80.0,"fat":6.0,"carbs":2.0,"protein":6.0},{"name":"Ketchup","category":"","servings":0.0,"calories":15.0,"fat":0.0,"carbs":4.0,"protein":0.0},{"name":"Beans","category":"","servings":14.0,"calories":90.0,"fat":0.5,"carbs":18.0,"protein":6.0},{"name":"almond milk","category":"","servings":8.0,"calories":35.0,"fat":3.0,"carbs":1.0,"protein":1.0},{"name":"cream of rice","category":"","servings":7.0,"calories":120.0,"fat":0.0,"carbs":26.0,"protein":2.0},{"name":"oatmeal","category":"","servings":7.0,"calories":150.0,"fat":3.0,"carbs":27.0,"protein":5.0},{"name":"bagel","category":"","servings":14.0,"calories":270.0,"fat":2.0,"carbs":47.0,"protein":9.0},{"name":"rice cake","category":"","servings":7.0,"calories":60.0,"fat":0.0,"carbs":11.0,"protein":0.0},{"name":"other","category":"","servings":7.0,"calories":800.0,"fat":15.0,"carbs":65.0,"protein":35.0}]}];
+const ORIGINAL_DATA = [{"id":"summer2k24cut","name":"summer2k24cut","items":[{"name":"Egg","category":"","servings":1.0,"calories":80.0,"fat":5.0,"carbs":0.0,"protein":7.0},{"name":"Egg White","category":"","servings":1.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"Spinach","category":"","servings":1.0,"calories":25.0,"fat":0.0,"carbs":3.0,"protein":2.0},{"name":"Almond Milk","category":"","servings":1.0,"calories":30.0,"fat":2.5,"carbs":1.0,"protein":1.0},{"name":"Protein Powder","category":"","servings":1.0,"calories":120.0,"fat":1.0,"carbs":2.0,"protein":25.0},{"name":"PB Powder","category":"","servings":1.0,"calories":50.0,"fat":1.5,"carbs":4.0,"protein":6.0},{"name":"Ground Tky","category":"","servings":1.0,"calories":150.0,"fat":8.0,"carbs":0.0,"protein":22.0},{"name":"Crushed Tom","category":"","servings":1.0,"calories":20.0,"fat":0.0,"carbs":4.0,"protein":1.0},{"name":"Pinto Bean","category":"","servings":1.0,"calories":110.0,"fat":0.5,"carbs":20.0,"protein":6.0},{"name":"Green Pepper","category":"","servings":1.0,"calories":30.0,"fat":0.0,"carbs":4.0,"protein":1.0},{"name":"Onion","category":"","servings":1.0,"calories":40.0,"fat":0.0,"carbs":10.0,"protein":1.0},{"name":"Chicken","category":"","servings":1.0,"calories":110.0,"fat":0.5,"carbs":0.0,"protein":26.0},{"name":"Squash","category":"","servings":1.0,"calories":68.0,"fat":1.0,"carbs":15.0,"protein":3.0},{"name":"Zuccini","category":"","servings":1.0,"calories":30.0,"fat":1.0,"carbs":5.0,"protein":2.0},{"name":"Rice","category":"","servings":1.0,"calories":170.0,"fat":0.0,"carbs":36.0,"protein":3.0}]},{"id":"macros","name":"macros","items":[{"name":"Egg","category":"Meat","servings":14.0,"calories":80.0,"fat":5.0,"carbs":0.0,"protein":7.0},{"name":"Egg white","category":"Meat","servings":14.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"Rice","category":"Grain","servings":12.0,"calories":170.0,"fat":0.0,"carbs":36.0,"protein":3.0},{"name":"Crushed Tom","category":"Veg","servings":20.0,"calories":20.0,"fat":0.0,"carbs":4.0,"protein":1.0},{"name":"Pinto Bean","category":"Veg","servings":3.5,"calories":110.0,"fat":0.5,"carbs":20.0,"protein":6.0},{"name":"Broccli","category":"Veg","servings":11.0,"calories":25.0,"fat":0.0,"carbs":4.0,"protein":3.0},{"name":"Chicken","category":"Meat","servings":8.0,"calories":110.0,"fat":0.5,"carbs":0.0,"protein":26.0},{"name":"Ground Tky","category":"Meat","servings":12.0,"calories":150.0,"fat":8.0,"carbs":0.0,"protein":22.0},{"name":"Onion","category":"Veg","servings":2.5,"calories":40.0,"fat":0.0,"carbs":10.0,"protein":1.0},{"name":"PB Powder","category":"Misc","servings":0,"calories":50.0,"fat":1.5,"carbs":4.0,"protein":6.0},{"name":"Protein Powder","category":"Misc","servings":7.0,"calories":120.0,"fat":1.0,"carbs":2.0,"protein":25.0},{"name":"Almond Milk","category":"Dairy","servings":8.0,"calories":30.0,"fat":2.5,"carbs":1.0,"protein":1.0},{"name":"Green Pepper","category":"Veg","servings":4.0,"calories":30.0,"fat":0.0,"carbs":4.0,"protein":1.0},{"name":"Squash","category":"Veg","servings":2.0,"calories":68.0,"fat":1.0,"carbs":15.0,"protein":3.0},{"name":"Zuccini","category":"Veg","servings":2.0,"calories":30.0,"fat":1.0,"carbs":5.0,"protein":2.0},{"name":"Spinach","category":"Veg","servings":3.5,"calories":25.0,"fat":0.0,"carbs":3.0,"protein":2.0},{"name":"Greek Yogurt","category":"Dairy","servings":5.0,"calories":100.0,"fat":0.0,"carbs":9.0,"protein":14.0},{"name":"Cottage Cheese","category":"Dairy","servings":8.0,"calories":110.0,"fat":5.0,"carbs":5.0,"protein":12.0}]},{"id":"grocerys","name":"grocerys","items":[{"name":"egg","category":"","servings":14.0,"calories":70.0,"fat":5.0,"carbs":0.0,"protein":6.0},{"name":"egg whites","category":"","servings":14.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"grd tky","category":"","servings":12.0,"calories":150.0,"fat":8.0,"carbs":0.0,"protein":22.0},{"name":"chicken tend","category":"","servings":10.0,"calories":110.0,"fat":1.0,"carbs":0.0,"protein":25.0},{"name":"almond milk","category":"","servings":7.0,"calories":30.0,"fat":2.5,"carbs":1.0,"protein":1.0},{"name":"rice cake","category":"","servings":14.0,"calories":50.0,"fat":0.0,"carbs":11.0,"protein":0.0},{"name":"banana","category":"","servings":7.0,"calories":140.0,"fat":6.0,"carbs":30.0,"protein":2.0},{"name":"pinot beans","category":"","servings":3.5,"calories":110.0,"fat":0.0,"carbs":20.0,"protein":7.0},{"name":"petite diced","category":"","servings":7.0,"calories":25.0,"fat":1.0,"carbs":5.0,"protein":1.0},{"name":"crsuhed tom","category":"","servings":13.0,"calories":20.0,"fat":0.0,"carbs":4.0,"protein":1.0},{"name":"cottage ch","category":"","servings":6.0,"calories":80.0,"fat":0.0,"carbs":6.0,"protein":12.0},{"name":"rice","category":"","servings":12.5,"calories":210.0,"fat":0.0,"carbs":49.0,"protein":4.0},{"name":"protein powder","category":"","servings":14.0,"calories":120.0,"fat":1.0,"carbs":2.0,"protein":25.0},{"name":"pb powder","category":"","servings":14.0,"calories":50.0,"fat":1.5,"carbs":4.0,"protein":6.0},{"name":"green beans","category":"","servings":3.5,"calories":15.0,"fat":0.0,"carbs":3.0,"protein":0.0},{"name":"popcorn","category":"","servings":7.0,"calories":160.0,"fat":6.0,"carbs":25.0,"protein":3.0},{"name":"blueberries","category":"","servings":7.0,"calories":40.0,"fat":1.0,"carbs":4.0,"protein":1.0},{"name":"vegs","category":"","servings":1.0,"calories":300.0,"fat":2.0,"carbs":30.0,"protein":5.0}]},{"id":"maintanence-2024","name":"maintanence 2024","items":[{"name":"eggs","category":"","servings":35.0,"calories":80.0,"fat":5.0,"carbs":0.0,"protein":7.0},{"name":"rice","category":"","servings":10.0,"calories":210.0,"fat":0.0,"carbs":49.0,"protein":4.0},{"name":"chicken","category":"","servings":14.25,"calories":110.0,"fat":1.0,"carbs":0.0,"protein":25.0},{"name":"ground turk","category":"","servings":0.0,"calories":150.0,"fat":8.0,"carbs":0.0,"protein":22.0},{"name":"yogurt","category":"","servings":5.0,"calories":100.0,"fat":0.0,"carbs":9.0,"protein":14.0},{"name":"pasta","category":"","servings":0.0,"calories":200.0,"fat":1.0,"carbs":42.0,"protein":7.0},{"name":"pinto","category":"","servings":7.0,"calories":110.0,"fat":0.0,"carbs":20.0,"protein":7.0},{"name":"bb","category":"","servings":7.0,"calories":120.0,"fat":0.5,"carbs":22.0,"protein":7.0},{"name":"marina","category":"","servings":0.0,"calories":60.0,"fat":2.0,"carbs":9.0,"protein":2.0},{"name":"protein powder","category":"","servings":7.0,"calories":120.0,"fat":0.0,"carbs":2.0,"protein":25.0},{"name":"milk","category":"","servings":12.0,"calories":30.0,"fat":2.5,"carbs":1.0,"protein":1.0},{"name":"cottage cheese","category":"","servings":6.0,"calories":80.0,"fat":0.0,"carbs":6.0,"protein":12.0},{"name":"frozen fruit","category":"","servings":9.0,"calories":70.0,"fat":0.0,"carbs":17.0,"protein":0.0},{"name":"tom","category":"","servings":3.5,"calories":25.0,"fat":0.0,"carbs":5.0,"protein":1.0},{"name":"broc","category":"","servings":11.0,"calories":30.0,"fat":0.0,"carbs":5.0,"protein":3.0},{"name":"corn","category":"","servings":7.0,"calories":70.0,"fat":1.0,"carbs":13.0,"protein":2.0},{"name":"oatmeal","category":"","servings":0.0,"calories":150.0,"fat":2.5,"carbs":27.0,"protein":5.0},{"name":"grits","category":"","servings":14.0,"calories":170.0,"fat":0.5,"carbs":38.0,"protein":3.0},{"name":"banana","category":"","servings":7.0,"calories":121.0,"fat":0.5,"carbs":30.0,"protein":1.5},{"name":"raisins","category":"","servings":0,"calories":140.0,"fat":2.0,"carbs":27.0,"protein":1.0},{"name":"pb2","category":"","servings":14.0,"calories":60.0,"fat":1.5,"carbs":5.0,"protein":6.0},{"name":"granola","category":"","servings":0.0,"calories":300.0,"fat":11.25,"carbs":47.5,"protein":5.0}]},{"id":"bulk","name":"bulk","items":[{"name":"eggs","category":"","servings":35.0,"calories":80.0,"fat":5.0,"carbs":0.0,"protein":7.0},{"name":"rice","category":"","servings":12.0,"calories":210.0,"fat":0.0,"carbs":49.0,"protein":4.0},{"name":"chicken","category":"","servings":9.5,"calories":110.0,"fat":1.0,"carbs":0.0,"protein":25.0},{"name":"ground turk","category":"","servings":12.0,"calories":150.0,"fat":8.0,"carbs":0.0,"protein":22.0},{"name":"yogurt","category":"","servings":10.0,"calories":80.0,"fat":0.0,"carbs":15.0,"protein":5.0},{"name":"pasta","category":"","servings":10.0,"calories":200.0,"fat":1.0,"carbs":42.0,"protein":7.0},{"name":"pinto","category":"","servings":3.5,"calories":110.0,"fat":0.0,"carbs":20.0,"protein":7.0},{"name":"bb","category":"","servings":3.5,"calories":120.0,"fat":0.5,"carbs":22.0,"protein":7.0},{"name":"marina","category":"","servings":5.0,"calories":60.0,"fat":2.0,"carbs":9.0,"protein":2.0},{"name":"protein powder","category":"","servings":7.0,"calories":120.0,"fat":0.0,"carbs":2.0,"protein":25.0},{"name":"milk","category":"","servings":24.0,"calories":30.0,"fat":2.5,"carbs":1.0,"protein":1.0},{"name":"cottage cheese","category":"","servings":8.0,"calories":110.0,"fat":5.0,"carbs":5.0,"protein":12.0},{"name":"frozen fruit","category":"","servings":9.0,"calories":70.0,"fat":0.0,"carbs":17.0,"protein":0.0},{"name":"tom","category":"","servings":3.5,"calories":25.0,"fat":0.0,"carbs":5.0,"protein":0.0},{"name":"tom ch","category":"","servings":3.5,"calories":25.0,"fat":0.0,"carbs":6.0,"protein":1.0},{"name":"corn","category":"","servings":3.5,"calories":80.0,"fat":1.0,"carbs":14.0,"protein":1.0},{"name":"oatmeal","category":"","servings":0,"calories":150.0,"fat":2.5,"carbs":27.0,"protein":5.0},{"name":"grits","category":"","servings":14.0,"calories":170.0,"fat":0.5,"carbs":38.0,"protein":3.0},{"name":"banana","category":"","servings":7.0,"calories":121.0,"fat":0.5,"carbs":30.0,"protein":1.5},{"name":"raisins","category":"","servings":0,"calories":140.0,"fat":2.0,"carbs":27.0,"protein":1.0},{"name":"pb2","category":"","servings":7.0,"calories":60.0,"fat":1.5,"carbs":5.0,"protein":6.0},{"name":"granola","category":"","servings":7.0,"calories":300.0,"fat":11.25,"carbs":47.5,"protein":5.0}]},{"id":"fall-cut-2k23","name":"fall cut 2k23","items":[{"name":"Eggs","category":"","servings":3.0,"calories":270.0,"fat":18.0,"carbs":0.0,"protein":24.0},{"name":"Egg Whites","category":"","servings":1.0,"calories":36.0,"fat":0.0,"carbs":0.0,"protein":7.0},{"name":"Pepper Mix","category":"","servings":1.0,"calories":20.0,"fat":0.0,"carbs":4.0,"protein":1.0},{"name":"Protein Powder","category":"","servings":1.0,"calories":120.0,"fat":1.0,"carbs":2.0,"protein":25.0},{"name":"Almond Milk","category":"","servings":1.0,"calories":15.0,"fat":1.25,"carbs":0.5,"protein":0.5},{"name":"Oats","category":"","servings":1.0,"calories":150.0,"fat":2.5,"carbs":27.0,"protein":5.0},{"name":"Banana","category":"","servings":1.0,"calories":121.0,"fat":0.5,"carbs":30.0,"protein":1.5},{"name":"Ground Turkey","category":"","servings":1.0,"calories":257.0,"fat":14.0,"carbs":0.0,"protein":38.0},{"name":"Rice","category":"","servings":1.0,"calories":154.0,"fat":0.0,"carbs":35.0,"protein":3.0},{"name":"Broccili","category":"","servings":1.0,"calories":30.0,"fat":0.0,"carbs":5.0,"protein":3.0},{"name":"Cottage Cheese","category":"","servings":1.0,"calories":69.0,"fat":0.0,"carbs":5.0,"protein":10.0},{"name":"Strawberries","category":"","servings":1.0,"calories":22.0,"fat":0.0,"carbs":5.3,"protein":0.0},{"name":"Blueberries","category":"","servings":1.0,"calories":25.0,"fat":0.0,"carbs":7.0,"protein":0.0},{"name":"Chicken","category":"","servings":1.0,"calories":138.0,"fat":1.25,"carbs":0.0,"protein":31.0},{"name":"Squash","category":"","servings":1.0,"calories":11.0,"fat":0.0,"carbs":2.0,"protein":0.0},{"name":"Zucchini","category":"","servings":1.0,"calories":7.0,"fat":0.0,"carbs":1.3,"protein":0.0},{"name":"Carrots","category":"","servings":1.0,"calories":12.0,"fat":0.0,"carbs":3.0,"protein":0.0},{"name":"Onion","category":"","servings":1.0,"calories":22.0,"fat":0.0,"carbs":5.0,"protein":0.0},{"name":"Pepper","category":"","servings":1.0,"calories":7.0,"fat":0.0,"carbs":1.3,"protein":0.0}]},{"id":"cut-spring-25-pt-1","name":"Cut Spring 25 pt 1","items":[{"name":"Eggs","category":"","servings":14.0,"calories":70.0,"fat":5.0,"carbs":0.0,"protein":6.0},{"name":"Egg Whites","category":"","servings":20.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"Grits","category":"","servings":7.0,"calories":170.0,"fat":0.5,"carbs":38.0,"protein":3.0},{"name":"Rice","category":"","servings":10.0,"calories":210.0,"fat":0.0,"carbs":49.0,"protein":4.0},{"name":"Ground Tky","category":"","servings":12.0,"calories":160.0,"fat":8.0,"carbs":0.0,"protein":22.0},{"name":"Cottage Chse","category":"","servings":6.0,"calories":80.0,"fat":0.0,"carbs":6.0,"protein":12.0},{"name":"Banana","category":"","servings":7.0,"calories":105.0,"fat":0.0,"carbs":27.0,"protein":1.0},{"name":"Protein Pwd","category":"","servings":14.0,"calories":110.0,"fat":1.0,"carbs":2.0,"protein":25.0},{"name":"Oatmeal","category":"","servings":7.0,"calories":150.0,"fat":2.5,"carbs":27.0,"protein":5.0},{"name":"Greek Yogurt","category":"","servings":5.0,"calories":100.0,"fat":0.0,"carbs":9.0,"protein":14.0},{"name":"Ground Beef","category":"","servings":18.0,"calories":280.0,"fat":22.0,"carbs":0.0,"protein":19.0},{"name":"Russet Pot","category":"","servings":8.0,"calories":110.0,"fat":0.0,"carbs":26.0,"protein":3.0},{"name":"Shrd Cheese","category":"","servings":7.0,"calories":90.0,"fat":6.0,"carbs":2.0,"protein":7.0},{"name":"Ketchup","category":"","servings":33.0,"calories":20.0,"fat":0.0,"carbs":5.0,"protein":0.0},{"name":"Beans","category":"","servings":3.5,"calories":110.0,"fat":0.0,"carbs":20.0,"protein":7.0}]},{"id":"cut-spring-25-pt2","name":"Cut Spring 25 pt2","items":[{"name":"Eggs","category":"","servings":28.0,"calories":70.0,"fat":5.0,"carbs":0.0,"protein":6.0},{"name":"Egg Whites","category":"","servings":0.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"Grits","category":"","servings":7.0,"calories":170.0,"fat":0.5,"carbs":38.0,"protein":3.0},{"name":"Rice","category":"","servings":10.0,"calories":210.0,"fat":0.0,"carbs":49.0,"protein":4.0},{"name":"Ground Tky","category":"","servings":12.0,"calories":160.0,"fat":8.0,"carbs":0.0,"protein":22.0},{"name":"Cottage Chse","category":"","servings":6.0,"calories":80.0,"fat":0.0,"carbs":6.0,"protein":12.0},{"name":"Banana","category":"","servings":7.0,"calories":105.0,"fat":0.0,"carbs":27.0,"protein":1.0},{"name":"Protein Pwd","category":"","servings":14.0,"calories":110.0,"fat":1.0,"carbs":2.0,"protein":25.0},{"name":"Oatmeal","category":"","servings":7.0,"calories":150.0,"fat":2.5,"carbs":27.0,"protein":5.0},{"name":"Greek Yogurt","category":"","servings":0.0,"calories":100.0,"fat":0.0,"carbs":9.0,"protein":14.0},{"name":"Ground Beef","category":"","servings":18.0,"calories":170.0,"fat":8.0,"carbs":0.0,"protein":23.0},{"name":"Russet Pot","category":"","servings":5.05,"calories":110.0,"fat":0.0,"carbs":26.0,"protein":3.0},{"name":"Shrd Cheese","category":"","servings":7.0,"calories":90.0,"fat":6.0,"carbs":2.0,"protein":7.0},{"name":"Ketchup","category":"","servings":20.0,"calories":20.0,"fat":0.0,"carbs":5.0,"protein":0.0},{"name":"Beans","category":"","servings":3.5,"calories":110.0,"fat":0.0,"carbs":20.0,"protein":7.0}]},{"id":"cut-spring-25-pt-3","name":"Cut Spring 25 pt 3","items":[{"name":"Eggs","category":"","servings":14.0,"calories":70.0,"fat":5.0,"carbs":0.0,"protein":6.0},{"name":"Egg Whites","category":"","servings":14.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"Grits","category":"","servings":7.0,"calories":170.0,"fat":0.5,"carbs":38.0,"protein":3.0},{"name":"Rice","category":"","servings":15.0,"calories":210.0,"fat":0.0,"carbs":49.0,"protein":4.0},{"name":"Ground Tky","category":"","servings":24.0,"calories":160.0,"fat":8.0,"carbs":0.0,"protein":22.0},{"name":"Cottage Chse","category":"","servings":12.0,"calories":80.0,"fat":0.0,"carbs":6.0,"protein":12.0},{"name":"Banana","category":"","servings":7.0,"calories":105.0,"fat":0.0,"carbs":27.0,"protein":1.0},{"name":"Protein Pwd","category":"","servings":14.0,"calories":110.0,"fat":1.0,"carbs":2.0,"protein":25.0},{"name":"Oatmeal","category":"","servings":7.0,"calories":150.0,"fat":2.5,"carbs":27.0,"protein":5.0},{"name":"Greek Yogurt","category":"","servings":0.0,"calories":100.0,"fat":0.0,"carbs":9.0,"protein":14.0},{"name":"Ground Beef","category":"","servings":0.0,"calories":170.0,"fat":8.0,"carbs":0.0,"protein":23.0},{"name":"Russet Pot","category":"","servings":0.0,"calories":110.0,"fat":0.0,"carbs":26.0,"protein":3.0},{"name":"Shrd Cheese","category":"","servings":0.0,"calories":90.0,"fat":6.0,"carbs":2.0,"protein":7.0},{"name":"Ketchup","category":"","servings":0.0,"calories":20.0,"fat":0.0,"carbs":5.0,"protein":0.0},{"name":"Beans","category":"","servings":7.0,"calories":110.0,"fat":0.0,"carbs":20.0,"protein":7.0},{"name":"rice cake","category":"","servings":14.0,"calories":50.0,"fat":0.0,"carbs":11.0,"protein":0.0}]},{"id":"cut-spring-25-pt-4","name":"Cut Spring 25 pt 4","items":[{"name":"Eggs","category":"","servings":14.0,"calories":70.0,"fat":5.0,"carbs":0.0,"protein":6.0},{"name":"Egg Whites","category":"","servings":16.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"Grits","category":"","servings":7.0,"calories":170.0,"fat":0.5,"carbs":38.0,"protein":3.0},{"name":"Rice","category":"","servings":7.5,"calories":210.0,"fat":0.0,"carbs":49.0,"protein":4.0},{"name":"Ground Tky","category":"","servings":12.0,"calories":160.0,"fat":8.0,"carbs":0.0,"protein":22.0},{"name":"Cottage Chse","category":"","servings":6.0,"calories":80.0,"fat":0.0,"carbs":6.0,"protein":12.0},{"name":"chicken","category":"","servings":11.0,"calories":110.0,"fat":1.0,"carbs":0.0,"protein":25.0},{"name":"Banana","category":"","servings":7.0,"calories":105.0,"fat":0.0,"carbs":27.0,"protein":1.0},{"name":"Protein Pwd","category":"","servings":14.0,"calories":110.0,"fat":1.0,"carbs":2.0,"protein":25.0},{"name":"Oatmeal","category":"","servings":7.0,"calories":150.0,"fat":2.5,"carbs":27.0,"protein":5.0},{"name":"Greek Yogurt","category":"","servings":0.0,"calories":100.0,"fat":0.0,"carbs":9.0,"protein":14.0},{"name":"Ground Beef","category":"","servings":0.0,"calories":170.0,"fat":8.0,"carbs":0.0,"protein":23.0},{"name":"Russet Pot","category":"","servings":14.0,"calories":110.0,"fat":0.0,"carbs":26.0,"protein":3.0},{"name":"Shrd Cheese","category":"","servings":0.0,"calories":90.0,"fat":6.0,"carbs":2.0,"protein":7.0},{"name":"Ketchup","category":"","servings":7.0,"calories":20.0,"fat":0.0,"carbs":5.0,"protein":0.0},{"name":"Beans","category":"","servings":14.0,"calories":110.0,"fat":0.0,"carbs":20.0,"protein":7.0},{"name":"rice cake","category":"","servings":7.0,"calories":50.0,"fat":0.0,"carbs":11.0,"protein":0.0}]},{"id":"cut-spring-25-pt-5","name":"Cut Spring 25 pt 5","items":[{"name":"Eggs","category":"","servings":14.0,"calories":70.0,"fat":5.0,"carbs":0.0,"protein":6.0},{"name":"Egg Whites","category":"","servings":14.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"Grits","category":"","servings":0.0,"calories":170.0,"fat":0.5,"carbs":38.0,"protein":3.0},{"name":"Rice","category":"","servings":0.0,"calories":210.0,"fat":0.0,"carbs":49.0,"protein":4.0},{"name":"Ground Tky","category":"","servings":12.0,"calories":160.0,"fat":5.0,"carbs":0.0,"protein":21.0},{"name":"Cottage Chse","category":"","servings":0.0,"calories":80.0,"fat":0.0,"carbs":6.0,"protein":12.0},{"name":"chicken","category":"","servings":17.0,"calories":130.0,"fat":3.0,"carbs":0.0,"protein":25.0},{"name":"Banana","category":"","servings":4.0,"calories":105.0,"fat":0.0,"carbs":27.0,"protein":1.0},{"name":"Protein Pwd","category":"","servings":14.0,"calories":110.0,"fat":1.0,"carbs":2.0,"protein":25.0},{"name":"berries","category":"","servings":0.0,"calories":80.0,"fat":0.0,"carbs":19.0,"protein":1.0},{"name":"mango mix","category":"","servings":7.0,"calories":70.0,"fat":0.0,"carbs":19.0,"protein":0.0},{"name":"Greek Yogurt","category":"","servings":0.0,"calories":100.0,"fat":0.0,"carbs":9.0,"protein":14.0},{"name":"plain yogurt","category":"","servings":5.0,"calories":100.0,"fat":0.0,"carbs":7.0,"protein":17.0},{"name":"Ground Beef","category":"","servings":0.0,"calories":170.0,"fat":8.0,"carbs":0.0,"protein":23.0},{"name":"Russet Pot","category":"","servings":10.0,"calories":110.0,"fat":0.0,"carbs":26.0,"protein":3.0},{"name":"Shrd Cheese","category":"","servings":0.0,"calories":90.0,"fat":6.0,"carbs":2.0,"protein":7.0},{"name":"Ketchup","category":"","servings":0.0,"calories":20.0,"fat":0.0,"carbs":5.0,"protein":0.0},{"name":"Beans","category":"","servings":7.0,"calories":110.0,"fat":0.0,"carbs":20.0,"protein":7.0},{"name":"rice cake","category":"","servings":7.0,"calories":60.0,"fat":0.0,"carbs":11.0,"protein":0.0}]},{"id":"sheet2","name":"Sheet2","items":[{"name":"1120","category":"","servings":98.0,"calories":80.0,"fat":5.0,"carbs":0.0,"protein":70.0},{"name":"350","category":"","servings":70.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"1190","category":"","servings":21.0,"calories":266.0,"fat":0.5,"carbs":38.0,"protein":3.5},{"name":"2660","category":"","servings":189.0,"calories":266.0,"fat":0,"carbs":0,"protein":73.5},{"name":"380","category":"","servings":27.0,"calories":38.0,"fat":0,"carbs":0,"protein":10.5},{"name":"770","category":"","servings":175.0,"calories":14.0,"fat":1.0,"carbs":2.0,"protein":7.0},{"name":"105","category":"","servings":3.5,"calories":3.5,"fat":2.5,"carbs":1.0,"protein":8.75},{"name":"420","category":"","servings":7.0,"calories":105.0,"fat":0.0,"carbs":15.0,"protein":1.0},{"name":"1995","category":"","servings":229.6,"calories":227.5,"fat":0,"carbs":0,"protein":26.25},{"name":"285","category":"","servings":32.8,"calories":32.5,"fat":0,"carbs":0,"protein":3.75},{"name":"1800","category":"","servings":264.0,"calories":150.0,"fat":8.0,"carbs":0.0,"protein":96.0},{"name":"1260","category":"","servings":24.0,"calories":294.0,"fat":0.0,"carbs":49.0,"protein":4.0},{"name":"300","category":"","servings":30.0,"calories":50.0,"fat":0.0,"carbs":5.0,"protein":3.0},{"name":"40","category":"","servings":4.0,"calories":6.0,"fat":0.0,"carbs":3.0,"protein":2.0},{"name":"240","category":"","servings":36.0,"calories":18.0,"fat":0.0,"carbs":6.0,"protein":12.0},{"name":"150","category":"","servings":30.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"3790","category":"","servings":388.0,"calories":368.0,"fat":0,"carbs":0,"protein":96.0},{"name":"541.4285714285714","category":"","servings":55.43,"calories":52.57,"fat":0,"carbs":0,"protein":13.71},{"name":"210","category":"","servings":7.0,"calories":7.0,"fat":2.5,"carbs":1.0,"protein":17.5},{"name":"2100","category":"","servings":233.1,"calories":231.0,"fat":0,"carbs":0,"protein":35.0},{"name":"935","category":"","servings":212.5,"calories":110.0,"fat":1.0,"carbs":0.0,"protein":8.5},{"name":"120","category":"","servings":1.0,"calories":42.0,"fat":0.0,"carbs":7.0,"protein":0.0},{"name":"220","category":"","servings":1.0,"calories":50.0,"fat":0.0,"carbs":5.0,"protein":0.0},{"name":"480","category":"","servings":24.0,"calories":120.0,"fat":1.5,"carbs":15.0,"protein":12.0},{"name":"3255","category":"","servings":296.5,"calories":524.0,"fat":0,"carbs":0,"protein":20.5},{"name":"465","category":"","servings":42.36,"calories":74.86,"fat":0,"carbs":0,"protein":2.93},{"name":"700","category":"","servings":98.0,"calories":63.0,"fat":0.0,"carbs":9.0,"protein":14.0},{"name":"14500","category":"","servings":1434.2,"calories":1679.5,"fat":0,"carbs":0,"protein":251.25},{"name":"2071.4285714285716","category":"","servings":204.89,"calories":239.93,"fat":0,"carbs":0,"protein":35.89}]},{"id":"lean-bulk-winter-25","name":"lean bulk winter 25","items":[{"name":"Eggs","category":"","servings":14.0,"calories":70.0,"fat":5.0,"carbs":0.0,"protein":6.0},{"name":"Egg Whites","category":"","servings":14.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"corn","category":"","servings":3.5,"calories":60.0,"fat":1.0,"carbs":12.0,"protein":2.0},{"name":"carrot","category":"","servings":3.5,"calories":30.0,"fat":0.0,"carbs":6.0,"protein":1.0},{"name":"Ground Tky","category":"","servings":12.0,"calories":200.0,"fat":14.0,"carbs":0.0,"protein":20.0},{"name":"sauce","category":"","servings":5.0,"calories":90.0,"fat":3.5,"carbs":12.0,"protein":3.0},{"name":"chicken","category":"","servings":11.6,"calories":120.0,"fat":3.0,"carbs":0.0,"protein":24.0},{"name":"broth","category":"","servings":4.0,"calories":40.0,"fat":0.0,"carbs":0.0,"protein":9.0},{"name":"Protein Pwd","category":"","servings":14.0,"calories":110.0,"fat":1.0,"carbs":2.0,"protein":25.0},{"name":"tom","category":"","servings":3.5,"calories":25.0,"fat":0.0,"carbs":5.0,"protein":1.0},{"name":"mango mix","category":"","servings":0.0,"calories":70.0,"fat":0.0,"carbs":19.0,"protein":0.0},{"name":"pasta","category":"","servings":8.0,"calories":200.0,"fat":1.0,"carbs":41.0,"protein":8.0},{"name":"plain yogurt","category":"","servings":0.0,"calories":100.0,"fat":0.0,"carbs":7.0,"protein":17.0},{"name":"bread","category":"","servings":12.0,"calories":120.0,"fat":0.0,"carbs":25.0,"protein":4.0},{"name":"Russet Pot","category":"","servings":11.0,"calories":110.0,"fat":0.0,"carbs":26.0,"protein":3.0},{"name":"Shrd Cheese","category":"","servings":12.0,"calories":110.0,"fat":8.0,"carbs":1.0,"protein":7.0},{"name":"bagels","category":"","servings":6.0,"calories":260.0,"fat":3.5,"carbs":45.0,"protein":11.0},{"name":"Beans","category":"","servings":6.0,"calories":90.0,"fat":0.5,"carbs":20.0,"protein":6.0},{"name":"rice cake","category":"","servings":7.0,"calories":110.0,"fat":0.0,"carbs":24.0,"protein":2.0}]},{"id":"cut-spring-26","name":"Cut Spring 26","items":[{"name":"Eggs","category":"","servings":14.0,"calories":70.0,"fat":5.0,"carbs":0.0,"protein":6.0},{"name":"Egg Whites","category":"","servings":14.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"Grits","category":"","servings":7.0,"calories":170.0,"fat":0.5,"carbs":38.0,"protein":3.0},{"name":"Rice","category":"","servings":8.0,"calories":160.0,"fat":0.0,"carbs":36.0,"protein":4.0},{"name":"Ground Tky","category":"","servings":12.0,"calories":200.0,"fat":14.0,"carbs":0.0,"protein":20.0},{"name":"Cottage Chse","category":"","servings":12.0,"calories":90.0,"fat":1.0,"carbs":6.0,"protein":13.0},{"name":"chicken","category":"","servings":17.0,"calories":130.0,"fat":3.0,"carbs":0.0,"protein":25.0},{"name":"Banana","category":"","servings":7.0,"calories":105.0,"fat":0.0,"carbs":27.0,"protein":1.0},{"name":"Protein Pwd","category":"","servings":14.0,"calories":147.0,"fat":3.0,"carbs":5.0,"protein":25.0},{"name":"Russet Pot","category":"","servings":13.0,"calories":110.0,"fat":0.0,"carbs":26.0,"protein":3.0},{"name":"Shrd M Cheese","category":"","servings":10.0,"calories":80.0,"fat":6.0,"carbs":2.0,"protein":6.0},{"name":"Ketchup","category":"","servings":15.0,"calories":15.0,"fat":0.0,"carbs":4.0,"protein":0.0},{"name":"Beans","category":"","servings":12.0,"calories":90.0,"fat":0.5,"carbs":20.0,"protein":6.0},{"name":"almond milk","category":"","servings":8.0,"calories":35.0,"fat":3.0,"carbs":1.0,"protein":1.0},{"name":"rice cake","category":"","servings":7.0,"calories":60.0,"fat":0.0,"carbs":11.0,"protein":0.0}]},{"id":"cut-spring-26-pt-2","name":"Cut Spring 26 pt 2","items":[{"name":"Eggs","category":"","servings":14.0,"calories":70.0,"fat":5.0,"carbs":0.0,"protein":6.0},{"name":"Egg Whites","category":"","servings":14.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"Grits","category":"","servings":0.0,"calories":170.0,"fat":0.5,"carbs":38.0,"protein":3.0},{"name":"Rice","category":"","servings":0.0,"calories":160.0,"fat":0.0,"carbs":36.0,"protein":4.0},{"name":"Ground Tky","category":"","servings":12.0,"calories":160.0,"fat":9.0,"carbs":0.0,"protein":22.0},{"name":"Cottage Chse","category":"","servings":12.0,"calories":90.0,"fat":1.0,"carbs":6.0,"protein":13.0},{"name":"chicken","category":"","servings":24.0,"calories":130.0,"fat":3.0,"carbs":0.0,"protein":25.0},{"name":"Banana","category":"","servings":7.0,"calories":105.0,"fat":0.0,"carbs":27.0,"protein":1.0},{"name":"Protein Pwd","category":"","servings":14.0,"calories":147.0,"fat":3.0,"carbs":5.0,"protein":25.0},{"name":"Russet Pot","category":"","servings":20.0,"calories":110.0,"fat":0.0,"carbs":26.0,"protein":3.0},{"name":"Shrd M Cheese","category":"","servings":10.0,"calories":80.0,"fat":6.0,"carbs":2.0,"protein":6.0},{"name":"Ketchup","category":"","servings":8.0,"calories":15.0,"fat":0.0,"carbs":4.0,"protein":0.0},{"name":"Beans","category":"","servings":12.0,"calories":90.0,"fat":0.5,"carbs":20.0,"protein":6.0},{"name":"almond milk","category":"","servings":8.0,"calories":35.0,"fat":3.0,"carbs":1.0,"protein":1.0},{"name":"rice cake","category":"","servings":7.0,"calories":60.0,"fat":0.0,"carbs":11.0,"protein":0.0}]},{"id":"cut-spring-26-pt-3","name":"Cut Spring 26 pt 3","items":[{"name":"Eggs","category":"","servings":14.0,"calories":70.0,"fat":5.0,"carbs":0.0,"protein":6.0},{"name":"Egg Whites","category":"","servings":14.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"Grits","category":"","servings":0.0,"calories":170.0,"fat":0.5,"carbs":38.0,"protein":3.0},{"name":"Rice","category":"","servings":0.0,"calories":160.0,"fat":0.0,"carbs":36.0,"protein":4.0},{"name":"Ground Tky","category":"","servings":12.0,"calories":160.0,"fat":9.0,"carbs":0.0,"protein":22.0},{"name":"Cottage Chse","category":"","servings":12.0,"calories":90.0,"fat":1.0,"carbs":6.0,"protein":13.0},{"name":"chicken","category":"","servings":19.0,"calories":130.0,"fat":3.0,"carbs":0.0,"protein":25.0},{"name":"Banana","category":"","servings":7.0,"calories":105.0,"fat":0.0,"carbs":27.0,"protein":1.0},{"name":"Protein Pwd","category":"","servings":14.0,"calories":147.0,"fat":3.0,"carbs":5.0,"protein":25.0},{"name":"Russet Pot","category":"","servings":20.0,"calories":110.0,"fat":0.0,"carbs":26.0,"protein":3.0},{"name":"Shrd M Cheese","category":"","servings":0.0,"calories":80.0,"fat":6.0,"carbs":2.0,"protein":6.0},{"name":"Ketchup","category":"","servings":0.0,"calories":15.0,"fat":0.0,"carbs":4.0,"protein":0.0},{"name":"Beans","category":"","servings":13.0,"calories":90.0,"fat":0.5,"carbs":20.0,"protein":6.0},{"name":"almond milk","category":"","servings":8.0,"calories":35.0,"fat":3.0,"carbs":1.0,"protein":1.0},{"name":"rice cake","category":"","servings":7.0,"calories":60.0,"fat":0.0,"carbs":11.0,"protein":0.0}]},{"id":"cut-spring-26-pt-4","name":"Cut Spring 26 pt 4","items":[{"name":"Eggs","category":"","servings":7.0,"calories":70.0,"fat":5.0,"carbs":0.0,"protein":6.0},{"name":"Egg Whites","category":"","servings":21.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"Grits","category":"","servings":0.0,"calories":170.0,"fat":0.5,"carbs":38.0,"protein":3.0},{"name":"Rice","category":"","servings":0.0,"calories":160.0,"fat":0.0,"carbs":36.0,"protein":4.0},{"name":"Ground Tky","category":"","servings":12.0,"calories":160.0,"fat":9.0,"carbs":0.0,"protein":22.0},{"name":"Cottage Chse","category":"","servings":6.0,"calories":90.0,"fat":1.0,"carbs":6.0,"protein":13.0},{"name":"chicken","category":"","servings":14.0,"calories":130.0,"fat":3.0,"carbs":0.0,"protein":25.0},{"name":"Banana","category":"","servings":7.0,"calories":105.0,"fat":0.0,"carbs":27.0,"protein":1.0},{"name":"Protein Pwd","category":"","servings":14.0,"calories":147.0,"fat":3.0,"carbs":5.0,"protein":25.0},{"name":"Russet Pot","category":"","servings":22.0,"calories":110.0,"fat":0.0,"carbs":26.0,"protein":3.0},{"name":"Shrd M Cheese","category":"","servings":0.0,"calories":80.0,"fat":6.0,"carbs":2.0,"protein":6.0},{"name":"Ketchup","category":"","servings":0.0,"calories":15.0,"fat":0.0,"carbs":4.0,"protein":0.0},{"name":"Beans","category":"","servings":14.0,"calories":90.0,"fat":0.5,"carbs":18.0,"protein":6.0},{"name":"almond milk","category":"","servings":8.0,"calories":35.0,"fat":3.0,"carbs":1.0,"protein":1.0},{"name":"rice cake","category":"","servings":7.0,"calories":60.0,"fat":0.0,"carbs":11.0,"protein":0.0}]},{"id":"cut-spring-26-pt-5","name":"Cut Spring 26 pt 5","items":[{"name":"Eggs","category":"","servings":7.0,"calories":70.0,"fat":5.0,"carbs":0.0,"protein":6.0},{"name":"Egg Whites","category":"","servings":21.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"Grits","category":"","servings":0.0,"calories":170.0,"fat":0.5,"carbs":38.0,"protein":3.0},{"name":"Rice","category":"","servings":0.0,"calories":160.0,"fat":0.0,"carbs":36.0,"protein":4.0},{"name":"Ground Tky","category":"","servings":12.0,"calories":120.0,"fat":1.0,"carbs":0.0,"protein":26.0},{"name":"Cottage Chse","category":"","servings":6.0,"calories":110.0,"fat":1.0,"carbs":6.0,"protein":13.0},{"name":"chicken","category":"","servings":14.0,"calories":130.0,"fat":3.0,"carbs":0.0,"protein":25.0},{"name":"Banana","category":"","servings":7.0,"calories":105.0,"fat":0.0,"carbs":27.0,"protein":1.0},{"name":"Protein Pwd","category":"","servings":14.0,"calories":147.0,"fat":3.0,"carbs":5.0,"protein":25.0},{"name":"Russet Pot","category":"","servings":20.0,"calories":110.0,"fat":0.0,"carbs":26.0,"protein":3.0},{"name":"Shrd M Cheese","category":"","servings":0.0,"calories":80.0,"fat":6.0,"carbs":2.0,"protein":6.0},{"name":"Ketchup","category":"","servings":0.0,"calories":15.0,"fat":0.0,"carbs":4.0,"protein":0.0},{"name":"Beans","category":"","servings":14.0,"calories":90.0,"fat":0.5,"carbs":18.0,"protein":6.0},{"name":"almond milk","category":"","servings":8.0,"calories":35.0,"fat":3.0,"carbs":1.0,"protein":1.0},{"name":"rice cake","category":"","servings":7.0,"calories":60.0,"fat":0.0,"carbs":11.0,"protein":0.0}]},{"id":"cut-spring-26-pt-5-2","name":"Cut Spring 26 pt 5.2","items":[{"name":"Eggs","category":"","servings":14.0,"calories":70.0,"fat":5.0,"carbs":0.0,"protein":6.0},{"name":"Egg Whites","category":"","servings":14.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"Grits","category":"","servings":0.0,"calories":170.0,"fat":0.5,"carbs":38.0,"protein":3.0},{"name":"Rice","category":"","servings":0.0,"calories":160.0,"fat":0.0,"carbs":36.0,"protein":4.0},{"name":"Ground Tky","category":"","servings":12.0,"calories":160.0,"fat":8.0,"carbs":0.0,"protein":22.0},{"name":"Cottage Chse","category":"","servings":6.0,"calories":110.0,"fat":1.0,"carbs":6.0,"protein":13.0},{"name":"chicken","category":"","servings":12.0,"calories":130.0,"fat":3.0,"carbs":0.0,"protein":25.0},{"name":"Banana","category":"","servings":7.0,"calories":105.0,"fat":0.0,"carbs":27.0,"protein":1.0},{"name":"Protein Pwd","category":"","servings":10.0,"calories":147.0,"fat":3.0,"carbs":5.0,"protein":25.0},{"name":"Russet Pot","category":"","servings":24.0,"calories":110.0,"fat":0.0,"carbs":26.0,"protein":3.0},{"name":"Shrd M Cheese","category":"","servings":7.0,"calories":80.0,"fat":6.0,"carbs":2.0,"protein":6.0},{"name":"Ketchup","category":"","servings":0.0,"calories":15.0,"fat":0.0,"carbs":4.0,"protein":0.0},{"name":"Beans","category":"","servings":14.0,"calories":90.0,"fat":0.5,"carbs":18.0,"protein":6.0},{"name":"almond milk","category":"","servings":8.0,"calories":35.0,"fat":3.0,"carbs":1.0,"protein":1.0},{"name":"cream of rice","category":"","servings":7.0,"calories":120.0,"fat":0.0,"carbs":27.0,"protein":2.0},{"name":"rice cake","category":"","servings":7.0,"calories":60.0,"fat":0.0,"carbs":11.0,"protein":0.0}]},{"id":"cut-spring-26-pt-6","name":"Cut Spring 26 pt 6","items":[{"name":"Eggs","category":"","servings":0.0,"calories":70.0,"fat":5.0,"carbs":0.0,"protein":6.0},{"name":"Egg Whites","category":"","servings":21.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"Grits","category":"","servings":0.0,"calories":170.0,"fat":0.5,"carbs":38.0,"protein":3.0},{"name":"Rice","category":"","servings":0.0,"calories":160.0,"fat":0.0,"carbs":36.0,"protein":4.0},{"name":"Ground Tky","category":"","servings":12.0,"calories":120.0,"fat":1.0,"carbs":0.0,"protein":26.0},{"name":"Cottage Chse","category":"","servings":0.0,"calories":110.0,"fat":1.0,"carbs":6.0,"protein":13.0},{"name":"chicken","category":"","servings":14.0,"calories":130.0,"fat":3.0,"carbs":0.0,"protein":25.0},{"name":"Banana","category":"","servings":7.0,"calories":105.0,"fat":0.0,"carbs":27.0,"protein":1.0},{"name":"Protein Pwd","category":"","servings":14.0,"calories":147.0,"fat":3.0,"carbs":5.0,"protein":25.0},{"name":"Russet Pot","category":"","servings":20.0,"calories":110.0,"fat":0.0,"carbs":26.0,"protein":3.0},{"name":"Shrd M Cheese","category":"","servings":0.0,"calories":80.0,"fat":6.0,"carbs":2.0,"protein":6.0},{"name":"Ketchup","category":"","servings":0.0,"calories":15.0,"fat":0.0,"carbs":4.0,"protein":0.0},{"name":"Beans","category":"","servings":7.0,"calories":90.0,"fat":0.5,"carbs":18.0,"protein":6.0},{"name":"almond milk","category":"","servings":8.0,"calories":35.0,"fat":3.0,"carbs":1.0,"protein":1.0},{"name":"rice cake","category":"","servings":7.0,"calories":60.0,"fat":0.0,"carbs":11.0,"protein":0.0}]},{"id":"reverse-diet-cut-summer-26","name":"Reverse Diet Cut Summer 26","items":[{"name":"Eggs","category":"","servings":14.0,"calories":70.0,"fat":5.0,"carbs":0.0,"protein":6.0},{"name":"Egg Whites","category":"","servings":14.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"Grits","category":"","servings":0.0,"calories":170.0,"fat":0.5,"carbs":38.0,"protein":3.0},{"name":"Rice","category":"","servings":8.0,"calories":160.0,"fat":0.0,"carbs":36.0,"protein":4.0},{"name":"Ground Tky","category":"","servings":12.0,"calories":160.0,"fat":8.0,"carbs":0.0,"protein":22.0},{"name":"Cottage Chse","category":"","servings":7.0,"calories":110.0,"fat":1.0,"carbs":6.0,"protein":13.0},{"name":"chicken","category":"","servings":18.0,"calories":130.0,"fat":3.0,"carbs":0.0,"protein":25.0},{"name":"Banana","category":"","servings":7.0,"calories":105.0,"fat":0.0,"carbs":27.0,"protein":1.0},{"name":"Protein Pwd","category":"","servings":14.0,"calories":147.0,"fat":3.0,"carbs":5.0,"protein":25.0},{"name":"Russet Pot","category":"","servings":15.0,"calories":110.0,"fat":0.0,"carbs":26.0,"protein":3.0},{"name":"Shrd M Cheese","category":"","servings":0.0,"calories":80.0,"fat":6.0,"carbs":2.0,"protein":6.0},{"name":"Ketchup","category":"","servings":0.0,"calories":15.0,"fat":0.0,"carbs":4.0,"protein":0.0},{"name":"Beans","category":"","servings":14.0,"calories":90.0,"fat":0.5,"carbs":18.0,"protein":6.0},{"name":"almond milk","category":"","servings":8.0,"calories":35.0,"fat":3.0,"carbs":1.0,"protein":1.0},{"name":"cream of rice","category":"","servings":7.0,"calories":120.0,"fat":0.0,"carbs":26.0,"protein":2.0},{"name":"oatmeal","category":"","servings":0.0,"calories":150.0,"fat":3.0,"carbs":27.0,"protein":5.0},{"name":"bagel","category":"","servings":0.0,"calories":270.0,"fat":2.0,"carbs":47.0,"protein":9.0},{"name":"rice cake","category":"","servings":7.0,"calories":60.0,"fat":0.0,"carbs":11.0,"protein":0.0}]},{"id":"reverse-diet-cut-summer-26-pt-2","name":"Reverse Diet Cut Summer 26 pt 2","items":[{"name":"Eggs","category":"","servings":14.0,"calories":70.0,"fat":5.0,"carbs":0.0,"protein":6.0},{"name":"Egg Whites","category":"","servings":14.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"Grits","category":"","servings":0.0,"calories":170.0,"fat":0.5,"carbs":38.0,"protein":3.0},{"name":"Rice","category":"","servings":8.0,"calories":160.0,"fat":0.0,"carbs":36.0,"protein":4.0},{"name":"Ground Tky","category":"","servings":12.0,"calories":160.0,"fat":8.0,"carbs":0.0,"protein":22.0},{"name":"Cottage Chse","category":"","servings":7.0,"calories":110.0,"fat":1.0,"carbs":6.0,"protein":13.0},{"name":"chicken","category":"","servings":18.0,"calories":130.0,"fat":3.0,"carbs":0.0,"protein":25.0},{"name":"Banana","category":"","servings":7.0,"calories":105.0,"fat":0.0,"carbs":27.0,"protein":1.0},{"name":"Protein Pwd","category":"","servings":14.0,"calories":147.0,"fat":3.0,"carbs":5.0,"protein":25.0},{"name":"Russet Pot","category":"","servings":15.0,"calories":110.0,"fat":0.0,"carbs":26.0,"protein":3.0},{"name":"Shrd M Cheese","category":"","servings":0.0,"calories":80.0,"fat":6.0,"carbs":2.0,"protein":6.0},{"name":"Ketchup","category":"","servings":0.0,"calories":15.0,"fat":0.0,"carbs":4.0,"protein":0.0},{"name":"Beans","category":"","servings":14.0,"calories":90.0,"fat":0.5,"carbs":18.0,"protein":6.0},{"name":"almond milk","category":"","servings":8.0,"calories":35.0,"fat":3.0,"carbs":1.0,"protein":1.0},{"name":"cream of rice","category":"","servings":7.0,"calories":120.0,"fat":0.0,"carbs":26.0,"protein":2.0},{"name":"oatmeal","category":"","servings":0.0,"calories":150.0,"fat":3.0,"carbs":27.0,"protein":5.0},{"name":"bagel","category":"","servings":7.0,"calories":270.0,"fat":2.0,"carbs":47.0,"protein":9.0},{"name":"rice cake","category":"","servings":7.0,"calories":60.0,"fat":0.0,"carbs":11.0,"protein":0.0}]},{"id":"reverse-diet-cut-summer-26-pt-3","name":"Reverse Diet Cut Summer 26 pt 3","items":[{"name":"Eggs","category":"","servings":14.0,"calories":70.0,"fat":5.0,"carbs":0.0,"protein":6.0},{"name":"Egg Whites","category":"","servings":14.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"Grits","category":"","servings":0.0,"calories":170.0,"fat":0.5,"carbs":38.0,"protein":3.0},{"name":"Rice","category":"","servings":8.0,"calories":160.0,"fat":0.0,"carbs":36.0,"protein":4.0},{"name":"Ground Tky","category":"","servings":12.0,"calories":160.0,"fat":8.0,"carbs":0.0,"protein":22.0},{"name":"Cottage Chse","category":"","servings":7.0,"calories":110.0,"fat":1.0,"carbs":6.0,"protein":13.0},{"name":"chicken","category":"","servings":18.0,"calories":130.0,"fat":3.0,"carbs":0.0,"protein":25.0},{"name":"Banana","category":"","servings":7.0,"calories":105.0,"fat":0.0,"carbs":27.0,"protein":1.0},{"name":"Protein Pwd","category":"","servings":14.0,"calories":147.0,"fat":3.0,"carbs":5.0,"protein":25.0},{"name":"Russet Pot","category":"","servings":15.0,"calories":110.0,"fat":0.0,"carbs":26.0,"protein":3.0},{"name":"Shrd M Cheese","category":"","servings":0.0,"calories":80.0,"fat":6.0,"carbs":2.0,"protein":6.0},{"name":"Ketchup","category":"","servings":0.0,"calories":15.0,"fat":0.0,"carbs":4.0,"protein":0.0},{"name":"Beans","category":"","servings":14.0,"calories":90.0,"fat":0.5,"carbs":18.0,"protein":6.0},{"name":"almond milk","category":"","servings":8.0,"calories":35.0,"fat":3.0,"carbs":1.0,"protein":1.0},{"name":"cream of rice","category":"","servings":7.0,"calories":120.0,"fat":0.0,"carbs":26.0,"protein":2.0},{"name":"oatmeal","category":"","servings":7.0,"calories":150.0,"fat":3.0,"carbs":27.0,"protein":5.0},{"name":"bagel","category":"","servings":14.0,"calories":270.0,"fat":2.0,"carbs":47.0,"protein":9.0},{"name":"rice cake","category":"","servings":7.0,"calories":60.0,"fat":0.0,"carbs":11.0,"protein":0.0}]},{"id":"maintenance-race-prep","name":"Maintenance Race Prep","items":[{"name":"Eggs","category":"","servings":14.0,"calories":70.0,"fat":5.0,"carbs":0.0,"protein":6.0},{"name":"Egg Whites","category":"","servings":14.0,"calories":25.0,"fat":0.0,"carbs":0.0,"protein":5.0},{"name":"Grits","category":"","servings":0.0,"calories":170.0,"fat":0.5,"carbs":38.0,"protein":3.0},{"name":"Rice","category":"","servings":8.0,"calories":160.0,"fat":0.0,"carbs":36.0,"protein":4.0},{"name":"Ground Tky","category":"","servings":12.0,"calories":160.0,"fat":8.0,"carbs":0.0,"protein":22.0},{"name":"Cottage Chse","category":"","servings":7.0,"calories":110.0,"fat":1.0,"carbs":6.0,"protein":13.0},{"name":"chicken","category":"","servings":15.0,"calories":130.0,"fat":3.0,"carbs":0.0,"protein":25.0},{"name":"Banana","category":"","servings":7.0,"calories":105.0,"fat":0.0,"carbs":27.0,"protein":1.0},{"name":"Protein Pwd","category":"","servings":14.0,"calories":147.0,"fat":3.0,"carbs":5.0,"protein":25.0},{"name":"Russet Pot","category":"","servings":15.0,"calories":110.0,"fat":0.0,"carbs":26.0,"protein":3.0},{"name":"Shrd M Cheese","category":"","servings":0.0,"calories":80.0,"fat":6.0,"carbs":2.0,"protein":6.0},{"name":"Ketchup","category":"","servings":0.0,"calories":15.0,"fat":0.0,"carbs":4.0,"protein":0.0},{"name":"Beans","category":"","servings":14.0,"calories":90.0,"fat":0.5,"carbs":18.0,"protein":6.0},{"name":"almond milk","category":"","servings":8.0,"calories":35.0,"fat":3.0,"carbs":1.0,"protein":1.0},{"name":"cream of rice","category":"","servings":7.0,"calories":120.0,"fat":0.0,"carbs":26.0,"protein":2.0},{"name":"oatmeal","category":"","servings":7.0,"calories":150.0,"fat":3.0,"carbs":27.0,"protein":5.0},{"name":"bagel","category":"","servings":14.0,"calories":270.0,"fat":2.0,"carbs":47.0,"protein":9.0},{"name":"rice cake","category":"","servings":7.0,"calories":60.0,"fat":0.0,"carbs":11.0,"protein":0.0},{"name":"other","category":"","servings":7.0,"calories":800.0,"fat":15.0,"carbs":65.0,"protein":35.0}]}];
+const STORAGE_KEY = "macroDataV2";
+
+const clone = (value) => JSON.parse(JSON.stringify(value));
+const slug = (value) => String(value || "item").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "item";
+const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({
+  "&": "&amp;",
+  "<": "&lt;",
+  ">": "&gt;",
+  "\"": "&quot;",
+  "'": "&#39;"
+}[char]));
+const parseNumber = (value) => {
+  const parsed = Number(String(value ?? "").replace(",", "").trim());
+  return Number.isFinite(parsed) ? parsed : 0;
+};
+
+function prepareData(phases) {
+  return phases.map((phase, phaseIndex) => {
+    const used = {};
+    const phaseId = phase.id || `${slug(phase.name)}-${phaseIndex}`;
+    return {
+      ...phase,
+      id: phaseId,
+      items: (phase.items || []).map((item, itemIndex) => {
+        const base = slug(item.name);
+        used[base] = (used[base] || 0) + 1;
+        return {
+          id: item.id || `${base}-${used[base]}-${itemIndex}`,
+          name: item.name || "New food",
+          category: item.category || "",
+          servings: parseNumber(item.servings),
+          calories: parseNumber(item.calories),
+          fat: parseNumber(item.fat),
+          carbs: parseNumber(item.carbs),
+          protein: parseNumber(item.protein)
+        };
+      })
+    };
+  });
+}
+
+let DATA = prepareData(JSON.parse(localStorage.getItem(STORAGE_KEY) || "null") || clone(ORIGINAL_DATA));
 const state = {
   phaseId: localStorage.getItem("macroPhase") || DATA[0]?.id,
   query: "",
-  overrides: JSON.parse(localStorage.getItem("macroServings") || "{}")
+  modal: null
 };
 
 const fmt = (n) => {
   const value = Number(n || 0);
   return Number.isInteger(value) ? String(value) : value.toFixed(1).replace(/\.0$/, "");
 };
-const keyFor = (phase, item) => `${phase.id}::${item.name}`;
-const getServings = (phase, item) => {
-  const key = keyFor(phase, item);
-  return state.overrides[key] ?? item.servings ?? 0;
-};
-const setServings = (phase, item, value) => {
-  const key = keyFor(phase, item);
-  const parsed = Math.max(0, Math.round(Number(value || 0) * 2) / 2);
-  state.overrides[key] = parsed;
-  localStorage.setItem("macroServings", JSON.stringify(state.overrides));
-  render();
-};
+const saveData = () => localStorage.setItem(STORAGE_KEY, JSON.stringify(DATA));
+const getServings = (phase, item) => item?.servings ?? 0;
 const currentPhase = () => DATA.find((phase) => phase.id === state.phaseId) || DATA[0];
-const totalsFor = (phase, items = phase.items) => items.reduce((totals, item) => {
-  const servings = getServings(phase, item);
-  totals.calories += item.calories * servings;
-  totals.fat += item.fat * servings;
-  totals.carbs += item.carbs * servings;
-  totals.protein += item.protein * servings;
-  totals.servings += servings;
-  return totals;
-}, { calories: 0, fat: 0, carbs: 0, protein: 0, servings: 0 });
+
+function setServings(phase, item, value) {
+  if (!item) return;
+  item.servings = Math.max(0, Math.round(parseNumber(value) * 2) / 2);
+  saveData();
+  renderSummary();
+  renderItems();
+}
+
+function totalsFor(phase, items = phase.items) {
+  return items.reduce((totals, item) => {
+    const servings = getServings(phase, item);
+    totals.calories += item.calories * servings;
+    totals.fat += item.fat * servings;
+    totals.carbs += item.carbs * servings;
+    totals.protein += item.protein * servings;
+    totals.servings += servings;
+    return totals;
+  }, { calories: 0, fat: 0, carbs: 0, protein: 0, servings: 0 });
+}
+
+function foodKey(item) {
+  return `${item.name.trim().toLowerCase()}|${item.calories}|${item.fat}|${item.carbs}|${item.protein}`;
+}
+
+function foodLibrary() {
+  const map = new Map();
+  DATA.forEach((phase) => {
+    phase.items.forEach((item) => {
+      const key = foodKey(item);
+      if (!map.has(key)) map.set(key, { ...item, sources: [phase.name] });
+      else map.get(key).sources.push(phase.name);
+    });
+  });
+  return [...map.values()].sort((a, b) => a.name.localeCompare(b.name));
+}
 
 function phaseOptions(phase) {
-  return DATA.map((entry) => `<option value="${entry.id}" ${entry.id === phase.id ? "selected" : ""}>${entry.name}</option>`).join("");
+  return DATA.map((entry) => `<option value="${esc(entry.id)}" ${entry.id === phase.id ? "selected" : ""}>${esc(entry.name)}</option>`).join("");
 }
 
 function tabs(phase) {
-  return DATA.map((entry) => `<button class="tab ${entry.id === phase.id ? "active" : ""}" data-phase="${entry.id}">${entry.name}</button>`).join("");
+  return DATA.map((entry) => `<button class="tab ${entry.id === phase.id ? "active" : ""}" data-phase="${esc(entry.id)}">${esc(entry.name)}</button>`).join("");
 }
 
-function itemCard(phase, item) {
+function itemCard(phase, item, options = {}) {
   const servings = getServings(phase, item);
   const weeklyCal = item.calories * servings;
   const dailyCal = weeklyCal / 7;
+  const isLibrary = options.library;
+  const sourceText = item.sources?.length ? `From ${item.sources.slice(0, 2).join(", ")}` : "From library";
   return `
     <article class="item">
       <div class="item-head">
         <div>
-          <div class="item-name">${item.name}</div>
-          <div class="item-cat">${item.category || "Per serving"} · ${fmt(item.calories)} cal</div>
+          <div class="item-name">${esc(item.name)}</div>
+          <div class="item-cat">${esc(item.category || (isLibrary ? sourceText : "Per serving"))} - ${fmt(item.calories)} cal</div>
         </div>
-        <div class="servings" aria-label="Weekly servings for ${item.name}">
-          <button data-step="-0.5" data-item="${item.name}" aria-label="Remove serving">-</button>
-          <input inputmode="decimal" value="${fmt(servings)}" data-input="${item.name}" aria-label="Weekly servings">
-          <button data-step="0.5" data-item="${item.name}" aria-label="Add serving">+</button>
-        </div>
+        ${isLibrary ? `<button class="mini add" data-add-library="${esc(item.id)}">Add</button>` : `
+          <div class="servings" aria-label="Weekly servings for ${esc(item.name)}">
+            <button data-step="-0.5" data-item-id="${esc(item.id)}" aria-label="Remove serving">-</button>
+            <input inputmode="decimal" value="${fmt(servings)}" data-input-id="${esc(item.id)}" aria-label="Weekly servings">
+            <button data-step="0.5" data-item-id="${esc(item.id)}" aria-label="Add serving">+</button>
+          </div>
+        `}
       </div>
       <div class="macro-grid">
         <div class="macro"><span>Cal</span><b>${fmt(item.calories)}</b></div>
@@ -321,20 +486,23 @@ function itemCard(phase, item) {
         <div class="macro"><span>Carbs</span><b>${fmt(item.carbs)}g</b></div>
         <div class="macro"><span>Protein</span><b>${fmt(item.protein)}g</b></div>
       </div>
-      <div class="subtotals">
-        <span>${fmt(weeklyCal)} weekly cal</span>
-        <span>${fmt(dailyCal)} daily cal avg</span>
-      </div>
+      ${isLibrary ? "" : `
+        <div class="subtotals">
+          <span>${fmt(weeklyCal)} weekly cal</span>
+          <span>${fmt(dailyCal)} daily cal avg</span>
+        </div>
+        <div class="item-tools">
+          <button class="mini" data-edit-item="${esc(item.id)}">Edit</button>
+          <button class="mini danger" data-delete-item="${esc(item.id)}">Delete</button>
+        </div>
+      `}
     </article>
   `;
 }
 
-function render() {
+function renderSummary() {
   const phase = currentPhase();
   if (!phase) return;
-  localStorage.setItem("macroPhase", phase.id);
-  const query = state.query.trim().toLowerCase();
-  const filtered = phase.items.filter((item) => !query || item.name.toLowerCase().includes(query) || item.category.toLowerCase().includes(query));
   const weekly = totalsFor(phase);
   const daily = {
     calories: weekly.calories / 7,
@@ -342,6 +510,92 @@ function render() {
     carbs: weekly.carbs / 7,
     protein: weekly.protein / 7
   };
+  const summary = document.querySelector("[data-summary]");
+  const bottom = document.querySelector("[data-bottom]");
+  if (summary) {
+    summary.innerHTML = `
+      <div class="metric"><span>Daily Calories</span><strong>${fmt(daily.calories)}</strong></div>
+      <div class="metric"><span>Daily Protein</span><strong>${fmt(daily.protein)}g</strong></div>
+      <div class="metric"><span>Weekly Calories</span><strong>${fmt(weekly.calories)}</strong></div>
+      <div class="metric"><span>Weekly Servings</span><strong>${fmt(weekly.servings)}</strong></div>
+    `;
+  }
+  if (bottom) {
+    bottom.innerHTML = `
+      <div class="bottom-cell"><span>Cal</span><strong>${fmt(daily.calories)}</strong></div>
+      <div class="bottom-cell"><span>Fat</span><strong>${fmt(daily.fat)}g</strong></div>
+      <div class="bottom-cell"><span>Carbs</span><strong>${fmt(daily.carbs)}g</strong></div>
+      <div class="bottom-cell"><span>Protein</span><strong>${fmt(daily.protein)}g</strong></div>
+    `;
+  }
+}
+
+function renderItems() {
+  const phase = currentPhase();
+  if (!phase) return;
+  const query = state.query.trim().toLowerCase();
+  const currentMatches = phase.items.filter((item) => !query || item.name.toLowerCase().includes(query) || item.category.toLowerCase().includes(query));
+  const currentKeys = new Set(phase.items.map(foodKey));
+  const libraryMatches = query
+    ? foodLibrary()
+        .filter((item) => (item.name.toLowerCase().includes(query) || item.category.toLowerCase().includes(query)) && !currentKeys.has(foodKey(item)))
+        .slice(0, 20)
+    : [];
+  const list = document.querySelector("[data-items]");
+  if (!list) return;
+  const currentHtml = currentMatches.length
+    ? currentMatches.map((item) => itemCard(phase, item)).join("")
+    : `<div class="empty">No foods in this tab match this search.</div>`;
+  const libraryHtml = libraryMatches.length
+    ? `<div class="section-label">Food library from all tabs</div>${libraryMatches.map((item) => itemCard(phase, item, { library: true })).join("")}`
+    : "";
+  list.innerHTML = currentHtml + libraryHtml;
+}
+
+function renderModal() {
+  const modalRoot = document.querySelector("[data-modal-root]");
+  if (!modalRoot) return;
+  if (!state.modal) {
+    modalRoot.innerHTML = "";
+    return;
+  }
+  const phase = currentPhase();
+  const item = state.modal.itemId ? phase.items.find((entry) => entry.id === state.modal.itemId) : null;
+  const isTab = state.modal.type === "tab";
+  const title = isTab ? "Add Tab" : item ? "Edit Food" : "Add Food";
+  const values = item || { name: "", category: "", servings: 0, calories: 0, fat: 0, carbs: 0, protein: 0 };
+  modalRoot.innerHTML = `
+    <div class="modal-backdrop open" data-close-modal>
+      <form class="modal" data-food-form data-form-type="${esc(state.modal.type)}" data-form-item="${esc(state.modal.itemId || "")}">
+        <h2>${title}</h2>
+        ${isTab ? `
+          <div class="form-grid">
+            <label class="field full"><span>Tab name</span><input name="tabName" required placeholder="Example: Fall Cut"></label>
+          </div>
+        ` : `
+          <div class="form-grid">
+            <label class="field full"><span>Food name</span><input name="name" required value="${esc(values.name)}"></label>
+            <label class="field full"><span>Category or note</span><input name="category" value="${esc(values.category)}"></label>
+            <label class="field"><span>Weekly servings</span><input name="servings" inputmode="decimal" value="${fmt(values.servings)}"></label>
+            <label class="field"><span>Calories</span><input name="calories" inputmode="decimal" value="${fmt(values.calories)}"></label>
+            <label class="field"><span>Fat</span><input name="fat" inputmode="decimal" value="${fmt(values.fat)}"></label>
+            <label class="field"><span>Carbs</span><input name="carbs" inputmode="decimal" value="${fmt(values.carbs)}"></label>
+            <label class="field"><span>Protein</span><input name="protein" inputmode="decimal" value="${fmt(values.protein)}"></label>
+          </div>
+        `}
+        <div class="modal-actions">
+          <button class="ghost" type="button" data-cancel>Cancel</button>
+          <button class="primary" type="submit">Save</button>
+        </div>
+      </form>
+    </div>
+  `;
+}
+
+function render() {
+  const phase = currentPhase();
+  if (!phase) return;
+  localStorage.setItem("macroPhase", phase.id);
   document.querySelector("#app").innerHTML = `
     <div class="topbar">
       <div class="title-row">
@@ -351,31 +605,37 @@ function render() {
       <select class="phase-select" data-select>${phaseOptions(phase)}</select>
       <div class="tabs">${tabs(phase)}</div>
     </div>
-    <section class="summary">
-      <div class="metric"><span>Daily Calories</span><strong>${fmt(daily.calories)}</strong></div>
-      <div class="metric"><span>Daily Protein</span><strong>${fmt(daily.protein)}g</strong></div>
-      <div class="metric"><span>Weekly Calories</span><strong>${fmt(weekly.calories)}</strong></div>
-      <div class="metric"><span>Weekly Servings</span><strong>${fmt(weekly.servings)}</strong></div>
-    </section>
+    <section class="summary" data-summary></section>
+    <div class="action-row">
+      <button class="primary" data-open-add-food>Add Food</button>
+      <button class="ghost" data-open-add-tab>Add Tab</button>
+    </div>
     <div class="toolbar">
-      <input class="search" type="search" placeholder="Search foods" value="${state.query}" data-search>
+      <input class="search" type="search" placeholder="Search foods" value="${esc(state.query)}" data-search>
       <button class="ghost" data-clear>Clear</button>
     </div>
-    <main class="items">
-      ${filtered.length ? filtered.map((item) => itemCard(phase, item)).join("") : `<div class="empty">No foods match this search.</div>`}
-    </main>
+    <main class="items" data-items></main>
     <footer class="bottom">
-      <div class="bottom-grid">
-        <div class="bottom-cell"><span>Cal</span><strong>${fmt(daily.calories)}</strong></div>
-        <div class="bottom-cell"><span>Fat</span><strong>${fmt(daily.fat)}g</strong></div>
-        <div class="bottom-cell"><span>Carbs</span><strong>${fmt(daily.carbs)}g</strong></div>
-        <div class="bottom-cell"><span>Protein</span><strong>${fmt(daily.protein)}g</strong></div>
-      </div>
+      <div class="bottom-grid" data-bottom></div>
     </footer>
+    <div data-modal-root></div>
   `;
+  renderSummary();
+  renderItems();
+  renderModal();
 }
 
 document.addEventListener("click", (event) => {
+  if (event.target.closest("[data-close-modal]") && !event.target.closest(".modal")) {
+    state.modal = null;
+    renderModal();
+    return;
+  }
+  if (event.target.closest("[data-cancel]")) {
+    state.modal = null;
+    renderModal();
+    return;
+  }
   const phaseButton = event.target.closest("[data-phase]");
   if (phaseButton) {
     state.phaseId = phaseButton.dataset.phase;
@@ -385,8 +645,47 @@ document.addEventListener("click", (event) => {
   const stepButton = event.target.closest("[data-step]");
   if (stepButton) {
     const phase = currentPhase();
-    const item = phase.items.find((entry) => entry.name === stepButton.dataset.item);
+    const item = phase.items.find((entry) => entry.id === stepButton.dataset.itemId);
     setServings(phase, item, getServings(phase, item) + Number(stepButton.dataset.step));
+    return;
+  }
+  const editButton = event.target.closest("[data-edit-item]");
+  if (editButton) {
+    state.modal = { type: "food", itemId: editButton.dataset.editItem };
+    renderModal();
+    return;
+  }
+  const deleteButton = event.target.closest("[data-delete-item]");
+  if (deleteButton) {
+    const phase = currentPhase();
+    const item = phase.items.find((entry) => entry.id === deleteButton.dataset.deleteItem);
+    if (item && confirm(`Delete ${item.name} from this tab?`)) {
+      phase.items = phase.items.filter((entry) => entry.id !== item.id);
+      saveData();
+      render();
+    }
+    return;
+  }
+  const addLibraryButton = event.target.closest("[data-add-library]");
+  if (addLibraryButton) {
+    const phase = currentPhase();
+    const item = foodLibrary().find((entry) => entry.id === addLibraryButton.dataset.addLibrary);
+    if (item) {
+      phase.items.push({ ...item, id: `${slug(item.name)}-${Date.now()}`, servings: 0, sources: undefined });
+      saveData();
+      renderSummary();
+      renderItems();
+    }
+    return;
+  }
+  if (event.target.closest("[data-open-add-food]")) {
+    state.modal = { type: "food" };
+    renderModal();
+    return;
+  }
+  if (event.target.closest("[data-open-add-tab]")) {
+    state.modal = { type: "tab" };
+    renderModal();
     return;
   }
   if (event.target.closest("[data-clear]")) {
@@ -395,9 +694,11 @@ document.addEventListener("click", (event) => {
     return;
   }
   if (event.target.closest("[data-reset]")) {
-    if (confirm("Reset serving changes for all phases?")) {
-      state.overrides = {};
+    if (confirm("Reset all edits and serving changes back to the original spreadsheet?")) {
+      DATA = prepareData(clone(ORIGINAL_DATA));
+      localStorage.removeItem(STORAGE_KEY);
       localStorage.removeItem("macroServings");
+      state.phaseId = DATA[0]?.id;
       render();
     }
   }
@@ -406,7 +707,7 @@ document.addEventListener("click", (event) => {
 document.addEventListener("input", (event) => {
   if (event.target.matches("[data-search]")) {
     state.query = event.target.value;
-    render();
+    renderItems();
   }
 });
 
@@ -416,11 +717,43 @@ document.addEventListener("change", (event) => {
     render();
     return;
   }
-  if (event.target.matches("[data-input]")) {
+  if (event.target.matches("[data-input-id]")) {
     const phase = currentPhase();
-    const item = phase.items.find((entry) => entry.name === event.target.dataset.input);
+    const item = phase.items.find((entry) => entry.id === event.target.dataset.inputId);
     setServings(phase, item, event.target.value);
   }
+});
+
+document.addEventListener("submit", (event) => {
+  const form = event.target.closest("[data-food-form]");
+  if (!form) return;
+  event.preventDefault();
+  const phase = currentPhase();
+  const formData = new FormData(form);
+  if (form.dataset.formType === "tab") {
+    const name = String(formData.get("tabName") || "").trim();
+    if (!name) return;
+    const id = `${slug(name)}-${Date.now()}`;
+    DATA.push({ id, name, items: [] });
+    state.phaseId = id;
+  } else {
+    const itemData = {
+      id: form.dataset.formItem || `${slug(formData.get("name"))}-${Date.now()}`,
+      name: String(formData.get("name") || "").trim() || "New food",
+      category: String(formData.get("category") || "").trim(),
+      servings: parseNumber(formData.get("servings")),
+      calories: parseNumber(formData.get("calories")),
+      fat: parseNumber(formData.get("fat")),
+      carbs: parseNumber(formData.get("carbs")),
+      protein: parseNumber(formData.get("protein"))
+    };
+    const existingIndex = phase.items.findIndex((item) => item.id === itemData.id);
+    if (existingIndex >= 0) phase.items[existingIndex] = itemData;
+    else phase.items.push(itemData);
+  }
+  saveData();
+  state.modal = null;
+  render();
 });
 
 render();
