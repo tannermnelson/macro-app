@@ -3,6 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0f805f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Macros">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Macro%20Phases%22%2C%22short_name%22%3A%22Macros%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23edf8ef%22%2C%22theme_color%22%3A%22%230f805f%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage/svg%2Bxml%2C%253Csvg%2520xmlns%253D%2527http%253A//www.w3.org/2000/svg%2527%2520viewBox%253D%25270%25200%2520512%2520512%2527%253E%253Crect%2520width%253D%2527512%2527%2520height%253D%2527512%2527%2520rx%253D%252796%2527%2520fill%253D%2527%25230f805f%2527/%253E%253Ccircle%2520cx%253D%2527256%2527%2520cy%253D%2527256%2527%2520r%253D%2527150%2527%2520fill%253D%2527none%2527%2520stroke%253D%2527%2523ffffff%2527%2520stroke-width%253D%252746%2527/%253E%253Cpath%2520d%253D%2527M256%2520106a150%2520150%25200%25200%25201%2520132%252079%2527%2520fill%253D%2527none%2527%2520stroke%253D%2527%2523efb94d%2527%2520stroke-width%253D%252746%2527%2520stroke-linecap%253D%2527round%2527/%253E%253Cpath%2520d%253D%2527M388%2520185a150%2520150%25200%25200%25201-38%2520194%2527%2520fill%253D%2527none%2527%2520stroke%253D%2527%252363aef2%2527%2520stroke-width%253D%252746%2527%2520stroke-linecap%253D%2527round%2527/%253E%253Ccircle%2520cx%253D%2527256%2527%2520cy%253D%2527256%2527%2520r%253D%252758%2527%2520fill%253D%2527%2523ffffff%2527/%253E%253C/svg%253E%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image/svg%2Bxml%22%7D%5D%7D">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20512%20512%27%3E%3Crect%20width%3D%27512%27%20height%3D%27512%27%20rx%3D%2796%27%20fill%3D%27%230f805f%27/%3E%3Ccircle%20cx%3D%27256%27%20cy%3D%27256%27%20r%3D%27150%27%20fill%3D%27none%27%20stroke%3D%27%23ffffff%27%20stroke-width%3D%2746%27/%3E%3Cpath%20d%3D%27M256%20106a150%20150%200%200%201%20132%2079%27%20fill%3D%27none%27%20stroke%3D%27%23efb94d%27%20stroke-width%3D%2746%27%20stroke-linecap%3D%27round%27/%3E%3Cpath%20d%3D%27M388%20185a150%20150%200%200%201-38%20194%27%20fill%3D%27none%27%20stroke%3D%27%2363aef2%27%20stroke-width%3D%2746%27%20stroke-linecap%3D%27round%27/%3E%3Ccircle%20cx%3D%27256%27%20cy%3D%27256%27%20r%3D%2758%27%20fill%3D%27%23ffffff%27/%3E%3C/svg%3E">
   <title>Macro Phases</title>
   <style>
 :root {
@@ -17,6 +23,7 @@
   --gold: #c89021;
   --blue: #386fa4;
   --danger: #a63d40;
+  --under-goal: #b9413f;
   --soft: #e9f5ee;
   --soft-2: #d6eadf;
   --bottom: #10231d;
@@ -33,6 +40,7 @@
   --gold: #d99c22;
   --blue: #245dd8;
   --danger: #a63d40;
+  --under-goal: #b33f32;
   --soft: #d8f0f5;
   --soft-2: #bfe5ed;
   --bottom: #063342;
@@ -48,6 +56,7 @@
   --gold: #c99118;
   --blue: #2c689b;
   --danger: #a63d40;
+  --under-goal: #b9413f;
   --soft: #dcefe2;
   --soft-2: #c4e3cf;
   --bottom: #0b2d20;
@@ -63,6 +72,7 @@
   --gold: #e09a16;
   --blue: #267aa0;
   --danger: #a33b42;
+  --under-goal: #087f6f;
   --soft: #ffe0d0;
   --soft-2: #f8c9af;
   --bottom: #4d2215;
@@ -78,6 +88,7 @@
   --gold: #d08d18;
   --blue: #4368c4;
   --danger: #a63d40;
+  --under-goal: #15806f;
   --soft: #f1d7f4;
   --soft-2: #e5c1eb;
   --bottom: #311738;
@@ -93,6 +104,7 @@
   --gold: #c48d1f;
   --blue: #167ca5;
   --danger: #a64045;
+  --under-goal: #b24a35;
   --soft: #dde5eb;
   --soft-2: #cdd8e0;
   --bottom: #1f2d38;
@@ -109,12 +121,16 @@
   --gold: #efb94d;
   --blue: #63aef2;
   --danger: #ff8a8f;
+  --under-goal: #ffbd59;
   --soft: #dbeee6;
   --soft-2: #bfe4d6;
   --bottom: #050907;
 }
+[data-theme="dark"] .macro span,
 [data-theme="dark"] .macro b,
-[data-theme="dark"] .servings input {
+[data-theme="dark"] .servings input,
+[data-theme="dark"] .servings button,
+[data-theme="dark"] .goal-actions .mini {
   color: #000000;
 }
 * { box-sizing: border-box; }
@@ -261,6 +277,70 @@ h1 {
   font-size: .78rem;
   margin-top: 2px;
 }
+.goal-actions {
+  margin-top: 10px;
+}
+.goal-grid {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 10px;
+}
+.goal-card {
+  background: color-mix(in srgb, var(--panel) 70%, var(--soft));
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 9px;
+}
+.goal-card span {
+  display: block;
+  color: var(--muted);
+  font-size: .68rem;
+}
+.goal-card strong {
+  display: block;
+  margin-top: 3px;
+}
+.goal-card small {
+  display: block;
+  margin-top: 2px;
+  color: var(--muted);
+}
+.goal-card.under {
+  border-color: color-mix(in srgb, var(--under-goal) 62%, var(--line));
+}
+.goal-card.under strong,
+.goal-card.under small {
+  color: var(--under-goal);
+}
+.goal-card.over {
+  border-color: color-mix(in srgb, var(--accent) 62%, var(--line));
+}
+.goal-card.over strong,
+.goal-card.over small {
+  color: var(--accent-dark);
+}
+.bar {
+  height: 6px;
+  overflow: hidden;
+  background: var(--soft-2);
+  border-radius: 999px;
+  margin-top: 7px;
+}
+.bar i {
+  display: block;
+  height: 100%;
+  width: min(var(--fill), 100%);
+  background: var(--accent);
+  border-radius: inherit;
+}
+.goal-card.under .bar i {
+  background: var(--under-goal);
+}
+.goal-card.over .bar i {
+  background: var(--accent);
+}
 .legend {
   display: grid;
   gap: 6px;
@@ -307,6 +387,14 @@ h1 {
   grid-template-columns: 1fr 1fr;
   gap: 8px;
   margin: 12px 0;
+}
+.action-row.compact {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.active-toggle.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
 }
 .primary {
   border: 1px solid var(--accent);
@@ -562,6 +650,43 @@ const parseNumber = (value) => {
   const parsed = Number(String(value ?? "").replace(",", "").trim());
   return Number.isFinite(parsed) ? parsed : 0;
 };
+const DEFAULT_TARGETS = { calories: 0, fat: 0, carbs: 0, protein: 0 };
+
+function canonicalName(name) {
+  const cleaned = String(name || "").trim().replace(/\s+/g, " ");
+  const key = cleaned.toLowerCase();
+  const aliases = {
+    "grd tky": "Ground Turkey",
+    "ground turk": "Ground Turkey",
+    "ground tky": "Ground Turkey",
+    "protein pwd": "Protein Powder",
+    "pb2": "PB Powder",
+    "pb powder": "PB Powder",
+    "cottage ch": "Cottage Cheese",
+    "cottage chse": "Cottage Cheese",
+    "shrd cheese": "Shredded Cheese",
+    "shrd m cheese": "Shredded Mexican Cheese",
+    "russet pot": "Russet Potato",
+    "broc": "Broccoli",
+    "broccili": "Broccoli",
+    "broccli": "Broccoli",
+    "crsuhed tom": "Crushed Tomato",
+    "crushed tom": "Crushed Tomato",
+    "tom": "Tomato",
+    "tom ch": "Tomatoes",
+    "pinot beans": "Pinto Beans",
+    "pinto": "Pinto Beans",
+    "bb": "Blueberries",
+    "egg white": "Egg Whites",
+    "egg whites": "Egg Whites",
+    "egg": "Eggs",
+    "milk": "Almond Milk",
+    "zuccini": "Zucchini",
+    "vegs": "Vegetables",
+    "marina": "Marinara"
+  };
+  return aliases[key] || cleaned.replace(/\b\w/g, (char) => char.toUpperCase());
+}
 
 function prepareData(phases) {
   return phases.map((phase, phaseIndex) => {
@@ -570,12 +695,13 @@ function prepareData(phases) {
     return {
       ...phase,
       id: phaseId,
+      targets: { ...DEFAULT_TARGETS, ...(phase.targets || {}) },
       items: (phase.items || []).map((item, itemIndex) => {
         const base = slug(item.name);
         used[base] = (used[base] || 0) + 1;
         return {
           id: item.id || `${base}-${used[base]}-${itemIndex}`,
-          name: item.name || "New food",
+          name: canonicalName(item.name || "New food"),
           category: item.category || "",
           servings: parseNumber(item.servings),
           calories: parseNumber(item.calories),
@@ -592,6 +718,8 @@ let DATA = prepareData(JSON.parse(localStorage.getItem(STORAGE_KEY) || "null") |
 const state = {
   phaseId: localStorage.getItem("macroPhase") || DATA[0]?.id,
   query: "",
+  view: localStorage.getItem("macroView") || "phase",
+  activeOnly: localStorage.getItem("macroActiveOnly") === "true",
   theme: localStorage.getItem(THEME_KEY) || "forest",
   favoriteIds: JSON.parse(localStorage.getItem(FAVORITES_KEY) || "[]"),
   modal: null
@@ -613,6 +741,30 @@ function applyTheme() {
 function saveFavorites() {
   state.favoriteIds = state.favoriteIds.filter((id, index, ids) => DATA.some((phase) => phase.id === id) && ids.indexOf(id) === index);
   localStorage.setItem(FAVORITES_KEY, JSON.stringify(state.favoriteIds));
+}
+
+function setView(view) {
+  state.view = view;
+  localStorage.setItem("macroView", view);
+}
+
+function copyCurrentPhase() {
+  const phase = currentPhase();
+  if (!phase) return;
+  const name = prompt("Name for copied tab:", `${phase.name} Copy`);
+  if (!name) return;
+  const suffix = Date.now();
+  const copied = {
+    ...clone(phase),
+    id: `${slug(name)}-${suffix}`,
+    name: name.trim(),
+    items: phase.items.map((item, index) => ({ ...clone(item), id: `${slug(item.name)}-${suffix}-${index}` }))
+  };
+  DATA.push(copied);
+  state.phaseId = copied.id;
+  setView("phase");
+  saveData();
+  render();
 }
 
 function setServings(phase, item, value) {
@@ -767,6 +919,7 @@ function renderSummary() {
   const phase = currentPhase();
   if (!phase) return;
   const weekly = totalsFor(phase);
+  const targets = { ...DEFAULT_TARGETS, ...(phase.targets || {}) };
   const macroCal = macroCalories(weekly);
   const fatEnd = macroCal.fatPct;
   const carbEnd = macroCal.fatPct + macroCal.carbsPct;
@@ -778,6 +931,20 @@ function renderSummary() {
   };
   const summary = document.querySelector("[data-summary]");
   const bottom = document.querySelector("[data-bottom]");
+  const goalCard = (label, actual, target, unit = "") => {
+    const fill = target > 0 ? Math.min(actual / target * 100, 120) : 0;
+    const remaining = target > 0 ? target - actual : 0;
+    const status = target > 0 && remaining > 0 ? "under" : target > 0 && remaining < 0 ? "over" : "";
+    const remainingText = target > 0 ? `${remaining >= 0 ? fmt(remaining) + unit + " left" : fmt(Math.abs(remaining)) + unit + " over"}` : "No goal set";
+    return `
+      <div class="goal-card ${status}">
+        <span>${label}</span>
+        <strong>${fmt(actual)}${unit} / ${target ? fmt(target) + unit : "--"}</strong>
+        <small>${remainingText}</small>
+        <div class="bar"><i style="--fill:${fill}%"></i></div>
+      </div>
+    `;
+  };
   if (summary) {
     summary.innerHTML = `
       <div class="metric"><span>Daily Calories</span><strong>${fmt(daily.calories)}</strong></div>
@@ -789,11 +956,18 @@ function renderSummary() {
         <div class="chart-copy">
           <strong>Macro Calories</strong>
           <span>Fat, carbs, and protein calorie split</span>
+          <div class="goal-actions"><button class="mini" data-edit-goals>Edit Goals</button></div>
           <div class="legend">
             <div class="legend-row"><i class="swatch fat"></i><span>Fat</span><b>${fmt(macroCal.fatPct)}%</b></div>
             <div class="legend-row"><i class="swatch carbs"></i><span>Carbs</span><b>${fmt(macroCal.carbsPct)}%</b></div>
             <div class="legend-row"><i class="swatch protein"></i><span>Protein</span><b>${fmt(macroCal.proteinPct)}%</b></div>
           </div>
+        </div>
+        <div class="goal-grid">
+          ${goalCard("Calories", daily.calories, targets.calories)}
+          ${goalCard("Fat", daily.fat, targets.fat, "g")}
+          ${goalCard("Carbs", daily.carbs, targets.carbs, "g")}
+          ${goalCard("Protein", daily.protein, targets.protein, "g")}
         </div>
       </div>
     `;
@@ -812,7 +986,7 @@ function renderItems() {
   const phase = currentPhase();
   if (!phase) return;
   const query = state.query.trim().toLowerCase();
-  const currentMatches = phase.items.filter((item) => !query || item.name.toLowerCase().includes(query) || item.category.toLowerCase().includes(query));
+  const currentMatches = phase.items.filter((item) => (!state.activeOnly || getServings(phase, item) > 0) && (!query || item.name.toLowerCase().includes(query) || item.category.toLowerCase().includes(query)));
   const currentKeys = new Set(phase.items.map(foodKey));
   const libraryMatches = foodLibrary()
     .filter((item) => (!query || item.name.toLowerCase().includes(query) || item.category.toLowerCase().includes(query)) && !currentKeys.has(foodKey(item)))
@@ -838,13 +1012,22 @@ function renderModal() {
   const phase = currentPhase();
   const item = state.modal.itemId ? phase.items.find((entry) => entry.id === state.modal.itemId) : null;
   const isTab = state.modal.type === "tab";
-  const title = isTab ? "Add Tab" : item ? "Edit Food" : "Add Food";
+  const isGoals = state.modal.type === "goals";
+  const title = isGoals ? "Daily Goals" : isTab ? "Add Tab" : item ? "Edit Food" : "Add Food";
   const values = item || { name: "", category: "", servings: 0, calories: 0, fat: 0, carbs: 0, protein: 0 };
+  const targets = { ...DEFAULT_TARGETS, ...(phase.targets || {}) };
   modalRoot.innerHTML = `
     <div class="modal-backdrop open" data-close-modal>
       <form class="modal" data-food-form data-form-type="${esc(state.modal.type)}" data-form-item="${esc(state.modal.itemId || "")}">
         <h2>${title}</h2>
-        ${isTab ? `
+        ${isGoals ? `
+          <div class="form-grid">
+            <label class="field"><span>Daily calories</span><input name="goalCalories" inputmode="decimal" value="${fmt(targets.calories)}"></label>
+            <label class="field"><span>Daily fat</span><input name="goalFat" inputmode="decimal" value="${fmt(targets.fat)}"></label>
+            <label class="field"><span>Daily carbs</span><input name="goalCarbs" inputmode="decimal" value="${fmt(targets.carbs)}"></label>
+            <label class="field"><span>Daily protein</span><input name="goalProtein" inputmode="decimal" value="${fmt(targets.protein)}"></label>
+          </div>
+        ` : isTab ? `
           <div class="form-grid">
             <label class="field full"><span>Tab name</span><input name="tabName" required placeholder="Example: Fall Cut"></label>
           </div>
@@ -868,11 +1051,38 @@ function renderModal() {
   `;
 }
 
+function renderFoodBank() {
+  const query = state.query.trim().toLowerCase();
+  const items = foodLibrary().filter((item) => !query || item.name.toLowerCase().includes(query) || item.category.toLowerCase().includes(query));
+  document.querySelector("#app").innerHTML = `
+    <div class="topbar">
+      <div class="title-row">
+        <h1>Food Bank</h1>
+        <select class="theme-select" data-theme-select aria-label="Color theme">${themeOptions()}</select>
+      </div>
+      <button class="ghost" data-back-phase>Back to Phases</button>
+    </div>
+    <div class="toolbar">
+      <input class="search" type="search" placeholder="Search food bank" value="${esc(state.query)}" data-search>
+      <button class="ghost" data-clear>Clear</button>
+    </div>
+    <main class="items" data-items>
+      ${items.length ? groupedListHtml(currentPhase(), items, { library: true }) : `<div class="empty">No foods found.</div>`}
+    </main>
+    <div data-modal-root></div>
+  `;
+  renderModal();
+}
+
 function render() {
   const phase = currentPhase();
   if (!phase) return;
   applyTheme();
   saveFavorites();
+  if (state.view === "bank") {
+    renderFoodBank();
+    return;
+  }
   const isFavorite = state.favoriteIds.includes(phase.id);
   localStorage.setItem("macroPhase", phase.id);
   document.querySelector("#app").innerHTML = `
@@ -884,14 +1094,16 @@ function render() {
       <select class="phase-select" data-select>${phaseOptions(phase)}</select>
       <div class="top-actions">
         <button class="ghost favorite-toggle ${isFavorite ? "active" : ""}" data-toggle-favorite>${isFavorite ? "Favorited" : "Favorite Page"}</button>
-        <button class="ghost" data-reset>Reset</button>
+        <button class="ghost" data-open-bank>Food Bank</button>
       </div>
       <div class="tabs">${favoriteTabs(phase)}</div>
     </div>
     <section class="summary" data-summary></section>
-    <div class="action-row">
+    <div class="action-row compact">
       <button class="primary" data-open-add-food>Add Food</button>
       <button class="ghost" data-open-add-tab>Add Tab</button>
+      <button class="ghost" data-copy-phase>Copy Tab</button>
+      <button class="ghost active-toggle ${state.activeOnly ? "active" : ""}" data-toggle-active>${state.activeOnly ? "Active Only" : "Show All"}</button>
     </div>
     <div class="toolbar">
       <input class="search" type="search" placeholder="Search foods" value="${esc(state.query)}" data-search>
@@ -916,6 +1128,33 @@ document.addEventListener("click", (event) => {
   }
   if (event.target.closest("[data-cancel]")) {
     state.modal = null;
+    renderModal();
+    return;
+  }
+  if (event.target.closest("[data-open-bank]")) {
+    setView("bank");
+    state.query = "";
+    render();
+    return;
+  }
+  if (event.target.closest("[data-back-phase]")) {
+    setView("phase");
+    state.query = "";
+    render();
+    return;
+  }
+  if (event.target.closest("[data-copy-phase]")) {
+    copyCurrentPhase();
+    return;
+  }
+  if (event.target.closest("[data-toggle-active]")) {
+    state.activeOnly = !state.activeOnly;
+    localStorage.setItem("macroActiveOnly", String(state.activeOnly));
+    render();
+    return;
+  }
+  if (event.target.closest("[data-edit-goals]")) {
+    state.modal = { type: "goals" };
     renderModal();
     return;
   }
@@ -965,10 +1204,12 @@ document.addEventListener("click", (event) => {
     const phase = currentPhase();
     const item = foodLibrary().find((entry) => entry.id === addLibraryButton.dataset.addLibrary);
     if (item) {
-      phase.items.push({ ...item, id: `${slug(item.name)}-${Date.now()}`, servings: 0, sources: undefined });
+      const servings = prompt(`Weekly servings for ${item.name}:`, "0");
+      if (servings === null) return;
+      phase.items.push({ ...item, id: `${slug(item.name)}-${Date.now()}`, servings: parseNumber(servings), sources: undefined });
       saveData();
-      renderSummary();
-      renderItems();
+      setView("phase");
+      render();
     }
     return;
   }
@@ -992,9 +1233,12 @@ document.addEventListener("click", (event) => {
       DATA = prepareData(clone(ORIGINAL_DATA));
       localStorage.removeItem(STORAGE_KEY);
       localStorage.removeItem("macroServings");
+      localStorage.removeItem("macroActiveOnly");
       state.favoriteIds = [];
       localStorage.removeItem(FAVORITES_KEY);
       state.phaseId = DATA[0]?.id;
+      state.activeOnly = false;
+      setView("phase");
       render();
     }
   }
@@ -1003,7 +1247,8 @@ document.addEventListener("click", (event) => {
 document.addEventListener("input", (event) => {
   if (event.target.matches("[data-search]")) {
     state.query = event.target.value;
-    renderItems();
+    if (state.view === "bank") renderFoodBank();
+    else renderItems();
   }
 });
 
@@ -1036,8 +1281,15 @@ document.addEventListener("submit", (event) => {
     const name = String(formData.get("tabName") || "").trim();
     if (!name) return;
     const id = `${slug(name)}-${Date.now()}`;
-    DATA.push({ id, name, items: [] });
+    DATA.push({ id, name, targets: { ...DEFAULT_TARGETS }, items: [] });
     state.phaseId = id;
+  } else if (form.dataset.formType === "goals") {
+    phase.targets = {
+      calories: parseNumber(formData.get("goalCalories")),
+      fat: parseNumber(formData.get("goalFat")),
+      carbs: parseNumber(formData.get("goalCarbs")),
+      protein: parseNumber(formData.get("goalProtein"))
+    };
   } else {
     const itemData = {
       id: form.dataset.formItem || `${slug(formData.get("name"))}-${Date.now()}`,
