@@ -696,10 +696,13 @@ h1 {
   font-size: .82rem;
 }
 .dessert-image {
+  display: block;
+  width: calc(100% + 4px);
   height: 132px;
   border-radius: 8px;
   margin: -2px -2px 10px;
   background: radial-gradient(circle at 25% 25%, rgba(255,255,255,.85), transparent 18%), linear-gradient(135deg, var(--gold), var(--blue), var(--accent));
+  object-fit: cover;
 }
 .ingredients {
   margin: 10px 0 0;
@@ -1159,18 +1162,18 @@ const RESTAURANT_MEALS = [
   { id: "okami-miso", restaurant: "Okami Wilmington", name: "Miso Soup", slot: "Other", calories: 60, fat: 2, carbs: 6, protein: 4, note: "Estimated bowl" }
 ];
 const PROTEIN_DESSERTS = [
-  { name: "Greek Yogurt Cheesecake Bowl", calories: 310, fat: 6, carbs: 30, protein: 35, ingredients: ["225g nonfat Greek yogurt", "1 scoop vanilla protein powder", "8g sugar-free cheesecake pudding mix", "70g berries", "1 sheet graham cracker, crushed"], instructions: ["Stir yogurt, protein powder, and pudding mix until thick.", "Top with berries and graham crumbs.", "Chill 10 minutes for a cheesecake texture."], colors: ["#f6d6a8", "#9ccfdd", "#f9fbff"] },
-  { name: "Cottage Cheese Chocolate Pudding", calories: 280, fat: 7, carbs: 22, protein: 32, ingredients: ["220g low-fat cottage cheese", "10g cocoa powder", "1/2 scoop chocolate protein powder", "1/2 tsp vanilla", "Sweetener to taste"], instructions: ["Blend all ingredients until completely smooth.", "Taste and adjust sweetener.", "Chill 20-30 minutes before eating."], colors: ["#5a3428", "#d9a66c", "#fff3dc"] },
-  { name: "Casein Chocolate Pudding", calories: 260, fat: 4, carbs: 18, protein: 34, ingredients: ["1 scoop casein protein", "120ml almond milk", "8g cocoa powder", "80g Greek yogurt", "Pinch sea salt"], instructions: ["Whisk casein, cocoa, and milk slowly.", "Fold in Greek yogurt.", "Let it thicken in the fridge for 15 minutes."], colors: ["#2b1d24", "#774c60", "#d9b0c2"] },
-  { name: "Protein Ice Cream Base", calories: 320, fat: 8, carbs: 32, protein: 30, ingredients: ["240ml Fairlife milk", "100g Greek yogurt", "1 scoop vanilla protein powder", "8g pudding mix", "100g frozen berries"], instructions: ["Blend everything until smooth.", "Freeze in a shallow container.", "Let soften 5 minutes, then stir or re-blend."], colors: ["#bfe4ff", "#f9f2ff", "#6ca6dc"] },
-  { name: "Silken Tofu Mocha Mousse", calories: 300, fat: 9, carbs: 28, protein: 24, ingredients: ["200g silken tofu", "1 scoop plant protein", "10g cocoa powder", "30ml espresso", "15ml maple syrup"], instructions: ["Blend tofu, cocoa, espresso, protein, and syrup.", "Scrape sides and blend again until glossy.", "Chill until mousse-like."], colors: ["#3d2d25", "#9b7054", "#e6d1bf"] },
-  { name: "High-Protein Rice Pudding", calories: 380, fat: 6, carbs: 54, protein: 26, ingredients: ["150g cooked rice", "180ml ultra-filtered milk", "1/2 scoop casein protein", "1/2 tsp cinnamon", "1/2 tsp vanilla"], instructions: ["Warm rice and milk gently.", "Remove from heat and stir in casein, cinnamon, and vanilla.", "Chill or eat warm."], colors: ["#fff6d9", "#d9a441", "#8c6a2f"] },
-  { name: "Protein Brownie Bowl", calories: 390, fat: 10, carbs: 43, protein: 30, ingredients: ["1 scoop chocolate protein powder", "20g oat flour", "8g cocoa powder", "80g Greek yogurt", "40ml almond milk", "5g mini chocolate chips"], instructions: ["Mix dry ingredients in a microwave-safe bowl.", "Stir in yogurt and milk until thick.", "Microwave 45-60 seconds and top with chocolate chips."], colors: ["#3a211b", "#7b4a35", "#d8a06f"] },
-  { name: "Peanut Butter Protein Cookie", calories: 290, fat: 13, carbs: 24, protein: 25, ingredients: ["18g peanut butter powder", "12g creamy peanut butter", "1/2 scoop vanilla protein", "35g egg whites", "10g oat flour", "Sweetener to taste"], instructions: ["Mix everything into a thick dough.", "Shape into one large cookie.", "Bake at 350F for 8-10 minutes."], colors: ["#d7a14a", "#7b4d21", "#f7ddb0"] },
-  { name: "Cookies & Cream Protein Blondie", calories: 340, fat: 9, carbs: 38, protein: 28, ingredients: ["1 scoop vanilla protein", "60g Greek yogurt", "20g oat flour", "1 crushed Oreo thin", "1/2 tsp baking powder", "Sweetener to taste"], instructions: ["Stir batter until smooth.", "Fold in crushed cookie pieces.", "Bake in a small dish at 350F for 10-12 minutes."], colors: ["#eee7db", "#2f2a27", "#bca98f"] },
-  { name: "Fudgy Protein Brownie Bites", calories: 330, fat: 11, carbs: 34, protein: 29, ingredients: ["1 scoop chocolate protein", "60g pumpkin puree", "12g cocoa powder", "15g almond flour", "30g egg whites", "5g dark chocolate"], instructions: ["Mix until glossy and thick.", "Spoon into mini muffin cups.", "Bake at 350F for 9-11 minutes."], colors: ["#251616", "#5a2a24", "#a65f46"] },
-  { name: "Chocolate Chip Cookie Dough Bowl", calories: 360, fat: 12, carbs: 36, protein: 31, ingredients: ["170g low-fat cottage cheese", "1 scoop vanilla protein", "12g peanut butter powder", "8g sugar-free vanilla pudding mix", "8g mini chocolate chips"], instructions: ["Blend cottage cheese until smooth.", "Stir in protein, PB powder, and pudding mix.", "Fold in chocolate chips and chill."], colors: ["#e6c89e", "#7b5434", "#f9ecd7"] },
-  { name: "Double Chocolate Mug Brownie", calories: 315, fat: 8, carbs: 32, protein: 27, ingredients: ["1 scoop chocolate protein", "15g cocoa powder", "25g banana", "45g egg whites", "30ml almond milk", "5g chocolate chips"], instructions: ["Mash banana in a mug.", "Mix in remaining ingredients.", "Microwave 50-70 seconds, stopping while still fudgy."], colors: ["#1f1214", "#6b342f", "#d28b62"] }
+  { name: "Greek Yogurt Cheesecake Bowl", calories: 310, fat: 6, carbs: 30, protein: 35, ingredients: ["225g nonfat Greek yogurt", "1 scoop vanilla protein powder", "8g sugar-free cheesecake pudding mix", "70g berries", "1 sheet graham cracker, crushed"], instructions: ["Stir yogurt, protein powder, and pudding mix until thick.", "Top with berries and graham crumbs.", "Chill 10 minutes for a cheesecake texture."], colors: ["#f6d6a8", "#9ccfdd", "#f9fbff"], image: "assets/desserts/greek-yogurt-cheesecake-bowl.webp" },
+  { name: "Cottage Cheese Chocolate Pudding", calories: 280, fat: 7, carbs: 22, protein: 32, ingredients: ["220g low-fat cottage cheese", "10g cocoa powder", "1/2 scoop chocolate protein powder", "1/2 tsp vanilla", "Sweetener to taste"], instructions: ["Blend all ingredients until completely smooth.", "Taste and adjust sweetener.", "Chill 20-30 minutes before eating."], colors: ["#5a3428", "#d9a66c", "#fff3dc"], image: "assets/desserts/cottage-cheese-chocolate-pudding.webp" },
+  { name: "Casein Chocolate Pudding", calories: 260, fat: 4, carbs: 18, protein: 34, ingredients: ["1 scoop casein protein", "120ml almond milk", "8g cocoa powder", "80g Greek yogurt", "Pinch sea salt"], instructions: ["Whisk casein, cocoa, and milk slowly.", "Fold in Greek yogurt.", "Let it thicken in the fridge for 15 minutes."], colors: ["#2b1d24", "#774c60", "#d9b0c2"], image: "assets/desserts/casein-chocolate-pudding.webp" },
+  { name: "Protein Ice Cream Base", calories: 320, fat: 8, carbs: 32, protein: 30, ingredients: ["240ml Fairlife milk", "100g Greek yogurt", "1 scoop vanilla protein powder", "8g pudding mix", "100g frozen berries"], instructions: ["Blend everything until smooth.", "Freeze in a shallow container.", "Let soften 5 minutes, then stir or re-blend."], colors: ["#bfe4ff", "#f9f2ff", "#6ca6dc"], image: "assets/desserts/protein-ice-cream-base.webp" },
+  { name: "Silken Tofu Mocha Mousse", calories: 300, fat: 9, carbs: 28, protein: 24, ingredients: ["200g silken tofu", "1 scoop plant protein", "10g cocoa powder", "30ml espresso", "15ml maple syrup"], instructions: ["Blend tofu, cocoa, espresso, protein, and syrup.", "Scrape sides and blend again until glossy.", "Chill until mousse-like."], colors: ["#3d2d25", "#9b7054", "#e6d1bf"], image: "assets/desserts/silken-tofu-mocha-mousse.webp" },
+  { name: "High-Protein Rice Pudding", calories: 380, fat: 6, carbs: 54, protein: 26, ingredients: ["150g cooked rice", "180ml ultra-filtered milk", "1/2 scoop casein protein", "1/2 tsp cinnamon", "1/2 tsp vanilla"], instructions: ["Warm rice and milk gently.", "Remove from heat and stir in casein, cinnamon, and vanilla.", "Chill or eat warm."], colors: ["#fff6d9", "#d9a441", "#8c6a2f"], image: "assets/desserts/high-protein-rice-pudding.webp" },
+  { name: "Protein Brownie Bowl", calories: 390, fat: 10, carbs: 43, protein: 30, ingredients: ["1 scoop chocolate protein powder", "20g oat flour", "8g cocoa powder", "80g Greek yogurt", "40ml almond milk", "5g mini chocolate chips"], instructions: ["Mix dry ingredients in a microwave-safe bowl.", "Stir in yogurt and milk until thick.", "Microwave 45-60 seconds and top with chocolate chips."], colors: ["#3a211b", "#7b4a35", "#d8a06f"], image: "assets/desserts/protein-brownie-bowl.webp" },
+  { name: "Peanut Butter Protein Cookie", calories: 290, fat: 13, carbs: 24, protein: 25, ingredients: ["18g peanut butter powder", "12g creamy peanut butter", "1/2 scoop vanilla protein", "35g egg whites", "10g oat flour", "Sweetener to taste"], instructions: ["Mix everything into a thick dough.", "Shape into one large cookie.", "Bake at 350F for 8-10 minutes."], colors: ["#d7a14a", "#7b4d21", "#f7ddb0"], image: "assets/desserts/peanut-butter-protein-cookie.webp" },
+  { name: "Cookies & Cream Protein Blondie", calories: 340, fat: 9, carbs: 38, protein: 28, ingredients: ["1 scoop vanilla protein", "60g Greek yogurt", "20g oat flour", "1 crushed Oreo thin", "1/2 tsp baking powder", "Sweetener to taste"], instructions: ["Stir batter until smooth.", "Fold in crushed cookie pieces.", "Bake in a small dish at 350F for 10-12 minutes."], colors: ["#eee7db", "#2f2a27", "#bca98f"], image: "assets/desserts/cookies-and-cream-protein-blondie.webp" },
+  { name: "Fudgy Protein Brownie Bites", calories: 330, fat: 11, carbs: 34, protein: 29, ingredients: ["1 scoop chocolate protein", "60g pumpkin puree", "12g cocoa powder", "15g almond flour", "30g egg whites", "5g dark chocolate"], instructions: ["Mix until glossy and thick.", "Spoon into mini muffin cups.", "Bake at 350F for 9-11 minutes."], colors: ["#251616", "#5a2a24", "#a65f46"], image: "assets/desserts/fudgy-protein-brownie-bites.webp" },
+  { name: "Chocolate Chip Cookie Dough Bowl", calories: 360, fat: 12, carbs: 36, protein: 31, ingredients: ["170g low-fat cottage cheese", "1 scoop vanilla protein", "12g peanut butter powder", "8g sugar-free vanilla pudding mix", "8g mini chocolate chips"], instructions: ["Blend cottage cheese until smooth.", "Stir in protein, PB powder, and pudding mix.", "Fold in chocolate chips and chill."], colors: ["#e6c89e", "#7b5434", "#f9ecd7"], image: "assets/desserts/chocolate-chip-cookie-dough-bowl.webp" },
+  { name: "Double Chocolate Mug Brownie", calories: 315, fat: 8, carbs: 32, protein: 27, ingredients: ["1 scoop chocolate protein", "15g cocoa powder", "25g banana", "45g egg whites", "30ml almond milk", "5g chocolate chips"], instructions: ["Mash banana in a mug.", "Mix in remaining ingredients.", "Microwave 50-70 seconds, stopping while still fudgy."], colors: ["#1f1214", "#6b342f", "#d28b62"], image: "assets/desserts/double-chocolate-mug-brownie.webp" }
 ];
 
 function canonicalName(name) {
@@ -2244,9 +2247,12 @@ function renderHome() {
 
 function mealLikeCard(item, options = {}) {
   const source = item.restaurant || item.category || "Food Bank";
+  const imageHtml = typeof options.image === "string"
+    ? `<img class="dessert-image" src="${esc(options.image)}" alt="${esc(item.name)}">`
+    : options.image ? `<div class="dessert-image" style="background: radial-gradient(circle at 25% 25%, rgba(255,255,255,.78), transparent 18%), linear-gradient(135deg, ${options.image.join(", ")});"></div>` : "";
   return `
     <article class="item">
-      ${options.image ? `<div class="dessert-image" style="background: radial-gradient(circle at 25% 25%, rgba(255,255,255,.78), transparent 18%), linear-gradient(135deg, ${options.image.join(", ")});"></div>` : ""}
+      ${imageHtml}
       <div class="item-head">
         <div>
           <div class="item-name">${esc(item.name)}</div>
@@ -2323,7 +2329,7 @@ function renderDesserts() {
   document.querySelector("#app").innerHTML = `
     ${topShell("Protein Desserts", `<button class="ghost" data-view-target="home">Home</button>`)}
     <main class="items">
-      ${PROTEIN_DESSERTS.map((dessert) => mealLikeCard(dessert, { ingredients: dessert.ingredients, instructions: dessert.instructions, image: dessert.colors })).join("")}
+      ${PROTEIN_DESSERTS.map((dessert) => mealLikeCard(dessert, { ingredients: dessert.ingredients, instructions: dessert.instructions, image: dessert.image || dessert.colors })).join("")}
     </main>
   `;
 }
