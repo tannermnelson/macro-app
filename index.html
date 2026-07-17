@@ -2164,6 +2164,7 @@ function renderFoodBank() {
     <div class="action-row">
       <button class="primary" data-open-bank-food>Add Food Bank Item</button>
       <button class="ghost" data-open-create-meal>Create Meal</button>
+      <button class="ghost" data-view-target="meal">Meal Plan</button>
       <button class="ghost" data-view-target="home">Home</button>
     </div>
     <div class="section-label">Saved meals</div>
@@ -2580,7 +2581,7 @@ function renderMealSlot(slot) {
 function renderMealPlan() {
   ensureMealTemplateFoods();
   document.querySelector("#app").innerHTML = `
-    ${topShell("Meal Plan", `<button class="ghost" data-view-target="home">Home</button>`)}
+    ${topShell("Meal Plan", `<div class="action-row"><button class="ghost" data-view-target="bank">Food Bank</button><button class="ghost" data-view-target="home">Home</button></div>`)}
     ${renderMealPlanSummary()}
     <main class="items">
       ${MEAL_PLAN_SLOTS.map(renderMealSlot).join("")}
