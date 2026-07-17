@@ -26,6 +26,8 @@
   --under-goal: #b9413f;
   --soft: #e9f5ee;
   --soft-2: #d6eadf;
+  --box-bg: #ffffff;
+  --box-bg-soft: #fbfffc;
   --bottom: #10231d;
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
@@ -109,6 +111,102 @@
   --soft-2: #e5c1eb;
   --bottom: #311738;
 }
+[data-theme="starwars"] {
+  --ink: #f4f7ff;
+  --muted: #b4bdd4;
+  --line: #39435d;
+  --paper: #06080e;
+  --panel: #101522;
+  --accent: #39ff88;
+  --accent-dark: #8dffbd;
+  --gold: #ffe45c;
+  --blue: #4aa3ff;
+  --danger: #ff4b4b;
+  --under-goal: #ff665d;
+  --soft: #0d1220;
+  --soft-2: #1c2640;
+  --box-bg: #121a2a;
+  --box-bg-soft: #18233a;
+  --bottom: #02030a;
+}
+[data-theme="unc"] {
+  --ink: #10233a;
+  --muted: #5d7287;
+  --line: #9bc5e8;
+  --paper: #eaf6ff;
+  --panel: #fafdff;
+  --accent: #4b9cd3;
+  --accent-dark: #1e5f8f;
+  --gold: #f4c95d;
+  --blue: #13294b;
+  --danger: #c94c4c;
+  --under-goal: #b23b48;
+  --soft: #d7edff;
+  --soft-2: #bee0fb;
+  --box-bg: #ffffff;
+  --box-bg-soft: #f2f9ff;
+  --bottom: #13294b;
+}
+[data-theme="goggins"] {
+  --ink: #f5f0e8;
+  --muted: #c7beb1;
+  --line: #6f665b;
+  --paper: #171412;
+  --panel: #241f1b;
+  --accent: #d94b2b;
+  --accent-dark: #ff8b63;
+  --gold: #d7a84d;
+  --blue: #7c8794;
+  --danger: #ff5a4f;
+  --under-goal: #ffbd59;
+  --soft: #2b2520;
+  --soft-2: #43372e;
+  --box-bg: #2a2521;
+  --box-bg-soft: #37302a;
+  --bottom: #090807;
+}
+[data-theme="starwars"] body {
+  background:
+    linear-gradient(180deg, rgba(2,3,10,.02) 0%, rgba(2,3,10,.16) 28%, rgba(2,3,10,.68) 46%, rgba(5,7,17,.94) 64%, #050711 100%),
+    url("assets/theme/starwars2.jpg"),
+    linear-gradient(118deg, transparent 0 18%, rgba(57,255,136,.34) 28%, rgba(57,255,136,.08) 39%, transparent 52%),
+    linear-gradient(66deg, transparent 0 36%, rgba(74,163,255,.28) 48%, rgba(74,163,255,.07) 58%, transparent 70%),
+    linear-gradient(152deg, transparent 0 44%, rgba(255,75,75,.3) 54%, rgba(255,75,75,.08) 64%, transparent 78%),
+    radial-gradient(circle at 8% 18%, rgba(255,255,255,.9) 0 1px, transparent 2px),
+    radial-gradient(circle at 82% 12%, rgba(255,255,255,.65) 0 1px, transparent 2px),
+    radial-gradient(circle at 34% 34%, rgba(255,255,255,.55) 0 1px, transparent 2px),
+    radial-gradient(circle at 68% 48%, rgba(255,255,255,.7) 0 1px, transparent 2px),
+    radial-gradient(circle at 24% 76%, rgba(255,255,255,.55) 0 1px, transparent 2px),
+    linear-gradient(180deg, #050711 0, #0b1020 45%, #050711 100%);
+  background-size: auto, min(100vw, 760px) auto, 100% 120vh, 100% 120vh, 100% 120vh, 120px 120px, 150px 150px, 180px 180px, 130px 130px, 170px 170px, auto;
+  background-position: center, center top, center top, center 220px, center 380px, 0 0, 0 0, 0 0, 0 0, 0 0, center;
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, repeat, repeat, repeat, repeat, repeat, no-repeat;
+  background-attachment: fixed;
+}
+[data-theme="unc"] body {
+  background:
+    url("assets/theme/uncMascot.png"),
+    linear-gradient(45deg, rgba(19,41,75,.08) 25%, transparent 25% 75%, rgba(19,41,75,.08) 75%),
+    linear-gradient(-45deg, rgba(75,156,211,.16) 25%, transparent 25% 75%, rgba(75,156,211,.16) 75%),
+    radial-gradient(circle at 50% 18%, rgba(255,255,255,.95), transparent 18%),
+    linear-gradient(180deg, var(--soft) 0, var(--paper) 230px);
+  background-size: 150px auto, 48px 48px, 48px 48px, auto, auto;
+  background-position: center 86px, 0 0, 0 0, center, center;
+  background-repeat: repeat, repeat, repeat, no-repeat, no-repeat;
+}
+[data-theme="goggins"] body {
+  background:
+    linear-gradient(90deg, rgba(9,8,7,.42), rgba(9,8,7,.82)),
+    url("assets/theme/david-goggins-bg.jpg"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='390' height='760' viewBox='0 0 390 760'%3E%3Crect width='390' height='760' fill='%23171412'/%3E%3Cg opacity='.32' fill='%23d94b2b'%3E%3Cpath d='M238 160c38 21 58 65 46 107-10 34-38 57-72 63l-5 49 52 39 24 101-38 13-28-78-38-23-20 74 26 73-36 18-34-81 23-112 32-36 3-38c-29-12-47-38-47-71 0-47 36-91 84-98 10-2 19-1 27 0z'/%3E%3Ccircle cx='216' cy='112' r='43'/%3E%3C/g%3E%3Cg font-family='Arial Black,Arial,sans-serif' font-weight='900' fill='%23f5f0e8' opacity='.1'%3E%3Ctext x='24' y='650' font-size='54'%3ESTAY%3C/text%3E%3Ctext x='24' y='710' font-size='54'%3EHARD%3C/text%3E%3C/g%3E%3Cg font-family='Arial Black,Arial,sans-serif' font-weight='900' fill='%23ffffff' opacity='.055'%3E%3Ctext x='18' y='68' font-size='31'%3EDAVID GOGGINS%3C/text%3E%3C/g%3E%3C/svg%3E"),
+    linear-gradient(110deg, rgba(217,75,43,.22), transparent 42%),
+    radial-gradient(circle at 85% 15%, rgba(255,139,99,.18), transparent 28%),
+    linear-gradient(180deg, #171412 0, #241f1b 55%, #090807 100%);
+  background-size: auto, cover, min(100vw, 390px) auto, auto, auto, auto;
+  background-position: center, center top, right top, center, center, center;
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat;
+  background-attachment: fixed;
+}
 [data-theme="graphite"] {
   --ink: #1d2227;
   --muted: #68717a;
@@ -140,6 +238,8 @@
   --under-goal: #ffbd59;
   --soft: #dbeee6;
   --soft-2: #bfe4d6;
+  --box-bg: #21382c;
+  --box-bg-soft: #294536;
   --bottom: #050907;
 }
 [data-theme="dark"] .macro span,
@@ -201,10 +301,29 @@ button:active,
   gap: 10px;
   justify-content: space-between;
 }
+.title-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
 h1 {
   margin: 0;
   font-size: 1.2rem;
   letter-spacing: 0;
+}
+.info-button {
+  width: 30px;
+  height: 30px;
+  min-height: 30px;
+  display: grid;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--line));
+  border-radius: 50%;
+  background: var(--box-bg);
+  color: var(--accent-dark);
+  font-weight: 900;
+  padding: 0;
 }
 .phase-select, .theme-select {
   width: 100%;
@@ -307,6 +426,53 @@ h1 {
   padding: 12px;
   margin: 10px 0;
   background: linear-gradient(135deg, var(--panel), color-mix(in srgb, var(--panel) 55%, var(--soft)));
+}
+.goal-focus {
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--line));
+  border-radius: 8px;
+  padding: 10px;
+  margin: 10px 0;
+  background: linear-gradient(135deg, var(--box-bg), var(--box-bg-soft));
+}
+.goal-focus-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: baseline;
+}
+.goal-focus h2 {
+  margin: 0;
+  font-size: .98rem;
+}
+.goal-focus-head span {
+  color: var(--muted);
+  font-size: .72rem;
+  white-space: nowrap;
+}
+.goal-focus-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+  margin-top: 8px;
+}
+.goal-tip {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px;
+  background: color-mix(in srgb, var(--panel) 88%, var(--soft));
+}
+.goal-tip strong,
+.goal-tip span {
+  display: block;
+}
+.goal-tip strong {
+  font-size: .76rem;
+}
+.goal-tip span {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: .72rem;
+  line-height: 1.25;
 }
 .home-snapshot h2 {
   margin: 0 0 10px;
@@ -453,26 +619,64 @@ h1 {
 .compact-list > div:last-child {
   border-bottom: 0;
 }
-.plan-tools {
+.grocery-tools {
   display: grid;
-  grid-template-columns: minmax(140px, .62fr) minmax(0, 1.38fr);
-  gap: 12px;
-  margin-top: 14px;
+  grid-template-columns: 1fr auto auto;
+  gap: 8px;
+  align-items: end;
+  margin-bottom: 10px;
+}
+.grocery-tools .field {
+  min-width: 0;
+}
+.grocery-tools button {
+  min-height: 38px;
+}
+.help-list {
+  display: grid;
+  gap: 9px;
+}
+.help-list div {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px;
+  background: linear-gradient(135deg, var(--box-bg), var(--box-bg-soft));
+}
+.help-list strong,
+.help-list span {
+  display: block;
+}
+.help-list strong {
+  font-size: .92rem;
+}
+.help-list span {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: .78rem;
+  line-height: 1.35;
+}
+.plan-tools {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(190px, .34fr) minmax(0, 1.66fr);
+  gap: 10px;
+  margin-top: 10px;
   align-items: stretch;
 }
 .plan-tool-main,
 .template-panel {
-  min-height: 118px;
+  min-height: 76px;
   border: 1px solid color-mix(in srgb, var(--accent) 36%, var(--line));
   border-radius: 8px;
   background: color-mix(in srgb, var(--panel) 80%, var(--soft));
 }
 .plan-tool-main {
   width: 100%;
-  display: grid;
-  align-content: center;
-  gap: 6px;
-  padding: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
   text-align: left;
   color: var(--ink);
 }
@@ -488,18 +692,20 @@ h1 {
 }
 .template-panel {
   display: grid;
-  gap: 10px;
-  padding: 12px;
+  grid-template-columns: minmax(124px, .55fr) minmax(180px, 1fr);
+  gap: 8px 10px;
+  padding: 10px;
+  align-items: center;
 }
 .template-panel h3 {
-  margin: 0 0 3px;
-  font-size: .98rem;
+  margin: 0 0 2px;
+  font-size: .94rem;
 }
-.template-save-row,
-.template-apply-row {
+.template-save-row {
   display: grid;
   grid-template-columns: 1fr auto;
-  gap: 8px;
+  gap: 6px;
+  align-items: center;
 }
 .template-save-row input,
 .compact-select {
@@ -507,13 +713,64 @@ h1 {
   min-width: 0;
   border: 1px solid var(--line);
   border-radius: 8px;
-  padding: 10px;
+  padding: 8px 9px;
   background: var(--panel);
   color: var(--ink);
 }
 .template-save-row button,
-.template-apply-row .primary {
-  min-width: 78px;
+.template-chip-delete {
+  min-width: 68px;
+  min-height: 36px;
+}
+.template-strip {
+  grid-column: 1 / -1;
+  min-width: 0;
+  display: flex;
+  gap: 5px;
+  overflow-x: auto;
+  padding: 2px 0 0;
+  scrollbar-width: none;
+}
+.template-strip::-webkit-scrollbar {
+  display: none;
+}
+.template-chip {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid color-mix(in srgb, var(--accent) 36%, var(--line));
+  border-radius: 999px;
+  background: var(--panel);
+  color: var(--ink);
+  padding: 4px 5px 4px 9px;
+  min-height: 28px;
+}
+.template-chip-name {
+  max-width: 82px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: .7rem;
+  font-weight: 750;
+}
+.template-chip-delete {
+  border: 1px solid color-mix(in srgb, var(--danger) 30%, var(--line));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--danger) 10%, var(--panel));
+  color: var(--danger);
+  min-width: 20px;
+  width: 20px;
+  min-height: 20px;
+  height: 20px;
+  padding: 0;
+  font-size: .72rem;
+  line-height: 1;
+}
+.template-empty {
+  color: var(--muted);
+  font-size: .78rem;
+  white-space: nowrap;
 }
 button:disabled,
 select:disabled {
@@ -1339,17 +1596,44 @@ select:disabled {
   gap: 8px;
   margin-top: 14px;
 }
-@media (max-width: 520px) {
+.home-hero,
+.goal-focus,
+.goal-tip,
+.home-snapshot,
+.mini-panel,
+.metric,
+.profile-stat,
+.snapshot-card,
+.food-chip,
+.plan-tool-main,
+.template-panel,
+.compact-list > div,
+.archive-section,
+.month-summary,
+.macro-chart,
+.goal-card,
+.slot-card,
+.meal-items,
+.item {
+  background: linear-gradient(135deg, var(--box-bg), var(--box-bg-soft)) !important;
+}
+@media (max-width: 430px) {
   .plan-tools {
     grid-template-columns: 1fr;
   }
   .plan-tool-main,
   .template-panel {
     min-height: auto;
-  }
-  .template-save-row,
-  .template-apply-row {
     grid-template-columns: 1fr;
+  }
+  .template-save-row {
+    grid-template-columns: 1fr;
+  }
+  .grocery-tools {
+    grid-template-columns: 1fr 1fr;
+  }
+  .grocery-tools .field {
+    grid-column: 1 / -1;
   }
 }
 @media (min-width: 720px) {
@@ -1394,6 +1678,7 @@ const WEIGHT_LOG_KEY = "macroWeightLog";
 const DAY_TEMPLATES_KEY = "macroDayTemplates";
 const RECENT_FOODS_KEY = "macroRecentFoods";
 const FAVORITE_FOODS_KEY = "macroFavoriteFoods";
+const GROCERY_DAYS_KEY = "macroGroceryDays";
 
 const clone = (value) => JSON.parse(JSON.stringify(value));
 const slug = (value) => String(value || "item").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "item";
@@ -1522,7 +1807,7 @@ const state = {
   query: "",
   view: localStorage.getItem("macroView") || "home",
   activeOnly: localStorage.getItem("macroActiveOnly") === "true",
-  theme: localStorage.getItem(THEME_KEY) || "forest",
+  theme: localStorage.getItem(THEME_KEY) || "original",
   profileName: localStorage.getItem(PROFILE_KEY) || "",
   profileData: JSON.parse(localStorage.getItem(PROFILE_DATA_KEY) || "{}"),
   trainingLog: JSON.parse(localStorage.getItem(TRAINING_KEY) || "{}"),
@@ -1538,6 +1823,7 @@ const state = {
   dayTemplates: JSON.parse(localStorage.getItem(DAY_TEMPLATES_KEY) || "[]"),
   recentFoods: JSON.parse(localStorage.getItem(RECENT_FOODS_KEY) || "[]"),
   favoriteFoods: JSON.parse(localStorage.getItem(FAVORITE_FOODS_KEY) || "[]"),
+  groceryDays: parseNumber(localStorage.getItem(GROCERY_DAYS_KEY) || "7") || 7,
   favoriteIds: JSON.parse(localStorage.getItem(FAVORITES_KEY) || "[]"),
   editingProfile: false,
   modal: null
@@ -1553,6 +1839,8 @@ const currentPhase = () => DATA.find((phase) => phase.id === state.phaseId) || D
 const foodBankPhase = () => DATA.find((phase) => phase.id === "food-bank-custom") || DATA[0];
 
 function applyTheme() {
+  const allowedThemes = ["original", "sunrise", "berry", "starwars", "unc", "goggins"];
+  if (!allowedThemes.includes(state.theme)) state.theme = "original";
   document.documentElement.dataset.theme = state.theme;
   localStorage.setItem(THEME_KEY, state.theme);
 }
@@ -1976,6 +2264,26 @@ function currentGroceryList() {
   return [...totals.values()].sort((a, b) => a.name.localeCompare(b.name));
 }
 
+function groceryListForDays(days = state.groceryDays) {
+  const multiplier = Math.max(1, Math.round(parseNumber(days) * 10) / 10);
+  return currentGroceryList().map((entry) => ({
+    ...entry,
+    servings: entry.servings * multiplier
+  }));
+}
+
+function groceryExportText(days = state.groceryDays) {
+  const multiplier = Math.max(1, Math.round(parseNumber(days) * 10) / 10);
+  const list = groceryListForDays(multiplier);
+  const lines = [
+    `Macro Hub Grocery List`,
+    `${fmt(multiplier)} day${multiplier === 1 ? "" : "s"} of food`,
+    "",
+    ...list.map((entry) => `- ${entry.name}: ${fmt(entry.servings)}`)
+  ];
+  return lines.join("\n");
+}
+
 function saveDayTemplates() {
   localStorage.setItem(DAY_TEMPLATES_KEY, JSON.stringify(state.dayTemplates));
 }
@@ -2196,22 +2504,7 @@ function dailyMealTotals() {
 }
 
 function todayMealTotals() {
-  const day = currentDayLog();
-  return MEAL_PLAN_SLOTS.reduce((totals, slot) => {
-    mealInstancesForSlot(slot).forEach((instance) => {
-      if (!day.doneMeals[instance.id]) return;
-      const meal = mealById(instance.mealId);
-      if (!meal) return;
-      const matches = mealMatchesFor(instance.id, meal);
-      const mealTotals = mealMacroTotals(matches);
-      totals.calories += mealTotals.calories;
-      totals.fat += mealTotals.fat;
-      totals.carbs += mealTotals.carbs;
-      totals.protein += mealTotals.protein;
-      totals.servings += matches.reduce((sum, match) => sum + match.servings, 0);
-    });
-    return totals;
-  }, { calories: 0, fat: 0, carbs: 0, protein: 0, servings: 0 });
+  return dailyMealTotals();
 }
 
 function snapshotTodayNutrition() {
@@ -2292,12 +2585,11 @@ function phaseOptions(phase) {
 function themeOptions() {
   const themes = [
     ["original", "Original"],
-    ["forest", "Forest"],
-    ["ocean", "Ocean"],
     ["sunrise", "Sunrise"],
     ["berry", "Berry"],
-    ["graphite", "Graphite"],
-    ["dark", "Dark"]
+    ["starwars", "Star Wars"],
+    ["unc", "UNC Tar Heels"],
+    ["goggins", "David Goggins"]
   ];
   return themes.map(([id, label]) => `<option value="${id}" ${state.theme === id ? "selected" : ""}>${label}</option>`).join("");
 }
@@ -2454,7 +2746,8 @@ function renderModal() {
   const isTraining = state.modal.type === "training";
   const isMeal = state.modal.type === "meal";
   const isGrocery = state.modal.type === "grocery";
-  const title = isGrocery ? "Grocery List" : isMeal ? "Create Meal" : isTraining ? "Training Day" : isCheat ? "Add Cheat Meal" : isGoals ? "Daily Goals" : isTab ? "Add Tab" : item ? "Edit Food" : "Add Food";
+  const isHelp = state.modal.type === "help";
+  const title = isHelp ? "App Guide" : isGrocery ? "Grocery List" : isMeal ? "Create Meal" : isTraining ? "Training Day" : isCheat ? "Add Cheat Meal" : isGoals ? "Daily Goals" : isTab ? "Add Tab" : item ? "Edit Food" : "Add Food";
   const values = item || { name: "", category: "", servings: 0, calories: 0, fat: 0, carbs: 0, protein: 0 };
   const targets = { ...DEFAULT_TARGETS, ...(phase.targets || {}) };
   const cheatItem = state.modal.cheatItem || { name: "", restaurant: "", slot: "Other", servings: 1, calories: 0, fat: 0, carbs: 0, protein: 0 };
@@ -2464,9 +2757,23 @@ function renderModal() {
     <div class="modal-backdrop open" data-close-modal>
       <form class="modal" data-food-form data-form-type="${esc(state.modal.type)}" data-form-item="${esc(state.modal.itemId || "")}" data-form-bank-key="${esc(state.modal.bankEditKey || "")}" data-form-bank="${state.modal.bankItem || state.modal.bankEditKey ? "true" : "false"}">
         <h2>${title}</h2>
-        ${isGrocery ? `
+        ${isHelp ? `
+          <div class="help-list">
+            <div><strong>Home</strong><span>View your profile, macro snapshot, training streak, weight trend, calendar, backups, and quick links.</span></div>
+            <div><strong>Meal Plan</strong><span>Build daily meals by breakfast, lunch, dinner, snacks, and other. Set macro goals, save day templates, and create grocery lists.</span></div>
+            <div><strong>Food Bank</strong><span>Manage every food item, edit macros, remove duplicates, favorite foods, and create reusable saved meals.</span></div>
+            <div><strong>Cheat Day</strong><span>Add restaurant meals or manual meals into breakfast, lunch, dinner, snacks, and other slots.</span></div>
+            <div><strong>Protein Desserts</strong><span>Browse high-protein dessert ideas with ingredients, macros, pictures, and instructions.</span></div>
+            <div><strong>Archived Phases</strong><span>Reference the original phase tabs from your spreadsheet without mixing them into the main meal-plan setup.</span></div>
+          </div>
+        ` : isGrocery ? `
+          <div class="grocery-tools">
+            <label class="field"><span>Days of food</span><input inputmode="decimal" value="${fmt(state.groceryDays)}" data-grocery-days></label>
+            <button class="ghost" type="button" data-share-grocery>Share</button>
+            <button class="primary" type="button" data-download-grocery>Export</button>
+          </div>
           <div class="compact-list">
-            ${currentGroceryList().length ? currentGroceryList().map((entry) => `<div><strong>${esc(entry.name)}</strong><span>${fmt(entry.servings)} servings</span></div>`).join("") : `<div class="empty">Add meals to your meal plan to build a grocery list.</div>`}
+            ${groceryListForDays().length ? groceryListForDays().map((entry) => `<div><strong>${esc(entry.name)}</strong><span>${fmt(entry.servings)} servings</span></div>`).join("") : `<div class="empty">Add meals to your meal plan to build a grocery list.</div>`}
           </div>
         ` : isMeal ? `
           <div class="form-grid">
@@ -2524,7 +2831,7 @@ function renderModal() {
         `}
         <div class="modal-actions">
           <button class="ghost" type="button" data-cancel>Cancel</button>
-          ${isGrocery ? "" : `<button class="primary" type="submit">Save</button>`}
+          ${isGrocery || isHelp ? "" : `<button class="primary" type="submit">Save</button>`}
         </div>
       </form>
     </div>
@@ -2589,11 +2896,11 @@ function renderFoodBankItems() {
   list.innerHTML = items.length ? groupedListHtml(currentPhase(), items, { library: true, bankDelete: true }) : `<div class="empty">No foods found.</div>`;
 }
 
-function topShell(title, extra = "") {
+function topShell(title, extra = "", titleExtra = "") {
   return `
     <div class="topbar">
       <div class="title-row">
-        <h1>${esc(title)}</h1>
+        <div class="title-left"><h1>${esc(title)}</h1>${titleExtra}</div>
         <select class="theme-select" data-theme-select aria-label="Color theme">${themeOptions()}</select>
       </div>
       ${extra}
@@ -2718,7 +3025,7 @@ function renderNutritionHistory() {
   return `
     <section class="mini-panel">
       <h2>Nutrition History</h2>
-      ${rows || `<div class="empty">Check off meals to start daily history.</div>`}
+      ${rows || `<div class="empty">Add meals to your plan to start daily history.</div>`}
     </section>
   `;
 }
@@ -2857,6 +3164,64 @@ function renderHomeSnapshot() {
   `;
 }
 
+function goalGuidance(profile, age, bmr) {
+  const weight = parseNumber(profile.currentWeight);
+  const gender = profile.gender || "";
+  const goal = profile.goal || "Maintain";
+  const protein = weight ? Math.round(weight * (goal === "Gain muscle" || goal === "Gain weight" ? 1.05 : goal === "Improve conditioning" ? 1 : 0.9)) : 0;
+  const waterOz = weight ? Math.round(Math.min(140, Math.max(80, weight * (gender === "female" ? 0.55 : 0.6)))) : 0;
+  const recovery = age >= 45 ? "2 mobility/recovery days" : age >= 35 ? "1-2 recovery days" : "1 recovery day";
+  const base = {
+    "Lose weight": [
+      ["Protein", protein ? `${protein}g/day target` : "0.8-1g per lb"],
+      ["Cardio", "8k-10k steps + 2-3 cardio days"],
+      ["Calories", bmr ? `Use meal goals near BMR + activity` : "Keep a steady deficit"],
+      ["Hydration", waterOz ? `${waterOz} oz water/day` : "3-4 liters water/day"]
+    ],
+    "Gain muscle": [
+      ["Protein", protein ? `${protein}g/day target` : "1g per lb"],
+      ["Training", "4-5 progressive lifting days"],
+      ["Calories", "Small surplus, steady weekly gain"],
+      ["Recovery", `${recovery}, 7-9 hr sleep`]
+    ],
+    "Gain weight": [
+      ["Protein", protein ? `${protein}g/day target` : "1g per lb"],
+      ["Calories", "Add 250-400 cal/day first"],
+      ["Carbs", "Push carbs around workouts"],
+      ["Tracking", "Aim 0.5-1 lb gain/week"]
+    ],
+    "Maintain": [
+      ["Protein", protein ? `${protein}g/day target` : "0.8-1g per lb"],
+      ["Training", "3-4 lifts + 2 light cardio days"],
+      ["Calories", "Keep weekly average steady"],
+      ["Hydration", waterOz ? `${waterOz} oz water/day` : "3-4 liters water/day"]
+    ],
+    "Improve conditioning": [
+      ["Cardio", "10 miles cardio/week"],
+      ["Protein", protein ? `${protein}g/day target` : "1g per lb"],
+      ["Hydration", waterOz ? `${waterOz} oz + electrolytes` : "1 gallon water + electrolytes"],
+      ["Recovery", `${recovery}, easy days stay easy`]
+    ]
+  };
+  return base[goal] || base.Maintain;
+}
+
+function renderGoalFocus(profile, age, bmr) {
+  const goal = profile.goal || "Set a profile goal";
+  const tips = goalGuidance(profile, age, bmr);
+  return `
+    <section class="goal-focus">
+      <div class="goal-focus-head">
+        <h2>Goal Focus</h2>
+        <span>${esc(goal)}</span>
+      </div>
+      <div class="goal-focus-grid">
+        ${tips.map(([label, value]) => `<div class="goal-tip"><strong>${esc(label)}</strong><span>${esc(value)}</span></div>`).join("")}
+      </div>
+    </section>
+  `;
+}
+
 function renderHome() {
   const name = state.profileName || "Tanner";
   const profile = state.profileData || {};
@@ -2866,21 +3231,18 @@ function renderHome() {
   const showProfileForm = state.editingProfile || !state.profileName;
   const profileSummary = [
     age ? `${age} yrs` : "",
+    bmr ? `BMR ${fmt(bmr)}` : "",
     profile.currentWeight ? `${profile.currentWeight} lb` : "",
     profile.goalWeight ? `goal ${profile.goalWeight} lb` : ""
   ].filter(Boolean).join(" - ");
   document.querySelector("#app").innerHTML = `
-    ${topShell("Macro Hub")}
+    ${topShell("Macro Hub", "", `<button class="info-button" data-open-app-info aria-label="App info" title="App info">i</button>`)}
     <section class="home-hero">
       <div class="profile-top">
         <div>
           <h2>Welcome, ${esc(name)}</h2>
           <p>${profile.goal ? esc(profile.goal) : "Your phases, food bank, cheat-day meals, and training log in one spot."}</p>
           ${profileSummary ? `<p>${esc(profileSummary)}</p>` : ""}
-          <div class="profile-stats">
-            <div class="profile-stat"><span>Age</span><strong>${age || "--"}</strong></div>
-            <div class="profile-stat"><span>BMR</span><strong>${bmr ? fmt(bmr) : "--"}</strong><span>Mifflin-St Jeor</span></div>
-          </div>
         </div>
         <div class="profile-avatar-stack">
           <div class="avatar">${esc(name.slice(0, 1).toUpperCase())}</div>
@@ -2901,6 +3263,7 @@ function renderHome() {
       </form>
       ` : ""}
     </section>
+    ${renderGoalFocus(profile, age, bmr)}
     ${renderHomeSnapshot()}
     <section class="action-row compact home-tools">
       <button class="ghost" data-export-backup>Export Backup</button>
@@ -3048,9 +3411,14 @@ function renderMealPlanSummary() {
     `;
   };
   const hasTemplates = state.dayTemplates.length > 0;
-  const templateOptions = hasTemplates
-    ? `<option value="">Choose saved template...</option>${state.dayTemplates.map((template) => `<option value="${esc(template.id)}">${esc(template.name)}</option>`).join("")}`
-    : `<option value="">No saved templates yet</option>`;
+  const templateChips = hasTemplates
+    ? state.dayTemplates.map((template) => `
+      <span class="template-chip">
+        <button class="template-chip-name" data-apply-template-chip="${esc(template.id)}" title="${esc(template.name)}">${esc(template.name)}</button>
+        <button class="template-chip-delete" data-delete-template-id="${esc(template.id)}" aria-label="Delete ${esc(template.name)}">x</button>
+      </span>
+    `).join("")
+    : `<span class="template-empty">Saved templates will show here.</span>`;
   return `
     <section class="summary">
       <div class="metric"><span>Daily Calories</span><strong>${fmt(totals.calories)}</strong></div>
@@ -3090,9 +3458,8 @@ function renderMealPlanSummary() {
             <input data-template-name placeholder="Template name" value="">
             <button class="ghost" data-save-day-template>Save</button>
           </div>
-          <div class="template-apply-row">
-            <select class="compact-select" data-template-picker ${hasTemplates ? "" : "disabled"}>${templateOptions}</select>
-            <button class="primary" data-apply-picked-template ${hasTemplates ? "" : "disabled"}>Apply</button>
+          <div class="template-strip">
+            ${templateChips}
           </div>
         </div>
       </div>
@@ -3126,7 +3493,6 @@ function renderMealSlot(slot) {
         if (!meal) return "";
         const matches = mealMatchesFor(instance.id, meal);
         const totals = mealMacroTotals(matches);
-        const isDone = !!currentDayLog().doneMeals[instance.id];
         return `
           <div class="meal-items">
             <div class="meal-row">
@@ -3135,7 +3501,6 @@ function renderMealSlot(slot) {
                 <span>F ${fmt(totals.fat)}g - C ${fmt(totals.carbs)}g - P ${fmt(totals.protein)}g</span>
               </div>
               <div class="library-actions">
-                <button class="mini done ${isDone ? "active" : ""}" data-toggle-meal-done="${esc(instance.id)}">${isDone ? "Done" : "Check"}</button>
                 <button class="mini danger" data-remove-slot-meal="${esc(slot)}" data-meal-instance="${esc(instance.id)}">Remove</button>
               </div>
             </div>
@@ -3283,6 +3648,11 @@ document.addEventListener("click", (event) => {
     renderModal();
     return;
   }
+  if (event.target.closest("[data-open-app-info]")) {
+    state.modal = { type: "help" };
+    renderModal();
+    return;
+  }
   const trainingDay = event.target.closest("[data-training-day]");
   if (trainingDay) {
     const key = trainingDay.dataset.trainingDay;
@@ -3323,6 +3693,26 @@ document.addEventListener("click", (event) => {
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
     link.download = `macro-hub-backup-${todayKey()}.json`;
+    link.click();
+    URL.revokeObjectURL(link.href);
+    return;
+  }
+  const shareGrocery = event.target.closest("[data-share-grocery]");
+  if (shareGrocery) {
+    const text = groceryExportText();
+    if (navigator.share) {
+      navigator.share({ title: "Macro Hub Grocery List", text }).catch(() => {});
+    } else if (navigator.clipboard) {
+      navigator.clipboard.writeText(text).catch(() => {});
+    }
+    return;
+  }
+  const downloadGrocery = event.target.closest("[data-download-grocery]");
+  if (downloadGrocery) {
+    const blob = new Blob([groceryExportText()], { type: "text/plain" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `grocery-list-${fmt(state.groceryDays)}-days.txt`;
     link.click();
     URL.revokeObjectURL(link.href);
     return;
@@ -3376,6 +3766,7 @@ document.addEventListener("click", (event) => {
     state.mealSlots[slot] = mealInstancesForSlot(slot);
     state.mealSlots[slot].push({ id: `${slug(slot)}-${slug(mealId)}-${Date.now()}`, mealId });
     localStorage.setItem(MEAL_SLOT_KEY, JSON.stringify(state.mealSlots));
+    snapshotTodayNutrition();
     renderMealPlan();
     return;
   }
@@ -3396,6 +3787,7 @@ document.addEventListener("click", (event) => {
     localStorage.setItem(MEAL_SLOT_KEY, JSON.stringify(state.mealSlots));
     localStorage.setItem(MEAL_PLAN_KEY, JSON.stringify(state.mealServings));
     saveDayLog();
+    snapshotTodayNutrition();
     renderMealPlan();
     return;
   }
@@ -3437,16 +3829,6 @@ document.addEventListener("click", (event) => {
     const day = currentDayLog();
     const current = day.mealOverrides[key] ?? state.mealServings[key] ?? parseNumber(document.querySelector(`[data-meal-input="${CSS.escape(key)}"]`)?.value);
     day.mealOverrides[key] = Math.max(0, Math.round((current + Number(todayMealStepButton.dataset.todayMealStep)) * 10) / 10);
-    snapshotTodayNutrition();
-    renderMealPlan();
-    return;
-  }
-  const toggleMealDone = event.target.closest("[data-toggle-meal-done]");
-  if (toggleMealDone) {
-    const day = currentDayLog();
-    const instanceId = toggleMealDone.dataset.toggleMealDone;
-    if (day.doneMeals[instanceId]) delete day.doneMeals[instanceId];
-    else day.doneMeals[instanceId] = true;
     snapshotTodayNutrition();
     renderMealPlan();
     return;
@@ -3560,6 +3942,28 @@ document.addEventListener("click", (event) => {
     if (applyDayTemplate(templateId)) renderMealPlan();
     return;
   }
+  const applyTemplateChip = event.target.closest("[data-apply-template-chip]");
+  if (applyTemplateChip) {
+    if (applyDayTemplate(applyTemplateChip.dataset.applyTemplateChip)) renderMealPlan();
+    return;
+  }
+  const deletePickedTemplate = event.target.closest("[data-delete-picked-template]");
+  if (deletePickedTemplate) {
+    const templateId = document.querySelector("[data-template-picker]")?.value || "";
+    if (!templateId) return;
+    state.dayTemplates = state.dayTemplates.filter((template) => template.id !== templateId);
+    saveDayTemplates();
+    renderMealPlan();
+    return;
+  }
+  const deleteTemplate = event.target.closest("[data-delete-template-id]");
+  if (deleteTemplate) {
+    const templateId = deleteTemplate.dataset.deleteTemplateId;
+    state.dayTemplates = state.dayTemplates.filter((template) => template.id !== templateId);
+    saveDayTemplates();
+    renderMealPlan();
+    return;
+  }
   const deleteCustomMeal = event.target.closest("[data-delete-custom-meal]");
   if (deleteCustomMeal) {
     const mealId = deleteCustomMeal.dataset.deleteCustomMeal;
@@ -3624,6 +4028,7 @@ document.addEventListener("click", (event) => {
       localStorage.removeItem(DAY_TEMPLATES_KEY);
       localStorage.removeItem(RECENT_FOODS_KEY);
       localStorage.removeItem(FAVORITE_FOODS_KEY);
+      localStorage.removeItem(GROCERY_DAYS_KEY);
       state.favoriteIds = [];
       state.cheatEntries = {};
       state.mealServings = {};
@@ -3636,6 +4041,7 @@ document.addEventListener("click", (event) => {
       state.dayTemplates = [];
       state.recentFoods = [];
       state.favoriteFoods = [];
+      state.groceryDays = 7;
       localStorage.removeItem(FAVORITES_KEY);
       state.phaseId = DATA[0]?.id;
       state.activeOnly = false;
@@ -3681,6 +4087,12 @@ document.addEventListener("change", (event) => {
     applyTheme();
     if (state.view === "archive") renderArchiveSummary();
     if (state.view === "meal" || state.view === "phase") renderMealPlan();
+    return;
+  }
+  if (event.target.matches("[data-grocery-days]")) {
+    state.groceryDays = Math.max(1, Math.round(parseNumber(event.target.value || 1) * 10) / 10);
+    localStorage.setItem(GROCERY_DAYS_KEY, String(state.groceryDays));
+    if (state.modal?.type === "grocery") renderModal();
     return;
   }
   if (event.target.matches("[data-slot-meal]")) {
