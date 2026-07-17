@@ -354,6 +354,172 @@ h1 {
   font-size: .78rem;
   line-height: 1.1;
 }
+.home-tools {
+  margin: 8px 0 12px;
+}
+.mini-panel {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px;
+  margin: 12px 0;
+  background: color-mix(in srgb, var(--panel) 78%, var(--soft));
+}
+.mini-panel h2 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+}
+.panel-title-row,
+.compact-list > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.inline-form {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+}
+.inline-form input,
+.compact-select {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px;
+  background: var(--panel);
+  color: var(--ink);
+}
+.sparkline {
+  width: 100%;
+  height: 90px;
+  margin-top: 8px;
+  border-radius: 8px;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--soft) 70%, var(--panel)), var(--panel));
+}
+.chip-row {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+.food-chip {
+  flex: 0 0 auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 9px 10px;
+  background: var(--panel);
+  color: var(--ink);
+  text-align: left;
+}
+.food-chip strong,
+.food-chip span {
+  display: block;
+  white-space: nowrap;
+}
+.food-chip span {
+  color: var(--muted);
+  font-size: .72rem;
+}
+.favorite-food.active,
+.done.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+.today-adjust {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  color: var(--muted);
+  font-size: .72rem;
+}
+.today-adjust .mini {
+  min-height: 26px;
+  padding: 3px 8px;
+}
+.compact-list {
+  display: grid;
+  gap: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.compact-list > div {
+  border-bottom: 1px solid var(--line);
+  padding: 11px 12px;
+  background: color-mix(in srgb, var(--panel) 84%, var(--soft));
+}
+.compact-list > div:last-child {
+  border-bottom: 0;
+}
+.plan-tools {
+  display: grid;
+  grid-template-columns: minmax(140px, .62fr) minmax(0, 1.38fr);
+  gap: 12px;
+  margin-top: 14px;
+  align-items: stretch;
+}
+.plan-tool-main,
+.template-panel {
+  min-height: 118px;
+  border: 1px solid color-mix(in srgb, var(--accent) 36%, var(--line));
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--panel) 80%, var(--soft));
+}
+.plan-tool-main {
+  width: 100%;
+  display: grid;
+  align-content: center;
+  gap: 6px;
+  padding: 14px;
+  text-align: left;
+  color: var(--ink);
+}
+.plan-tool-main strong {
+  font-size: 1rem;
+}
+.plan-tool-main span,
+.template-panel p {
+  margin: 0;
+  color: var(--muted);
+  font-size: .78rem;
+  line-height: 1.35;
+}
+.template-panel {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+}
+.template-panel h3 {
+  margin: 0 0 3px;
+  font-size: .98rem;
+}
+.template-save-row,
+.template-apply-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+}
+.template-save-row input,
+.compact-select {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px;
+  background: var(--panel);
+  color: var(--ink);
+}
+.template-save-row button,
+.template-apply-row .primary {
+  min-width: 78px;
+}
+button:disabled,
+select:disabled {
+  opacity: .58;
+  cursor: not-allowed;
+}
 .training-stats {
   margin-top: 12px;
 }
@@ -1173,6 +1339,19 @@ h1 {
   gap: 8px;
   margin-top: 14px;
 }
+@media (max-width: 520px) {
+  .plan-tools {
+    grid-template-columns: 1fr;
+  }
+  .plan-tool-main,
+  .template-panel {
+    min-height: auto;
+  }
+  .template-save-row,
+  .template-apply-row {
+    grid-template-columns: 1fr;
+  }
+}
 @media (min-width: 720px) {
   .app {
     max-width: 760px;
@@ -1210,6 +1389,11 @@ const MEAL_COLLAPSE_KEY = "macroMealCollapsedSlots";
 const CUSTOM_MEALS_KEY = "macroCustomMeals";
 const DELETED_FOOD_KEY = "macroDeletedFoodKeys";
 const MEAL_FOOD_KEY = "macroMealFoodLinks";
+const DAY_LOG_KEY = "macroDayLog";
+const WEIGHT_LOG_KEY = "macroWeightLog";
+const DAY_TEMPLATES_KEY = "macroDayTemplates";
+const RECENT_FOODS_KEY = "macroRecentFoods";
+const FAVORITE_FOODS_KEY = "macroFavoriteFoods";
 
 const clone = (value) => JSON.parse(JSON.stringify(value));
 const slug = (value) => String(value || "item").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "item";
@@ -1349,6 +1533,11 @@ const state = {
   customMeals: JSON.parse(localStorage.getItem(CUSTOM_MEALS_KEY) || "[]"),
   deletedFoodKeys: JSON.parse(localStorage.getItem(DELETED_FOOD_KEY) || "[]"),
   mealFoodKeys: JSON.parse(localStorage.getItem(MEAL_FOOD_KEY) || "{}"),
+  dayLog: JSON.parse(localStorage.getItem(DAY_LOG_KEY) || "{}"),
+  weightLog: JSON.parse(localStorage.getItem(WEIGHT_LOG_KEY) || "{}"),
+  dayTemplates: JSON.parse(localStorage.getItem(DAY_TEMPLATES_KEY) || "[]"),
+  recentFoods: JSON.parse(localStorage.getItem(RECENT_FOODS_KEY) || "[]"),
+  favoriteFoods: JSON.parse(localStorage.getItem(FAVORITE_FOODS_KEY) || "[]"),
   favoriteIds: JSON.parse(localStorage.getItem(FAVORITES_KEY) || "[]"),
   editingProfile: false,
   modal: null
@@ -1743,6 +1932,68 @@ function mealUsageForFood(item) {
   return meals.map((meal) => meal.name);
 }
 
+function saveFoodPins() {
+  state.favoriteFoods = [...new Set(state.favoriteFoods || [])];
+  state.recentFoods = [...new Set(state.recentFoods || [])].slice(0, 12);
+  localStorage.setItem(FAVORITE_FOODS_KEY, JSON.stringify(state.favoriteFoods));
+  localStorage.setItem(RECENT_FOODS_KEY, JSON.stringify(state.recentFoods));
+}
+
+function trackRecentFood(item) {
+  const key = foodKey(item);
+  state.recentFoods = [key, ...(state.recentFoods || []).filter((entry) => entry !== key)].slice(0, 12);
+  saveFoodPins();
+}
+
+function renderPinnedFoods() {
+  const library = foodLibrary();
+  const favorites = (state.favoriteFoods || []).map((key) => library.find((item) => foodKey(item) === key)).filter(Boolean);
+  const recents = (state.recentFoods || []).map((key) => library.find((item) => foodKey(item) === key)).filter(Boolean);
+  if (!favorites.length && !recents.length) return "";
+  const smallCard = (item) => `<button class="food-chip" data-edit-bank-food="${esc(foodKey(item))}"><strong>${esc(item.name)}</strong><span>${fmt(item.calories)} cal</span></button>`;
+  return `
+    <section class="mini-panel">
+      ${favorites.length ? `<div class="section-label">Favorite foods</div><div class="chip-row">${favorites.map(smallCard).join("")}</div>` : ""}
+      ${recents.length ? `<div class="section-label">Recent foods</div><div class="chip-row">${recents.map(smallCard).join("")}</div>` : ""}
+    </section>
+  `;
+}
+
+function currentGroceryList() {
+  const totals = new Map();
+  MEAL_PLAN_SLOTS.forEach((slot) => {
+    mealInstancesForSlot(slot).forEach((instance) => {
+      const meal = mealById(instance.mealId);
+      if (!meal) return;
+      mealMatchesFor(instance.id, meal).forEach((match) => {
+        const key = foodKey(match.item);
+        const existing = totals.get(key) || { name: match.item.name, servings: 0 };
+        existing.servings += match.servings;
+        totals.set(key, existing);
+      });
+    });
+  });
+  return [...totals.values()].sort((a, b) => a.name.localeCompare(b.name));
+}
+
+function saveDayTemplates() {
+  localStorage.setItem(DAY_TEMPLATES_KEY, JSON.stringify(state.dayTemplates));
+}
+
+function applyDayTemplate(templateId) {
+  const template = state.dayTemplates.find((entry) => entry.id === templateId);
+  if (!template) return false;
+  state.mealSlots = clone(template.mealSlots || {});
+  state.mealServings = clone(template.mealServings || {});
+  currentDayLog().doneMeals = {};
+  currentDayLog().mealOverrides = {};
+  localStorage.setItem(MEAL_SLOT_KEY, JSON.stringify(state.mealSlots));
+  localStorage.setItem(MEAL_PLAN_KEY, JSON.stringify(state.mealServings));
+  saveDayLog();
+  snapshotTodayNutrition();
+  return true;
+}
+
 function applySpecificFoodCleanup() {
   let changed = false;
   DATA.forEach((phase) => {
@@ -1860,6 +2111,27 @@ function getMealServing(instanceId, component) {
   return state.mealServings[key] ?? component.servings ?? 0;
 }
 
+function todayKey() {
+  return isoDate(new Date());
+}
+
+function currentDayLog(dateKey = todayKey()) {
+  state.dayLog[dateKey] = state.dayLog[dateKey] || {};
+  state.dayLog[dateKey].doneMeals = state.dayLog[dateKey].doneMeals || {};
+  state.dayLog[dateKey].mealOverrides = state.dayLog[dateKey].mealOverrides || {};
+  return state.dayLog[dateKey];
+}
+
+function saveDayLog() {
+  localStorage.setItem(DAY_LOG_KEY, JSON.stringify(state.dayLog));
+}
+
+function getEffectiveMealServing(instanceId, component) {
+  const key = mealServingKey(instanceId, component);
+  const day = currentDayLog();
+  return day.mealOverrides[key] ?? state.mealServings[key] ?? component.servings ?? 0;
+}
+
 function setMealServing(key, value) {
   const parsed = Math.max(0, Math.round(parseNumber(value) * 10) / 10);
   state.mealServings[key] = parsed;
@@ -1889,7 +2161,7 @@ function mealMatchesFor(instanceId, meal) {
       item,
       component,
       key: mealServingKey(instanceId, component),
-      servings: getMealServing(instanceId, component)
+      servings: getEffectiveMealServing(instanceId, component)
     };
   }).filter(Boolean);
 }
@@ -1923,6 +2195,31 @@ function dailyMealTotals() {
   }, { calories: 0, fat: 0, carbs: 0, protein: 0, servings: 0 });
 }
 
+function todayMealTotals() {
+  const day = currentDayLog();
+  return MEAL_PLAN_SLOTS.reduce((totals, slot) => {
+    mealInstancesForSlot(slot).forEach((instance) => {
+      if (!day.doneMeals[instance.id]) return;
+      const meal = mealById(instance.mealId);
+      if (!meal) return;
+      const matches = mealMatchesFor(instance.id, meal);
+      const mealTotals = mealMacroTotals(matches);
+      totals.calories += mealTotals.calories;
+      totals.fat += mealTotals.fat;
+      totals.carbs += mealTotals.carbs;
+      totals.protein += mealTotals.protein;
+      totals.servings += matches.reduce((sum, match) => sum + match.servings, 0);
+    });
+    return totals;
+  }, { calories: 0, fat: 0, carbs: 0, protein: 0, servings: 0 });
+}
+
+function snapshotTodayNutrition() {
+  const day = currentDayLog();
+  day.nutrition = todayMealTotals();
+  saveDayLog();
+}
+
 function mealItemRow(match) {
   const totals = {
     calories: match.item.calories * match.servings,
@@ -1942,6 +2239,11 @@ function mealItemRow(match) {
           <button data-meal-step="-0.5" data-meal-key="${esc(match.key)}" aria-label="Remove meal serving">-</button>
           <input inputmode="decimal" value="${fmt(match.servings)}" data-meal-input="${esc(match.key)}" aria-label="Daily meal servings">
           <button data-meal-step="0.5" data-meal-key="${esc(match.key)}" aria-label="Add meal serving">+</button>
+        </div>
+        <div class="today-adjust">
+          <span>Today only</span>
+          <button class="mini" data-today-meal-step="-0.5" data-meal-key="${esc(match.key)}">-</button>
+          <button class="mini" data-today-meal-step="0.5" data-meal-key="${esc(match.key)}">+</button>
         </div>
       </div>
     </div>
@@ -2015,8 +2317,9 @@ function itemCard(phase, item, options = {}) {
   const sourceText = options.bankDelete
     ? (mealUsage.length ? `Used in ${mealUsage.slice(0, 3).join(", ")}${mealUsage.length > 3 ? ` +${mealUsage.length - 3} more` : ""}` : "Not used in saved meals")
     : (item.sources?.length ? `From ${item.sources.slice(0, 2).join(", ")}` : "From library");
+  const isFavoriteFood = (state.favoriteFoods || []).includes(foodKey(item));
   const libraryAction = options.bankDelete
-    ? `<div class="library-actions"><button class="mini" data-edit-bank-food="${esc(foodKey(item))}">Edit</button><button class="mini danger" data-delete-bank-food="${esc(foodKey(item))}">Delete</button></div>`
+    ? `<div class="library-actions"><button class="mini favorite-food ${isFavoriteFood ? "active" : ""}" data-toggle-food-favorite="${esc(foodKey(item))}" title="Favorite">${isFavoriteFood ? "Starred" : "Star"}</button><button class="mini" data-edit-bank-food="${esc(foodKey(item))}">Edit</button><button class="mini danger" data-delete-bank-food="${esc(foodKey(item))}">Delete</button></div>`
     : `<button class="mini add" data-add-library="${esc(item.id)}">Add</button>`;
   return `
     <article class="item">
@@ -2150,7 +2453,8 @@ function renderModal() {
   const isCheat = state.modal.type === "cheat";
   const isTraining = state.modal.type === "training";
   const isMeal = state.modal.type === "meal";
-  const title = isMeal ? "Create Meal" : isTraining ? "Training Day" : isCheat ? "Add Cheat Meal" : isGoals ? "Daily Goals" : isTab ? "Add Tab" : item ? "Edit Food" : "Add Food";
+  const isGrocery = state.modal.type === "grocery";
+  const title = isGrocery ? "Grocery List" : isMeal ? "Create Meal" : isTraining ? "Training Day" : isCheat ? "Add Cheat Meal" : isGoals ? "Daily Goals" : isTab ? "Add Tab" : item ? "Edit Food" : "Add Food";
   const values = item || { name: "", category: "", servings: 0, calories: 0, fat: 0, carbs: 0, protein: 0 };
   const targets = { ...DEFAULT_TARGETS, ...(phase.targets || {}) };
   const cheatItem = state.modal.cheatItem || { name: "", restaurant: "", slot: "Other", servings: 1, calories: 0, fat: 0, carbs: 0, protein: 0 };
@@ -2160,7 +2464,11 @@ function renderModal() {
     <div class="modal-backdrop open" data-close-modal>
       <form class="modal" data-food-form data-form-type="${esc(state.modal.type)}" data-form-item="${esc(state.modal.itemId || "")}" data-form-bank-key="${esc(state.modal.bankEditKey || "")}" data-form-bank="${state.modal.bankItem || state.modal.bankEditKey ? "true" : "false"}">
         <h2>${title}</h2>
-        ${isMeal ? `
+        ${isGrocery ? `
+          <div class="compact-list">
+            ${currentGroceryList().length ? currentGroceryList().map((entry) => `<div><strong>${esc(entry.name)}</strong><span>${fmt(entry.servings)} servings</span></div>`).join("") : `<div class="empty">Add meals to your meal plan to build a grocery list.</div>`}
+          </div>
+        ` : isMeal ? `
           <div class="form-grid">
             <label class="field full"><span>Meal name</span><input name="mealName" required placeholder="Example: Turkey Lunch"></label>
             ${Array.from({ length: 8 }).map((_, index) => `
@@ -2216,7 +2524,7 @@ function renderModal() {
         `}
         <div class="modal-actions">
           <button class="ghost" type="button" data-cancel>Cancel</button>
-          <button class="primary" type="submit">Save</button>
+          ${isGrocery ? "" : `<button class="primary" type="submit">Save</button>`}
         </div>
       </form>
     </div>
@@ -2258,6 +2566,7 @@ function renderFoodBank() {
       <button class="ghost" data-view-target="meal">Meal Plan</button>
       <button class="ghost" data-view-target="home">Home</button>
     </div>
+    ${renderPinnedFoods()}
     <div class="section-label">Saved meals</div>
     <main class="items">${mealCards}</main>
     <div class="toolbar">
@@ -2387,6 +2696,106 @@ function renderMonthlyTrainingSummary() {
   `;
 }
 
+function dayNutritionTotals(dateKey) {
+  if (dateKey === todayKey()) return todayMealTotals();
+  return state.dayLog[dateKey]?.nutrition || { calories: 0, fat: 0, carbs: 0, protein: 0 };
+}
+
+function recentNutritionDays(limit = 7) {
+  const keys = Object.keys(state.dayLog)
+    .filter((key) => state.dayLog[key]?.nutrition)
+    .sort()
+    .reverse();
+  if (!keys.includes(todayKey())) keys.unshift(todayKey());
+  return [...new Set(keys)].slice(0, limit);
+}
+
+function renderNutritionHistory() {
+  const rows = recentNutritionDays(7).map((key) => {
+    const totals = dayNutritionTotals(key);
+    return `<div class="month-row"><strong>${esc(key)}</strong><span>${fmt(totals.calories)} cal</span><span>P ${fmt(totals.protein)}g</span></div>`;
+  }).join("");
+  return `
+    <section class="mini-panel">
+      <h2>Nutrition History</h2>
+      ${rows || `<div class="empty">Check off meals to start daily history.</div>`}
+    </section>
+  `;
+}
+
+function weightEntries() {
+  return Object.entries(state.weightLog || {})
+    .map(([date, weight]) => ({ date, weight: parseNumber(weight) }))
+    .filter((entry) => entry.weight > 0)
+    .sort((a, b) => a.date.localeCompare(b.date));
+}
+
+function renderWeightTracker() {
+  const entries = weightEntries();
+  const recent = entries.slice(-12);
+  const values = recent.map((entry) => entry.weight);
+  const min = Math.min(...values, parseNumber(state.profileData?.currentWeight) || 0);
+  const max = Math.max(...values, parseNumber(state.profileData?.currentWeight) || 1);
+  const span = Math.max(1, max - min);
+  const points = recent.map((entry, index) => {
+    const x = recent.length === 1 ? 50 : 8 + (index / (recent.length - 1)) * 84;
+    const y = 86 - ((entry.weight - min) / span) * 68;
+    return `${x},${y}`;
+  }).join(" ");
+  const latest = entries[entries.length - 1];
+  const first = entries[0];
+  const change = latest && first ? latest.weight - first.weight : 0;
+  return `
+    <section class="mini-panel">
+      <div class="panel-title-row"><h2>Weight Trend</h2><span>${latest ? `${fmt(latest.weight)} lb` : "No logs yet"}</span></div>
+      <form class="inline-form" data-weight-form>
+        <input name="weight" inputmode="decimal" placeholder="Today's weight" value="${esc(state.weightLog[todayKey()] || "")}">
+        <button class="primary" type="submit">Save</button>
+      </form>
+      <svg class="sparkline" viewBox="0 0 100 100" role="img" aria-label="Weight trend">
+        <polyline points="${points}" fill="none" stroke="var(--accent)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></polyline>
+        ${recent.map((entry, index) => {
+          const [x, y] = (points.split(" ")[index] || "50,50").split(",");
+          return `<circle cx="${x}" cy="${y}" r="3" fill="var(--gold)"></circle>`;
+        }).join("")}
+      </svg>
+      <p>${entries.length > 1 ? `${change >= 0 ? "+" : ""}${fmt(change)} lb since first log` : "Add a few entries to see the trend."}</p>
+    </section>
+  `;
+}
+
+function renderProgressSummary() {
+  const sevenAgo = new Date();
+  sevenAgo.setDate(sevenAgo.getDate() - 6);
+  let gym = 0;
+  let cardio = 0;
+  let calories = 0;
+  let protein = 0;
+  let nutritionDays = 0;
+  for (let i = 0; i < 7; i += 1) {
+    const date = new Date(sevenAgo);
+    date.setDate(sevenAgo.getDate() + i);
+    const key = isoDate(date);
+    const training = state.trainingLog[key] || {};
+    if (training.gym) gym += 1;
+    if (training.cardio) cardio += 1;
+    const nutrition = dayNutritionTotals(key);
+    if (nutrition.calories || nutrition.protein) {
+      calories += nutrition.calories;
+      protein += nutrition.protein;
+      nutritionDays += 1;
+    }
+  }
+  return `
+    <section class="stat-grid training-stats">
+      <div class="metric"><span>7-Day Gym</span><strong>${gym}</strong></div>
+      <div class="metric"><span>7-Day Cardio</span><strong>${cardio}</strong></div>
+      <div class="metric"><span>Avg Calories</span><strong>${nutritionDays ? fmt(calories / nutritionDays) : "--"}</strong></div>
+      <div class="metric"><span>Avg Protein</span><strong>${nutritionDays ? fmt(protein / nutritionDays) + "g" : "--"}</strong></div>
+    </section>
+  `;
+}
+
 function renderTrainingCalendar() {
   const today = new Date();
   const year = today.getFullYear();
@@ -2431,6 +2840,7 @@ function renderHomeSnapshot() {
   return `
     <section class="home-snapshot">
       <h2>Today's Macro Snapshot</h2>
+      <p>Synced with your current Meal Plan totals.</p>
       <div class="snapshot-grid">
         ${cards.map(([label, actual, target, unit, color]) => {
           const fill = target > 0 ? Math.min(actual / target * 100, 100) : 0;
@@ -2492,6 +2902,11 @@ function renderHome() {
       ` : ""}
     </section>
     ${renderHomeSnapshot()}
+    <section class="action-row compact home-tools">
+      <button class="ghost" data-export-backup>Export Backup</button>
+      <button class="ghost" data-import-backup>Restore Backup</button>
+      <input type="file" accept="application/json" data-import-file hidden>
+    </section>
     <main class="home-grid">
       <button class="home-card" data-view-target="meal"><strong>Meal Plan</strong><span>Daily meals, macro totals, food servings, and saved meal groups.</span></button>
       <button class="home-card" data-view-target="bank"><strong>Food Bank</strong><span>All saved foods grouped by food type.</span></button>
@@ -2502,7 +2917,10 @@ function renderHome() {
       <div class="metric"><span>Gym Streak</span><strong>${trainingStreak()}</strong></div>
       <div class="metric"><span>Gym / Cardio</span><strong>${counts.gym} / ${counts.cardio}</strong></div>
     </section>
+    ${renderWeightTracker()}
+    ${renderProgressSummary()}
     ${renderTrainingCalendar()}
+    ${renderNutritionHistory()}
     <section class="archive-section">
       <h2>Archived Phase Tabs</h2>
       <p>Old phase tabs stay here as a reference while the main setup moves toward a personal meal plan.</p>
@@ -2629,6 +3047,10 @@ function renderMealPlanSummary() {
       </div>
     `;
   };
+  const hasTemplates = state.dayTemplates.length > 0;
+  const templateOptions = hasTemplates
+    ? `<option value="">Choose saved template...</option>${state.dayTemplates.map((template) => `<option value="${esc(template.id)}">${esc(template.name)}</option>`).join("")}`
+    : `<option value="">No saved templates yet</option>`;
   return `
     <section class="summary">
       <div class="metric"><span>Daily Calories</span><strong>${fmt(totals.calories)}</strong></div>
@@ -2652,6 +3074,26 @@ function renderMealPlanSummary() {
           ${goalCard("Fat", totals.fat, targets.fat, "g")}
           ${goalCard("Carbs", totals.carbs, targets.carbs, "g")}
           ${goalCard("Protein", totals.protein, targets.protein, "g")}
+        </div>
+      </div>
+      <div class="plan-tools">
+        <button class="ghost plan-tool-main" data-open-grocery>
+          <strong>Grocery List</strong>
+          <span>Build a serving list from every meal loaded below.</span>
+        </button>
+        <div class="template-panel">
+          <div>
+            <h3>Day Templates</h3>
+            <p>${hasTemplates ? `${state.dayTemplates.length} saved template${state.dayTemplates.length === 1 ? "" : "s"}` : "Save your current day, then it will appear in the dropdown."}</p>
+          </div>
+          <div class="template-save-row">
+            <input data-template-name placeholder="Template name" value="">
+            <button class="ghost" data-save-day-template>Save</button>
+          </div>
+          <div class="template-apply-row">
+            <select class="compact-select" data-template-picker ${hasTemplates ? "" : "disabled"}>${templateOptions}</select>
+            <button class="primary" data-apply-picked-template ${hasTemplates ? "" : "disabled"}>Apply</button>
+          </div>
         </div>
       </div>
     </section>
@@ -2684,6 +3126,7 @@ function renderMealSlot(slot) {
         if (!meal) return "";
         const matches = mealMatchesFor(instance.id, meal);
         const totals = mealMacroTotals(matches);
+        const isDone = !!currentDayLog().doneMeals[instance.id];
         return `
           <div class="meal-items">
             <div class="meal-row">
@@ -2691,7 +3134,10 @@ function renderMealSlot(slot) {
                 <div class="meal-title-line"><strong>${esc(meal.name)}</strong><b>${fmt(totals.calories)} cal</b></div>
                 <span>F ${fmt(totals.fat)}g - C ${fmt(totals.carbs)}g - P ${fmt(totals.protein)}g</span>
               </div>
-              <button class="mini danger" data-remove-slot-meal="${esc(slot)}" data-meal-instance="${esc(instance.id)}">Remove</button>
+              <div class="library-actions">
+                <button class="mini done ${isDone ? "active" : ""}" data-toggle-meal-done="${esc(instance.id)}">${isDone ? "Done" : "Check"}</button>
+                <button class="mini danger" data-remove-slot-meal="${esc(slot)}" data-meal-instance="${esc(instance.id)}">Remove</button>
+              </div>
             </div>
             ${matches.map((match) => mealItemRow(match)).join("")}
           </div>
@@ -2866,6 +3312,25 @@ document.addEventListener("click", (event) => {
     render();
     return;
   }
+  if (event.target.closest("[data-export-backup]")) {
+    const keys = [STORAGE_KEY, PROFILE_KEY, PROFILE_DATA_KEY, CHEAT_KEY, TRAINING_KEY, MEAL_PLAN_KEY, MEAL_SLOT_KEY, MEAL_COLLAPSE_KEY, CUSTOM_MEALS_KEY, DELETED_FOOD_KEY, MEAL_FOOD_KEY, DAY_LOG_KEY, WEIGHT_LOG_KEY, DAY_TEMPLATES_KEY, RECENT_FOODS_KEY, FAVORITE_FOODS_KEY, FAVORITES_KEY, THEME_KEY, "macroPhase", "macroView", "macroActiveOnly"];
+    const backup = {};
+    keys.forEach((key) => {
+      const value = localStorage.getItem(key);
+      if (value !== null) backup[key] = value;
+    });
+    const blob = new Blob([JSON.stringify({ created: new Date().toISOString(), backup }, null, 2)], { type: "application/json" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `macro-hub-backup-${todayKey()}.json`;
+    link.click();
+    URL.revokeObjectURL(link.href);
+    return;
+  }
+  if (event.target.closest("[data-import-backup]")) {
+    document.querySelector("[data-import-file]")?.click();
+    return;
+  }
   if (event.target.closest("[data-open-bank]")) {
     setView("bank");
     state.query = "";
@@ -2922,8 +3387,15 @@ document.addEventListener("click", (event) => {
     Object.keys(state.mealServings).forEach((key) => {
       if (key.startsWith(`${instanceId}::`)) delete state.mealServings[key];
     });
+    Object.values(state.dayLog || {}).forEach((day) => {
+      if (day.doneMeals) delete day.doneMeals[instanceId];
+      Object.keys(day.mealOverrides || {}).forEach((key) => {
+        if (key.startsWith(`${instanceId}::`)) delete day.mealOverrides[key];
+      });
+    });
     localStorage.setItem(MEAL_SLOT_KEY, JSON.stringify(state.mealSlots));
     localStorage.setItem(MEAL_PLAN_KEY, JSON.stringify(state.mealServings));
+    saveDayLog();
     renderMealPlan();
     return;
   }
@@ -2956,6 +3428,27 @@ document.addEventListener("click", (event) => {
     const key = mealStepButton.dataset.mealKey;
     const current = state.mealServings[key] ?? parseNumber(document.querySelector(`[data-meal-input="${CSS.escape(key)}"]`)?.value);
     setMealServing(key, current + Number(mealStepButton.dataset.mealStep));
+    snapshotTodayNutrition();
+    return;
+  }
+  const todayMealStepButton = event.target.closest("[data-today-meal-step]");
+  if (todayMealStepButton) {
+    const key = todayMealStepButton.dataset.mealKey;
+    const day = currentDayLog();
+    const current = day.mealOverrides[key] ?? state.mealServings[key] ?? parseNumber(document.querySelector(`[data-meal-input="${CSS.escape(key)}"]`)?.value);
+    day.mealOverrides[key] = Math.max(0, Math.round((current + Number(todayMealStepButton.dataset.todayMealStep)) * 10) / 10);
+    snapshotTodayNutrition();
+    renderMealPlan();
+    return;
+  }
+  const toggleMealDone = event.target.closest("[data-toggle-meal-done]");
+  if (toggleMealDone) {
+    const day = currentDayLog();
+    const instanceId = toggleMealDone.dataset.toggleMealDone;
+    if (day.doneMeals[instanceId]) delete day.doneMeals[instanceId];
+    else day.doneMeals[instanceId] = true;
+    snapshotTodayNutrition();
+    renderMealPlan();
     return;
   }
   const editButton = event.target.closest("[data-edit-item]");
@@ -2983,6 +3476,7 @@ document.addEventListener("click", (event) => {
       const servings = prompt(`Weekly servings for ${item.name}:`, "0");
       if (servings === null) return;
       phase.items.push({ ...item, id: `${slug(item.name)}-${Date.now()}`, servings: parseNumber(servings), sources: undefined });
+      trackRecentFood(item);
       saveData();
       setView("phase");
       render();
@@ -2993,6 +3487,15 @@ document.addEventListener("click", (event) => {
   if (editBankFood) {
     state.modal = { type: "food", bankItem: true, bankEditKey: editBankFood.dataset.editBankFood };
     renderModal();
+    return;
+  }
+  const favoriteFood = event.target.closest("[data-toggle-food-favorite]");
+  if (favoriteFood) {
+    const key = favoriteFood.dataset.toggleFoodFavorite;
+    if ((state.favoriteFoods || []).includes(key)) state.favoriteFoods = state.favoriteFoods.filter((entry) => entry !== key);
+    else state.favoriteFoods = [...(state.favoriteFoods || []), key];
+    saveFoodPins();
+    renderFoodBank();
     return;
   }
   const deleteBankFood = event.target.closest("[data-delete-bank-food]");
@@ -3013,6 +3516,7 @@ document.addEventListener("click", (event) => {
       ? RESTAURANT_MEALS.find((entry) => entry.id === cheatAdd.dataset.cheatAdd)
       : foodLibrary().find((entry) => entry.id === cheatAdd.dataset.cheatAdd);
     if (!item) return;
+    trackRecentFood(item);
     state.modal = { type: "cheat", cheatItem: { ...item, servings: 1, restaurant: item.restaurant || "Food Bank", slot: item.slot || "Other" } };
     renderModal();
     return;
@@ -3030,6 +3534,30 @@ document.addEventListener("click", (event) => {
   if (event.target.closest("[data-open-create-meal]")) {
     state.modal = { type: "meal" };
     renderModal();
+    return;
+  }
+  if (event.target.closest("[data-open-grocery]")) {
+    state.modal = { type: "grocery" };
+    renderModal();
+    return;
+  }
+  if (event.target.closest("[data-save-day-template]")) {
+    const typedName = String(document.querySelector("[data-template-name]")?.value || "").trim();
+    const name = typedName || `Meal Plan Template ${state.dayTemplates.length + 1}`;
+    state.dayTemplates.push({
+      id: `${slug(name)}-${Date.now()}`,
+      name,
+      mealSlots: clone(state.mealSlots),
+      mealServings: clone(state.mealServings)
+    });
+    saveDayTemplates();
+    renderMealPlan();
+    return;
+  }
+  const applyPickedTemplate = event.target.closest("[data-apply-picked-template]");
+  if (applyPickedTemplate) {
+    const templateId = document.querySelector("[data-template-picker]")?.value || "";
+    if (applyDayTemplate(templateId)) renderMealPlan();
     return;
   }
   const deleteCustomMeal = event.target.closest("[data-delete-custom-meal]");
@@ -3091,6 +3619,11 @@ document.addEventListener("click", (event) => {
       localStorage.removeItem(CUSTOM_MEALS_KEY);
       localStorage.removeItem(DELETED_FOOD_KEY);
       localStorage.removeItem(MEAL_FOOD_KEY);
+      localStorage.removeItem(DAY_LOG_KEY);
+      localStorage.removeItem(WEIGHT_LOG_KEY);
+      localStorage.removeItem(DAY_TEMPLATES_KEY);
+      localStorage.removeItem(RECENT_FOODS_KEY);
+      localStorage.removeItem(FAVORITE_FOODS_KEY);
       state.favoriteIds = [];
       state.cheatEntries = {};
       state.mealServings = {};
@@ -3098,6 +3631,11 @@ document.addEventListener("click", (event) => {
       state.customMeals = [];
       state.deletedFoodKeys = [];
       state.mealFoodKeys = {};
+      state.dayLog = {};
+      state.weightLog = {};
+      state.dayTemplates = [];
+      state.recentFoods = [];
+      state.favoriteFoods = [];
       localStorage.removeItem(FAVORITES_KEY);
       state.phaseId = DATA[0]?.id;
       state.activeOnly = false;
@@ -3119,6 +3657,25 @@ document.addEventListener("input", (event) => {
 });
 
 document.addEventListener("change", (event) => {
+  if (event.target.matches("[data-import-file]")) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const parsed = JSON.parse(String(reader.result || "{}"));
+        const backup = parsed.backup || parsed;
+        Object.entries(backup).forEach(([key, value]) => {
+          if (typeof value === "string") localStorage.setItem(key, value);
+        });
+        location.reload();
+      } catch (error) {
+        alert("That backup file could not be restored.");
+      }
+    };
+    reader.readAsText(file);
+    return;
+  }
   if (event.target.matches("[data-theme-select]")) {
     state.theme = event.target.value;
     applyTheme();
@@ -3140,6 +3697,10 @@ document.addEventListener("change", (event) => {
     render();
     return;
   }
+  if (event.target.matches("[data-apply-day-template]")) {
+    if (applyDayTemplate(event.target.value)) renderMealPlan();
+    return;
+  }
   if (event.target.matches("[data-input-id]")) {
     const phase = currentPhase();
     const item = phase.items.find((entry) => entry.id === event.target.dataset.inputId);
@@ -3148,10 +3709,25 @@ document.addEventListener("change", (event) => {
   }
   if (event.target.matches("[data-meal-input]")) {
     setMealServing(event.target.dataset.mealInput, event.target.value);
+    snapshotTodayNutrition();
   }
 });
 
 document.addEventListener("submit", (event) => {
+  const weightForm = event.target.closest("[data-weight-form]");
+  if (weightForm) {
+    event.preventDefault();
+    const formData = new FormData(weightForm);
+    const weight = parseNumber(formData.get("weight"));
+    if (weight > 0) {
+      state.weightLog[todayKey()] = weight;
+      localStorage.setItem(WEIGHT_LOG_KEY, JSON.stringify(state.weightLog));
+      state.profileData = { ...(state.profileData || {}), currentWeight: String(weight) };
+      localStorage.setItem(PROFILE_DATA_KEY, JSON.stringify(state.profileData));
+    }
+    render();
+    return;
+  }
   const profileForm = event.target.closest("[data-profile-form]");
   if (profileForm) {
     event.preventDefault();
