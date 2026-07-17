@@ -279,6 +279,84 @@ h1 {
   color: var(--muted);
   font-size: .82rem;
 }
+.profile-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 10px;
+}
+.profile-stat {
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--line));
+  border-radius: 8px;
+  padding: 8px;
+  background: color-mix(in srgb, var(--panel) 70%, var(--soft));
+}
+.profile-stat span {
+  display: block;
+  color: var(--muted);
+  font-size: .68rem;
+}
+.profile-stat strong {
+  display: block;
+  margin-top: 2px;
+  font-size: 1rem;
+}
+.home-snapshot {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px;
+  margin: 10px 0;
+  background: linear-gradient(135deg, var(--panel), color-mix(in srgb, var(--panel) 55%, var(--soft)));
+}
+.home-snapshot h2 {
+  margin: 0 0 10px;
+  font-size: 1rem;
+}
+.snapshot-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 7px;
+}
+.snapshot-card {
+  min-width: 0;
+  display: grid;
+  justify-items: center;
+  gap: 5px;
+  border: 1px solid color-mix(in srgb, var(--snap-color) 35%, var(--line));
+  border-radius: 8px;
+  padding: 8px 5px;
+  background: color-mix(in srgb, var(--panel) 72%, var(--soft));
+  text-align: center;
+}
+.snapshot-donut {
+  width: 42px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: conic-gradient(var(--snap-color) 0 var(--snap-fill), var(--soft-2) var(--snap-fill) 100%);
+}
+.snapshot-donut::after {
+  content: "";
+  width: 24px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--panel);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+.snapshot-card span {
+  color: var(--muted);
+  font-size: .66rem;
+  font-weight: 750;
+}
+.snapshot-card strong {
+  color: var(--ink);
+  font-size: .78rem;
+  line-height: 1.1;
+}
+.training-stats {
+  margin-top: 12px;
+}
 .profile-top {
   display: grid;
   grid-template-columns: 1fr auto;
@@ -296,10 +374,23 @@ h1 {
   font-weight: 900;
   font-size: 1rem;
 }
+.profile-avatar-stack {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+}
 .profile-actions {
-  margin-top: 10px;
-  display: flex;
-  gap: 8px;
+  display: grid;
+  place-items: center;
+}
+.profile-edit-icon {
+  width: 34px;
+  height: 30px;
+  min-height: 30px;
+  padding: 0;
+  border-radius: 999px;
+  font-size: .94rem;
+  line-height: 1;
 }
 .profile-form {
   display: grid;
@@ -2328,6 +2419,34 @@ function renderTrainingCalendar() {
   `;
 }
 
+function renderHomeSnapshot() {
+  const totals = dailyMealTotals();
+  const targets = { ...DEFAULT_TARGETS, ...(currentPhase()?.targets || {}) };
+  const cards = [
+    ["Calories", totals.calories, targets.calories, "", "var(--accent)"],
+    ["Fat", totals.fat, targets.fat, "g", "var(--gold)"],
+    ["Carbs", totals.carbs, targets.carbs, "g", "var(--blue)"],
+    ["Protein", totals.protein, targets.protein, "g", "var(--accent-dark)"]
+  ];
+  return `
+    <section class="home-snapshot">
+      <h2>Today's Macro Snapshot</h2>
+      <div class="snapshot-grid">
+        ${cards.map(([label, actual, target, unit, color]) => {
+          const fill = target > 0 ? Math.min(actual / target * 100, 100) : 0;
+          return `
+            <div class="snapshot-card" style="--snap-fill:${fill}%; --snap-color:${color}">
+              <div class="snapshot-donut" aria-hidden="true"></div>
+              <span>${label}</span>
+              <strong>${fmt(actual)}${unit} / ${target ? fmt(target) + unit : "--"}</strong>
+            </div>
+          `;
+        }).join("")}
+      </div>
+    </section>
+  `;
+}
+
 function renderHome() {
   const name = state.profileName || "Tanner";
   const profile = state.profileData || {};
@@ -2348,10 +2467,16 @@ function renderHome() {
           <h2>Welcome, ${esc(name)}</h2>
           <p>${profile.goal ? esc(profile.goal) : "Your phases, food bank, cheat-day meals, and training log in one spot."}</p>
           ${profileSummary ? `<p>${esc(profileSummary)}</p>` : ""}
+          <div class="profile-stats">
+            <div class="profile-stat"><span>Age</span><strong>${age || "--"}</strong></div>
+            <div class="profile-stat"><span>BMR</span><strong>${bmr ? fmt(bmr) : "--"}</strong><span>Mifflin-St Jeor</span></div>
+          </div>
         </div>
-        <div class="avatar">${esc(name.slice(0, 1).toUpperCase())}</div>
+        <div class="profile-avatar-stack">
+          <div class="avatar">${esc(name.slice(0, 1).toUpperCase())}</div>
+          ${showProfileForm ? "" : `<div class="profile-actions"><button class="mini profile-edit-icon" data-edit-profile aria-label="Edit profile" title="Edit profile">&#9998;</button></div>`}
+        </div>
       </div>
-      ${showProfileForm ? "" : `<div class="profile-actions"><button class="mini" data-edit-profile>Edit Profile</button></div>`}
       ${showProfileForm ? `
       <form class="profile-form" data-profile-form>
         ${state.profileName ? "" : `<label class="full"><span>Name</span><input name="profileName" placeholder="Your name" value="${esc(state.profileName)}"></label>`}
@@ -2366,18 +2491,17 @@ function renderHome() {
       </form>
       ` : ""}
     </section>
-    <section class="stat-grid">
-      <div class="metric"><span>Age</span><strong>${age || "--"}</strong></div>
-      <div class="metric"><span>BMR</span><strong>${bmr ? fmt(bmr) : "--"}</strong><span>Mifflin-St Jeor</span></div>
-      <div class="metric"><span>Gym Streak</span><strong>${trainingStreak()}</strong></div>
-      <div class="metric"><span>Gym / Cardio</span><strong>${counts.gym} / ${counts.cardio}</strong></div>
-    </section>
+    ${renderHomeSnapshot()}
     <main class="home-grid">
       <button class="home-card" data-view-target="meal"><strong>Meal Plan</strong><span>Daily meals, macro totals, food servings, and saved meal groups.</span></button>
       <button class="home-card" data-view-target="bank"><strong>Food Bank</strong><span>All saved foods grouped by food type.</span></button>
       <button class="home-card" data-view-target="cheat"><strong>Cheat Day Entry</strong><span>Restaurant meals plus normal Food Bank items by meal slot.</span></button>
       <button class="home-card" data-view-target="desserts"><strong>Protein Dessert Options</strong><span>Six macro-friendly dessert ideas with ingredients and visuals.</span></button>
     </main>
+    <section class="stat-grid training-stats">
+      <div class="metric"><span>Gym Streak</span><strong>${trainingStreak()}</strong></div>
+      <div class="metric"><span>Gym / Cardio</span><strong>${counts.gym} / ${counts.cardio}</strong></div>
+    </section>
     ${renderTrainingCalendar()}
     <section class="archive-section">
       <h2>Archived Phase Tabs</h2>
