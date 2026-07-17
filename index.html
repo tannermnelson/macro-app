@@ -1455,12 +1455,12 @@ const TEMPLATE_FOOD_DEFAULTS = [
   { name: "Green Pepper", category: "Vegetables", calories: 30, fat: 0, carbs: 4, protein: 1 },
   { name: "Onion", category: "Vegetables", calories: 40, fat: 0, carbs: 10, protein: 1 },
   { name: "Pinto Beans", category: "Vegetables", calories: 90, fat: 0.5, carbs: 18, protein: 6 },
-  { name: "Cottage Cheese", category: "Dairy", calories: 110, fat: 1, carbs: 6, protein: 13 },
+  { name: "Low Fat Cottage Cheese", category: "Dairy", calories: 90, fat: 1, carbs: 6, protein: 13 },
   { name: "Chicken", category: "Protein", calories: 130, fat: 3, carbs: 0, protein: 25 },
   { name: "Eggs", category: "Protein", calories: 70, fat: 5, carbs: 0, protein: 6 },
   { name: "Egg Whites", category: "Protein", calories: 25, fat: 0, carbs: 0, protein: 5 },
   { name: "Spinach", category: "Vegetables", calories: 25, fat: 0, carbs: 3, protein: 2 },
-  { name: "Protein Powder", category: "Supplements", calories: 147, fat: 3, carbs: 5, protein: 25 },
+  { name: "Choc. Cake Protein Powder", category: "Supplements", calories: 147, fat: 3, carbs: 5, protein: 25 },
   { name: "Almond Milk", category: "Dairy", calories: 35, fat: 3, carbs: 1, protein: 1 },
   { name: "Xanthan Gum", category: "Fats, Sauces & Extras", calories: 10, fat: 0, carbs: 3, protein: 0 },
   { name: "Salt", category: "Fats, Sauces & Extras", calories: 0, fat: 0, carbs: 0, protein: 0 },
@@ -1469,7 +1469,7 @@ const TEMPLATE_FOOD_DEFAULTS = [
   { name: "Oatmeal", category: "Grains & Starches", calories: 150, fat: 3, carbs: 27, protein: 5 },
   { name: "Blueberries", category: "Fruit", calories: 40, fat: 0, carbs: 10, protein: 1 },
   { name: "Strawberries", category: "Fruit", calories: 25, fat: 0, carbs: 6, protein: 1 },
-  { name: "Banana", category: "Fruit", calories: 105, fat: 0, carbs: 27, protein: 1 },
+  { name: "Banana", category: "Fruit", calories: 110, fat: 0, carbs: 27, protein: 1 },
   { name: "Ice", category: "Fats, Sauces & Extras", calories: 0, fat: 0, carbs: 0, protein: 0 },
   { name: "Cinnamon", category: "Fats, Sauces & Extras", calories: 6, fat: 0, carbs: 2, protein: 0 },
   { name: "PB Powder", category: "Supplements", calories: 50, fat: 1.5, carbs: 4, protein: 6 },
@@ -1479,6 +1479,40 @@ const TEMPLATE_FOOD_DEFAULTS = [
 
 function normalizedFoodName(value) {
   return String(value || "").toLowerCase().replace(/[^a-z0-9]+/g, "");
+}
+
+function duplicateFoodNameKey(value) {
+  let name = normalizedFoodName(canonicalName(value));
+  if (name.includes("proteinpowder")) return "proteinpowder";
+  if (name.includes("cottagecheese")) return "cottagecheese";
+  if (name.includes("pintobean")) return "pintobeans";
+  if (name.includes("ricecake")) return "ricecake";
+  const aliases = {
+    proteinpwd: "proteinpowder",
+    proteinpowder: "proteinpowder",
+    pb2: "pbpowder",
+    pbpowder: "pbpowder",
+    potatoes: "potato",
+    pototaoes: "potato",
+    russetpotato: "potato",
+    russetpot: "potato",
+    greenpepper: "pepper",
+    peppers: "pepper",
+    onions: "onion",
+    eggs: "egg",
+    eggwhite: "eggwhites",
+    blueberry: "blueberries",
+    blueberries: "blueberries",
+    strawberry: "strawberries",
+    strawberries: "strawberries",
+    cottagech: "cottagecheese",
+    cottagechse: "cottagecheese"
+  };
+  if (aliases[name]) return aliases[name];
+  if (name.endsWith("ies") && name.length > 4) name = `${name.slice(0, -3)}y`;
+  else if (name.endsWith("es") && name.length > 4) name = name.slice(0, -2);
+  else if (name.endsWith("s") && name.length > 3) name = name.slice(0, -1);
+  return aliases[name] || name;
 }
 
 function findTemplateFood(component) {
@@ -1616,6 +1650,114 @@ function mealUsageForFood(item) {
     return matched && foodKey(matched) === itemKey;
   }));
   return meals.map((meal) => meal.name);
+}
+
+function applySpecificFoodCleanup() {
+  let changed = false;
+  DATA.forEach((phase) => {
+    const cleanedItems = [];
+    phase.items.forEach((item) => {
+      const nameKey = duplicateFoodNameKey(item.name);
+      const exactName = normalizedFoodName(item.name);
+      const calories = parseNumber(item.calories);
+      const updated = { ...item };
+      let remove = false;
+
+      if (nameKey === "proteinpowder") {
+        if (calories === 147) {
+          updated.name = "Choc. Cake Protein Powder";
+          updated.category = "Supplements";
+        } else {
+          remove = true;
+        }
+      }
+
+      if (nameKey === "banana") {
+        updated.name = "Banana";
+        updated.category = "Fruit";
+        updated.calories = 110;
+      }
+
+      if (nameKey === "cottagecheese") {
+        updated.name = "Low Fat Cottage Cheese";
+        updated.category = "Dairy";
+        updated.calories = 90;
+      }
+
+      if (nameKey === "beans" || nameKey === "pintobean" || nameKey === "pintobeans") {
+        updated.name = "Pinto Beans";
+        updated.category = "Vegetables";
+        updated.calories = 90;
+        updated.fat = 0.5;
+        updated.carbs = 18;
+        updated.protein = 6;
+      }
+
+      if (exactName === "carrots" || exactName === "carrot" || exactName === "other") remove = true;
+      if ((exactName === "ricecakes" || exactName === "ricecake") && calories !== 60) remove = true;
+
+      if (remove) {
+        changed = true;
+        return;
+      }
+      if (JSON.stringify(updated) !== JSON.stringify(item)) changed = true;
+      cleanedItems.push(updated);
+    });
+    phase.items = cleanedItems;
+  });
+
+  const library = foodLibrary();
+  const linkTargets = [
+    ["Protein Powder", (item) => duplicateFoodNameKey(item.name) === "proteinpowder" && parseNumber(item.calories) === 147],
+    ["Banana", (item) => duplicateFoodNameKey(item.name) === "banana" && parseNumber(item.calories) === 110],
+    ["Pinto Beans", (item) => duplicateFoodNameKey(item.name) === "pintobeans" || duplicateFoodNameKey(item.name) === "pintobean" || (duplicateFoodNameKey(item.name) === "beans" && parseNumber(item.calories) === 90)],
+    ["Cottage Cheese", (item) => duplicateFoodNameKey(item.name) === "cottagecheese" && parseNumber(item.calories) === 90]
+  ];
+  linkTargets.forEach(([componentName, matcher]) => {
+    const target = library.find(matcher);
+    if (!target) return;
+    state.mealFoodKeys[normalizedFoodName(componentName)] = foodKey(target);
+  });
+
+  if (changed) {
+    state.deletedFoodKeys = (state.deletedFoodKeys || []).filter((key) => {
+      const [name, calories] = key.split("|");
+      const nameKey = duplicateFoodNameKey(name);
+      if (nameKey === "proteinpowder" && Number(calories) !== 147) return false;
+      if (name === "carrots" || name === "carrot" || name === "other") return false;
+      if ((name === "ricecakes" || name === "ricecake") && Number(calories) !== 60) return false;
+      return true;
+    });
+    saveData();
+    localStorage.setItem(DELETED_FOOD_KEY, JSON.stringify(state.deletedFoodKeys));
+  }
+  localStorage.setItem(MEAL_FOOD_KEY, JSON.stringify(state.mealFoodKeys));
+}
+
+function cleanupUnusedMealDuplicates() {
+  const groups = new Map();
+  foodLibrary().forEach((item) => {
+    const key = duplicateFoodNameKey(item.name);
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(item);
+  });
+  const removeKeys = [];
+  groups.forEach((items) => {
+    if (items.length < 2) return;
+    const usedItems = items.filter((item) => mealUsageForFood(item).length);
+    if (!usedItems.length) return;
+    items.forEach((item) => {
+      if (!mealUsageForFood(item).length) removeKeys.push(foodKey(item));
+    });
+  });
+  if (!removeKeys.length) return 0;
+  state.deletedFoodKeys = [...new Set([...(state.deletedFoodKeys || []), ...removeKeys])];
+  DATA.forEach((phase) => {
+    phase.items = phase.items.filter((item) => !removeKeys.includes(foodKey(item)));
+  });
+  saveData();
+  localStorage.setItem(DELETED_FOOD_KEY, JSON.stringify(state.deletedFoodKeys));
+  return removeKeys.length;
 }
 
 function mealServingKey(instanceId, component) {
@@ -1992,6 +2134,7 @@ function renderModal() {
 
 function renderFoodBank() {
   ensureMealTemplateFoods();
+  cleanupUnusedMealDuplicates();
   const query = state.query.trim().toLowerCase();
   const items = foodLibrary().filter((item) => !query || item.name.toLowerCase().includes(query) || item.category.toLowerCase().includes(query));
   const mealCards = savedMeals().map((meal) => {
@@ -2989,6 +3132,7 @@ document.addEventListener("submit", (event) => {
   render();
 });
 
+applySpecificFoodCleanup();
 applyTheme();
 render();
 </script>
