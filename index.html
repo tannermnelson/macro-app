@@ -3599,7 +3599,7 @@ function renderHome() {
     age ? `${age} yrs` : "",
     bmr ? `BMR ${fmt(bmr)}` : "",
     profile.currentWeight ? `${profile.currentWeight} lb` : "",
-    profile.goalWeight ? `goal ${profile.goalWeight} lb` : ""
+    profile.goalWeight ? `Goal ${profile.goalWeight} lb` : ""
   ].filter(Boolean).join(" - ");
   document.querySelector("#app").innerHTML = `
     ${topShell("Macro Hub", "", `<button class="info-button" data-open-app-info aria-label="App info" title="App info">i</button>`)}
