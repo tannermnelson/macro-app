@@ -1755,6 +1755,8 @@ const DAY_TEMPLATES_KEY = "macroDayTemplates";
 const RECENT_FOODS_KEY = "macroRecentFoods";
 const FAVORITE_FOODS_KEY = "macroFavoriteFoods";
 const GROCERY_DAYS_KEY = "macroGroceryDays";
+const UPDATE_BACKUP_KEY = "macroPendingUpdateBackup";
+const USER_DATA_KEYS = [STORAGE_KEY, PROFILE_KEY, PROFILE_DATA_KEY, CHEAT_KEY, TRAINING_KEY, MEAL_PLAN_KEY, MEAL_SLOT_KEY, MEAL_COLLAPSE_KEY, CUSTOM_MEALS_KEY, EDITED_MEALS_KEY, WEEKLY_PLAN_KEY, DELETED_FOOD_KEY, MEAL_FOOD_KEY, DAY_LOG_KEY, WEIGHT_LOG_KEY, DAY_TEMPLATES_KEY, RECENT_FOODS_KEY, FAVORITE_FOODS_KEY, GROCERY_DAYS_KEY, FAVORITES_KEY, THEME_KEY, "macroPhase", "macroView", "macroActiveOnly"];
 
 const clone = (value) => JSON.parse(JSON.stringify(value));
 const slug = (value) => String(value || "item").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "item";
@@ -1873,6 +1875,37 @@ function prepareData(phases) {
     };
   });
 }
+
+function userDataBackup() {
+  const backup = {};
+  USER_DATA_KEYS.forEach((key) => {
+    const value = localStorage.getItem(key);
+    if (value !== null) backup[key] = value;
+  });
+  return { created: new Date().toISOString(), backup };
+}
+
+function savePendingUpdateBackup() {
+  localStorage.setItem(UPDATE_BACKUP_KEY, JSON.stringify(userDataBackup()));
+}
+
+function restorePendingUpdateBackup() {
+  const raw = localStorage.getItem(UPDATE_BACKUP_KEY);
+  if (!raw) return false;
+  try {
+    const parsed = JSON.parse(raw);
+    Object.entries(parsed.backup || {}).forEach(([key, value]) => {
+      if (typeof value === "string") localStorage.setItem(key, value);
+    });
+    localStorage.removeItem(UPDATE_BACKUP_KEY);
+    return true;
+  } catch (error) {
+    localStorage.removeItem(UPDATE_BACKUP_KEY);
+    return false;
+  }
+}
+
+restorePendingUpdateBackup();
 
 let DATA = prepareData(JSON.parse(localStorage.getItem(STORAGE_KEY) || "null") || clone(ORIGINAL_DATA));
 if (!DATA.some((phase) => phase.id === "food-bank-custom")) {
@@ -2032,6 +2065,7 @@ function showUpdateNotice(registration) {
   `;
   document.body.appendChild(notice);
   notice.querySelector("[data-refresh-app]").addEventListener("click", () => {
+    savePendingUpdateBackup();
     if (registration?.waiting) registration.waiting.postMessage({ type: "SKIP_WAITING" });
     else window.location.reload();
   });
@@ -4124,13 +4158,7 @@ document.addEventListener("click", (event) => {
     return;
   }
   if (event.target.closest("[data-export-backup]")) {
-    const keys = [STORAGE_KEY, PROFILE_KEY, PROFILE_DATA_KEY, CHEAT_KEY, TRAINING_KEY, MEAL_PLAN_KEY, MEAL_SLOT_KEY, MEAL_COLLAPSE_KEY, CUSTOM_MEALS_KEY, EDITED_MEALS_KEY, WEEKLY_PLAN_KEY, DELETED_FOOD_KEY, MEAL_FOOD_KEY, DAY_LOG_KEY, WEIGHT_LOG_KEY, DAY_TEMPLATES_KEY, RECENT_FOODS_KEY, FAVORITE_FOODS_KEY, FAVORITES_KEY, THEME_KEY, "macroPhase", "macroView", "macroActiveOnly"];
-    const backup = {};
-    keys.forEach((key) => {
-      const value = localStorage.getItem(key);
-      if (value !== null) backup[key] = value;
-    });
-    const blob = new Blob([JSON.stringify({ created: new Date().toISOString(), backup }, null, 2)], { type: "application/json" });
+    const blob = new Blob([JSON.stringify(userDataBackup(), null, 2)], { type: "application/json" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
     link.download = `macro-hub-backup-${todayKey()}.json`;

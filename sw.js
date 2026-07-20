@@ -1,4 +1,4 @@
-const CACHE_NAME = "macro-hub-2026-07-20-v1";
+const CACHE_NAME = "macro-hub-2026-07-20-v2";
 const APP_SHELL = [
   "./",
   "./index.html",
