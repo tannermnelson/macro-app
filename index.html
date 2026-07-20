@@ -202,7 +202,7 @@
     linear-gradient(110deg, rgba(217,75,43,.22), transparent 42%),
     radial-gradient(circle at 85% 15%, rgba(255,139,99,.18), transparent 28%),
     linear-gradient(180deg, #171412 0, #241f1b 55%, #090807 100%);
-  background-size: auto, cover, min(100vw, 390px) auto, auto, auto, auto;
+  background-size: auto, min(100vw, 430px) auto, min(100vw, 390px) auto, auto, auto, auto;
   background-position: center, center top, right top, center, center, center;
   background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat;
   background-attachment: fixed;
@@ -1671,6 +1671,7 @@ const MEAL_PLAN_KEY = "macroDailyMealPlan";
 const MEAL_SLOT_KEY = "macroMealSlots";
 const MEAL_COLLAPSE_KEY = "macroMealCollapsedSlots";
 const CUSTOM_MEALS_KEY = "macroCustomMeals";
+const EDITED_MEALS_KEY = "macroEditedMeals";
 const DELETED_FOOD_KEY = "macroDeletedFoodKeys";
 const MEAL_FOOD_KEY = "macroMealFoodLinks";
 const DAY_LOG_KEY = "macroDayLog";
@@ -1816,6 +1817,7 @@ const state = {
   mealSlots: JSON.parse(localStorage.getItem(MEAL_SLOT_KEY) || "{}"),
   collapsedMealSlots: JSON.parse(localStorage.getItem(MEAL_COLLAPSE_KEY) || "{}"),
   customMeals: JSON.parse(localStorage.getItem(CUSTOM_MEALS_KEY) || "[]"),
+  editedMeals: JSON.parse(localStorage.getItem(EDITED_MEALS_KEY) || "{}"),
   deletedFoodKeys: JSON.parse(localStorage.getItem(DELETED_FOOD_KEY) || "[]"),
   mealFoodKeys: JSON.parse(localStorage.getItem(MEAL_FOOD_KEY) || "{}"),
   dayLog: JSON.parse(localStorage.getItem(DAY_LOG_KEY) || "{}"),
@@ -1845,6 +1847,99 @@ function applyTheme() {
   localStorage.setItem(THEME_KEY, state.theme);
 }
 
+function playThemeSound(theme) {
+  const clips = {
+    starwars: "assets/sounds/lightsaber.mp3",
+    unc: "assets/sounds/unc-band.mp3",
+    goggins: "assets/sounds/goggins-boats.mp3"
+  };
+  if (playThemeSound.audio) {
+    playThemeSound.audio.pause();
+    playThemeSound.audio.currentTime = 0;
+  }
+  const fallback = () => playThemeTone(theme);
+  if (!clips[theme]) {
+    fallback();
+    return;
+  }
+  const audio = new Audio(clips[theme]);
+  playThemeSound.audio = audio;
+  audio.volume = 0.75;
+  audio.currentTime = 0;
+  let handledError = false;
+  const stopTimer = window.setTimeout(() => {
+    audio.pause();
+    audio.currentTime = 0;
+  }, 5000);
+  audio.addEventListener("error", () => {
+    if (handledError) return;
+    handledError = true;
+    window.clearTimeout(stopTimer);
+    fallback();
+  }, { once: true });
+  audio.play().catch(() => {
+    if (handledError) return;
+    handledError = true;
+    window.clearTimeout(stopTimer);
+    fallback();
+  });
+}
+
+function playThemeTone(theme) {
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContext) return;
+  const context = playThemeTone.context || new AudioContext();
+  playThemeTone.context = context;
+  if (context.state === "suspended") context.resume();
+  const now = context.currentTime;
+  const master = context.createGain();
+  master.gain.setValueAtTime(0.0001, now);
+  master.gain.exponentialRampToValueAtTime(0.18, now + 0.02);
+  master.gain.exponentialRampToValueAtTime(0.0001, now + 0.75);
+  master.connect(context.destination);
+  const tone = (frequency, start, duration, type = "sine", volume = 1, endFrequency = frequency) => {
+    const osc = context.createOscillator();
+    const gain = context.createGain();
+    osc.type = type;
+    osc.frequency.setValueAtTime(frequency, now + start);
+    if (endFrequency !== frequency) osc.frequency.exponentialRampToValueAtTime(endFrequency, now + start + duration);
+    gain.gain.setValueAtTime(0.0001, now + start);
+    gain.gain.exponentialRampToValueAtTime(0.22 * volume, now + start + 0.015);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + start + duration);
+    osc.connect(gain);
+    gain.connect(master);
+    osc.start(now + start);
+    osc.stop(now + start + duration + 0.03);
+  };
+  const noise = (start, duration, volume = 0.35) => {
+    const buffer = context.createBuffer(1, Math.max(1, Math.floor(context.sampleRate * duration)), context.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < data.length; i += 1) data[i] = (Math.random() * 2 - 1) * (1 - i / data.length);
+    const source = context.createBufferSource();
+    const gain = context.createGain();
+    const filter = context.createBiquadFilter();
+    filter.type = "lowpass";
+    filter.frequency.setValueAtTime(760, now + start);
+    gain.gain.setValueAtTime(0.0001, now + start);
+    gain.gain.exponentialRampToValueAtTime(0.2 * volume, now + start + 0.01);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + start + duration);
+    source.buffer = buffer;
+    source.connect(filter);
+    filter.connect(gain);
+    gain.connect(master);
+    source.start(now + start);
+  };
+  const sounds = {
+    original: () => { tone(392, 0, 0.12, "triangle", 0.45); tone(523, 0.11, 0.18, "triangle", 0.5); },
+    sunrise: () => { tone(440, 0, 0.1, "sine", 0.45); tone(554, 0.08, 0.1, "sine", 0.45); tone(659, 0.16, 0.18, "sine", 0.5); },
+    berry: () => { tone(659, 0, 0.08, "square", 0.28); tone(784, 0.08, 0.09, "square", 0.25); tone(587, 0.17, 0.14, "triangle", 0.35); },
+    starwars: () => { tone(90, 0, 0.42, "sawtooth", 0.42, 185); tone(185, 0.08, 0.36, "sawtooth", 0.28, 92); noise(0.02, 0.38, 0.22); },
+    unc: () => { tone(523, 0, 0.12, "triangle", 0.45); tone(659, 0.1, 0.12, "triangle", 0.45); tone(784, 0.2, 0.2, "triangle", 0.48); },
+    goggins: () => { tone(82, 0, 0.12, "square", 0.5); noise(0, 0.16, 0.32); tone(110, 0.18, 0.18, "sawtooth", 0.35); }
+  };
+  (sounds[theme] || sounds.original)();
+}
+
 function saveFavorites() {
   state.favoriteIds = state.favoriteIds.filter((id, index, ids) => DATA.some((phase) => phase.id === id) && ids.indexOf(id) === index);
   localStorage.setItem(FAVORITES_KEY, JSON.stringify(state.favoriteIds));
@@ -1856,7 +1951,18 @@ function setView(view) {
 }
 
 function savedMeals() {
-  return [...MEAL_TEMPLATES, ...state.customMeals];
+  const edited = state.editedMeals || {};
+  const builtIns = MEAL_TEMPLATES.map((meal) => {
+    const id = meal.id || slug(meal.name);
+    const edit = edited[id] || edited[meal.name];
+    return edit ? { ...clone(meal), ...clone(edit), id, edited: true } : { ...clone(meal), id };
+  });
+  const builtInIds = new Set(builtIns.map((meal) => meal.id));
+  return [...builtIns, ...state.customMeals.filter((meal) => !builtInIds.has(meal.id))];
+}
+
+function saveEditedMeals() {
+  localStorage.setItem(EDITED_MEALS_KEY, JSON.stringify(state.editedMeals || {}));
 }
 
 function saveCustomMeals() {
@@ -1864,7 +1970,7 @@ function saveCustomMeals() {
 }
 
 function mealById(idOrName) {
-  return savedMeals().find((meal) => (meal.id || meal.name) === idOrName || meal.name === idOrName);
+  return savedMeals().find((meal) => (meal.id || meal.name) === idOrName || meal.name === idOrName || slug(meal.name) === idOrName);
 }
 
 function copyCurrentPhase() {
@@ -2095,7 +2201,7 @@ function findTemplateFood(component) {
 
 function ensureMealTemplateFoods() {
   const bank = foodBankPhase();
-  if (!bank || bank.__seededMealFoods) return;
+  if (!bank) return;
   const library = foodLibrary();
   const deleted = new Set(state.deletedFoodKeys || []);
   const missing = TEMPLATE_FOOD_DEFAULTS.filter((food) => {
@@ -2304,6 +2410,7 @@ function applyDayTemplate(templateId) {
 
 function applySpecificFoodCleanup() {
   let changed = false;
+  const isPlainRiceItem = (name) => ["rice", "whiterice", "brownrice", "jasminerice"].includes(normalizedFoodName(name));
   DATA.forEach((phase) => {
     const cleanedItems = [];
     phase.items.forEach((item) => {
@@ -2344,7 +2451,7 @@ function applySpecificFoodCleanup() {
       }
 
       if (exactName === "carrots" || exactName === "carrot" || exactName === "other") remove = true;
-      if ((exactName === "ricecakes" || exactName === "ricecake") && calories !== 60) remove = true;
+      if (isPlainRiceItem(item.name) && calories !== 160) remove = true;
 
       if (remove) {
         changed = true;
@@ -2375,7 +2482,7 @@ function applySpecificFoodCleanup() {
       const nameKey = duplicateFoodNameKey(name);
       if (nameKey === "proteinpowder" && Number(calories) !== 147) return false;
       if (name === "carrots" || name === "carrot" || name === "other") return false;
-      if ((name === "ricecakes" || name === "ricecake") && Number(calories) !== 60) return false;
+      if (isPlainRiceItem(name) && Number(calories) !== 160) return false;
       return true;
     });
     saveData();
@@ -2747,7 +2854,8 @@ function renderModal() {
   const isMeal = state.modal.type === "meal";
   const isGrocery = state.modal.type === "grocery";
   const isHelp = state.modal.type === "help";
-  const title = isHelp ? "App Guide" : isGrocery ? "Grocery List" : isMeal ? "Create Meal" : isTraining ? "Training Day" : isCheat ? "Add Cheat Meal" : isGoals ? "Daily Goals" : isTab ? "Add Tab" : item ? "Edit Food" : "Add Food";
+  const editingMeal = isMeal && state.modal.mealId ? mealById(state.modal.mealId) : null;
+  const title = isHelp ? "App Guide" : isGrocery ? "Grocery List" : isMeal ? (editingMeal ? "Edit Meal" : "Create Meal") : isTraining ? "Training Day" : isCheat ? "Add Cheat Meal" : isGoals ? "Daily Goals" : isTab ? "Add Tab" : item ? "Edit Food" : "Add Food";
   const values = item || { name: "", category: "", servings: 0, calories: 0, fat: 0, carbs: 0, protein: 0 };
   const targets = { ...DEFAULT_TARGETS, ...(phase.targets || {}) };
   const cheatItem = state.modal.cheatItem || { name: "", restaurant: "", slot: "Other", servings: 1, calories: 0, fat: 0, carbs: 0, protein: 0 };
@@ -2755,7 +2863,7 @@ function renderModal() {
   const trainingEntry = trainingDate ? (state.trainingLog[trainingDate] || {}) : {};
   modalRoot.innerHTML = `
     <div class="modal-backdrop open" data-close-modal>
-      <form class="modal" data-food-form data-form-type="${esc(state.modal.type)}" data-form-item="${esc(state.modal.itemId || "")}" data-form-bank-key="${esc(state.modal.bankEditKey || "")}" data-form-bank="${state.modal.bankItem || state.modal.bankEditKey ? "true" : "false"}">
+      <form class="modal" data-food-form data-form-type="${esc(state.modal.type)}" data-form-meal-id="${esc(state.modal.mealId || "")}" data-form-item="${esc(state.modal.itemId || "")}" data-form-bank-key="${esc(state.modal.bankEditKey || "")}" data-form-bank="${state.modal.bankItem || state.modal.bankEditKey ? "true" : "false"}">
         <h2>${title}</h2>
         ${isHelp ? `
           <div class="help-list">
@@ -2777,14 +2885,19 @@ function renderModal() {
           </div>
         ` : isMeal ? `
           <div class="form-grid">
-            <label class="field full"><span>Meal name</span><input name="mealName" required placeholder="Example: Turkey Lunch"></label>
-            ${Array.from({ length: 8 }).map((_, index) => `
+            <label class="field full"><span>Meal name</span><input name="mealName" required placeholder="Example: Turkey Lunch" value="${esc(editingMeal?.name || "")}"></label>
+            ${Array.from({ length: Math.max(8, (editingMeal?.items?.length || 0) + 2) }).map((_, index) => {
+              const component = editingMeal?.items?.[index] || {};
+              const selectedFood = component.name ? findTemplateFood({ ...component, aliases: [...(component.aliases || []), component.name] }) : null;
+              const selectedKey = selectedFood ? foodKey(selectedFood) : "";
+              return `
               <label class="field"><span>Item ${index + 1}</span><select name="mealItem${index}">
                 <option value="">Choose food</option>
-                ${foodLibrary().map((food) => `<option value="${esc(food.name)}">${esc(food.name)}</option>`).join("")}
+                ${foodLibrary().map((food) => `<option value="${esc(foodKey(food))}" ${foodKey(food) === selectedKey || food.name === component.name ? "selected" : ""}>${esc(food.name)} - ${fmt(food.calories)} cal</option>`).join("")}
               </select></label>
-              <label class="field"><span>Servings</span><input name="mealServing${index}" inputmode="decimal" value="${index === 0 ? "1" : ""}"></label>
-            `).join("")}
+              <label class="field"><span>Servings</span><input name="mealServing${index}" inputmode="decimal" value="${component.servings ? fmt(component.servings) : (index === 0 && !editingMeal ? "1" : "")}"></label>
+            `;
+            }).join("")}
           </div>
         ` : isTraining ? `
           <div class="form-grid">
@@ -2846,14 +2959,14 @@ function renderFoodBank() {
   const mealCards = savedMeals().map((meal) => {
     const totals = mealMacroTotals(mealMatchesFor(`preview-${slug(meal.id || meal.name)}`, meal));
     const isCustom = Boolean(meal.custom);
-    return `
+    return ` 
       <article class="item">
         <div class="item-head">
           <div>
             <div class="item-name">${esc(meal.name)}</div>
             <div class="item-cat">${meal.items.length} items - ${fmt(totals.calories)} cal - P ${fmt(totals.protein)}g</div>
           </div>
-          ${isCustom ? `<button class="mini danger" data-delete-custom-meal="${esc(meal.id)}">Delete</button>` : ""}
+          <div class="inline-actions"><button class="mini" data-edit-meal="${esc(meal.id || meal.name)}">Edit</button>${isCustom ? `<button class="mini danger" data-delete-custom-meal="${esc(meal.id)}">Delete</button>` : ""}</div>
         </div>
         <ul class="ingredients">${meal.items.map((component) => `<li>${esc(component.name)} - ${fmt(component.servings)} serving${component.servings === 1 ? "" : "s"}</li>`).join("")}</ul>
       </article>
@@ -3683,7 +3796,7 @@ document.addEventListener("click", (event) => {
     return;
   }
   if (event.target.closest("[data-export-backup]")) {
-    const keys = [STORAGE_KEY, PROFILE_KEY, PROFILE_DATA_KEY, CHEAT_KEY, TRAINING_KEY, MEAL_PLAN_KEY, MEAL_SLOT_KEY, MEAL_COLLAPSE_KEY, CUSTOM_MEALS_KEY, DELETED_FOOD_KEY, MEAL_FOOD_KEY, DAY_LOG_KEY, WEIGHT_LOG_KEY, DAY_TEMPLATES_KEY, RECENT_FOODS_KEY, FAVORITE_FOODS_KEY, FAVORITES_KEY, THEME_KEY, "macroPhase", "macroView", "macroActiveOnly"];
+    const keys = [STORAGE_KEY, PROFILE_KEY, PROFILE_DATA_KEY, CHEAT_KEY, TRAINING_KEY, MEAL_PLAN_KEY, MEAL_SLOT_KEY, MEAL_COLLAPSE_KEY, CUSTOM_MEALS_KEY, EDITED_MEALS_KEY, DELETED_FOOD_KEY, MEAL_FOOD_KEY, DAY_LOG_KEY, WEIGHT_LOG_KEY, DAY_TEMPLATES_KEY, RECENT_FOODS_KEY, FAVORITE_FOODS_KEY, FAVORITES_KEY, THEME_KEY, "macroPhase", "macroView", "macroActiveOnly"];
     const backup = {};
     keys.forEach((key) => {
       const value = localStorage.getItem(key);
@@ -3918,6 +4031,12 @@ document.addEventListener("click", (event) => {
     renderModal();
     return;
   }
+  const editMeal = event.target.closest("[data-edit-meal]");
+  if (editMeal) {
+    state.modal = { type: "meal", mealId: editMeal.dataset.editMeal };
+    renderModal();
+    return;
+  }
   if (event.target.closest("[data-open-grocery]")) {
     state.modal = { type: "grocery" };
     renderModal();
@@ -4021,6 +4140,7 @@ document.addEventListener("click", (event) => {
       localStorage.removeItem(MEAL_PLAN_KEY);
       localStorage.removeItem(MEAL_SLOT_KEY);
       localStorage.removeItem(CUSTOM_MEALS_KEY);
+      localStorage.removeItem(EDITED_MEALS_KEY);
       localStorage.removeItem(DELETED_FOOD_KEY);
       localStorage.removeItem(MEAL_FOOD_KEY);
       localStorage.removeItem(DAY_LOG_KEY);
@@ -4034,6 +4154,7 @@ document.addEventListener("click", (event) => {
       state.mealServings = {};
       state.mealSlots = {};
       state.customMeals = [];
+      state.editedMeals = {};
       state.deletedFoodKeys = [];
       state.mealFoodKeys = {};
       state.dayLog = {};
@@ -4085,6 +4206,7 @@ document.addEventListener("change", (event) => {
   if (event.target.matches("[data-theme-select]")) {
     state.theme = event.target.value;
     applyTheme();
+    playThemeSound(state.theme);
     if (state.view === "archive") renderArchiveSummary();
     if (state.view === "meal" || state.view === "phase") renderMealPlan();
     return;
@@ -4210,15 +4332,32 @@ document.addEventListener("submit", (event) => {
     const name = String(formData.get("mealName") || "").trim();
     if (!name) return;
     const items = [];
-    for (let index = 0; index < 8; index += 1) {
-      const itemName = String(formData.get(`mealItem${index}`) || "").trim();
+    for (let index = 0; index < 20; index += 1) {
+      const itemKey = String(formData.get(`mealItem${index}`) || "").trim();
       const servings = parseNumber(formData.get(`mealServing${index}`));
-      if (!itemName || servings <= 0) continue;
+      if (!itemKey || servings <= 0) continue;
+      const linkedFood = foodLibrary().find((food) => foodKey(food) === itemKey);
+      if (!linkedFood) continue;
+      const itemName = linkedFood.name;
+      if (linkedFood) state.mealFoodKeys[normalizedFoodName(itemName)] = foodKey(linkedFood);
       items.push({ name: itemName, servings, aliases: [itemName] });
     }
     if (!items.length) return;
-    state.customMeals.push({ id: `${slug(name)}-${Date.now()}`, name, custom: true, items });
-    saveCustomMeals();
+    const mealId = form.dataset.formMealId || "";
+    if (mealId) {
+      const customIndex = state.customMeals.findIndex((meal) => meal.id === mealId);
+      if (customIndex >= 0) {
+        state.customMeals[customIndex] = { ...state.customMeals[customIndex], name, items, custom: true };
+        saveCustomMeals();
+      } else {
+        state.editedMeals = { ...(state.editedMeals || {}), [mealId]: { name, items } };
+        saveEditedMeals();
+      }
+    } else {
+      state.customMeals.push({ id: `${slug(name)}-${Date.now()}`, name, custom: true, items });
+      saveCustomMeals();
+    }
+    localStorage.setItem(MEAL_FOOD_KEY, JSON.stringify(state.mealFoodKeys));
   } else {
     const itemData = {
       id: form.dataset.formItem || `${slug(formData.get("name"))}-${Date.now()}`,
