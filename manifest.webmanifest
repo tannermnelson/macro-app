@@ -1,0 +1,19 @@
+{
+  "name": "Macro Hub",
+  "short_name": "Macros",
+  "description": "Meal planning, macro tracking, grocery lists, and training logs.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#edf8ef",
+  "theme_color": "#0f805f",
+  "icons": [
+    {
+      "src": "app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

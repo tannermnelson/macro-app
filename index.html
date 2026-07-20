@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Macros">
   <meta name="mobile-web-app-capable" content="yes">
-  <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Macro%20Phases%22%2C%22short_name%22%3A%22Macros%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23edf8ef%22%2C%22theme_color%22%3A%22%230f805f%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage/svg%2Bxml%2C%253Csvg%2520xmlns%253D%2527http%253A//www.w3.org/2000/svg%2527%2520viewBox%253D%25270%25200%2520512%2520512%2527%253E%253Crect%2520width%253D%2527512%2527%2520height%253D%2527512%2527%2520rx%253D%252796%2527%2520fill%253D%2527%25230f805f%2527/%253E%253Ccircle%2520cx%253D%2527256%2527%2520cy%253D%2527256%2527%2520r%253D%2527150%2527%2520fill%253D%2527none%2527%2520stroke%253D%2527%2523ffffff%2527%2520stroke-width%253D%252746%2527/%253E%253Cpath%2520d%253D%2527M256%2520106a150%2520150%25200%25200%25201%2520132%252079%2527%2520fill%253D%2527none%2527%2520stroke%253D%2527%2523efb94d%2527%2520stroke-width%253D%252746%2527%2520stroke-linecap%253D%2527round%2527/%253E%253Cpath%2520d%253D%2527M388%2520185a150%2520150%25200%25200%25201-38%2520194%2527%2520fill%253D%2527none%2527%2520stroke%253D%2527%252363aef2%2527%2520stroke-width%253D%252746%2527%2520stroke-linecap%253D%2527round%2527/%253E%253Ccircle%2520cx%253D%2527256%2527%2520cy%253D%2527256%2527%2520r%253D%252758%2527%2520fill%253D%2527%2523ffffff%2527/%253E%253C/svg%253E%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image/svg%2Bxml%22%7D%5D%7D">
+  <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20512%20512%27%3E%3Crect%20width%3D%27512%27%20height%3D%27512%27%20rx%3D%2796%27%20fill%3D%27%230f805f%27/%3E%3Ccircle%20cx%3D%27256%27%20cy%3D%27256%27%20r%3D%27150%27%20fill%3D%27none%27%20stroke%3D%27%23ffffff%27%20stroke-width%3D%2746%27/%3E%3Cpath%20d%3D%27M256%20106a150%20150%200%200%201%20132%2079%27%20fill%3D%27none%27%20stroke%3D%27%23efb94d%27%20stroke-width%3D%2746%27%20stroke-linecap%3D%27round%27/%3E%3Cpath%20d%3D%27M388%20185a150%20150%200%200%201-38%20194%27%20fill%3D%27none%27%20stroke%3D%27%2363aef2%27%20stroke-width%3D%2746%27%20stroke-linecap%3D%27round%27/%3E%3Ccircle%20cx%3D%27256%27%20cy%3D%27256%27%20r%3D%2758%27%20fill%3D%27%23ffffff%27/%3E%3C/svg%3E">
   <title>Macro Phases</title>
   <style>
@@ -881,6 +881,80 @@ select:disabled {
   color: var(--muted);
   font-size: .8rem;
 }
+.weekly-grid {
+  display: grid;
+  gap: 10px;
+}
+.weekly-day {
+  display: grid;
+  gap: 9px;
+}
+.weekly-day-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: start;
+}
+.weekly-day-head h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+.weekly-day-head span,
+.weekly-meals,
+.weekly-grocery-row {
+  color: var(--muted);
+  font-size: .78rem;
+}
+.weekly-actions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+.weekly-template-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 6px;
+}
+.weekly-template-row select,
+.weekly-actions button,
+.weekly-template-row button {
+  min-height: 34px;
+  padding: 7px 8px;
+  font-size: .78rem;
+}
+.weekly-grocery-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  border-top: 1px solid var(--line);
+  padding-top: 7px;
+}
+.update-notice {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: calc(12px + env(safe-area-inset-bottom));
+  z-index: 60;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 12px;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--line));
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--panel) 92%, var(--soft));
+  box-shadow: 0 12px 35px rgba(0,0,0,.22);
+}
+.update-notice strong {
+  display: block;
+  font-size: .9rem;
+}
+.update-notice span {
+  color: var(--muted);
+  font-size: .78rem;
+}
 .archive-section {
   margin: 12px 0 0;
   border: 1px dashed color-mix(in srgb, var(--muted) 45%, var(--line));
@@ -1672,6 +1746,7 @@ const MEAL_SLOT_KEY = "macroMealSlots";
 const MEAL_COLLAPSE_KEY = "macroMealCollapsedSlots";
 const CUSTOM_MEALS_KEY = "macroCustomMeals";
 const EDITED_MEALS_KEY = "macroEditedMeals";
+const WEEKLY_PLAN_KEY = "macroWeeklyPlans";
 const DELETED_FOOD_KEY = "macroDeletedFoodKeys";
 const MEAL_FOOD_KEY = "macroMealFoodLinks";
 const DAY_LOG_KEY = "macroDayLog";
@@ -1815,6 +1890,7 @@ const state = {
   cheatEntries: JSON.parse(localStorage.getItem(CHEAT_KEY) || "{}"),
   mealServings: JSON.parse(localStorage.getItem(MEAL_PLAN_KEY) || "{}"),
   mealSlots: JSON.parse(localStorage.getItem(MEAL_SLOT_KEY) || "{}"),
+  weeklyPlans: JSON.parse(localStorage.getItem(WEEKLY_PLAN_KEY) || "{}"),
   collapsedMealSlots: JSON.parse(localStorage.getItem(MEAL_COLLAPSE_KEY) || "{}"),
   customMeals: JSON.parse(localStorage.getItem(CUSTOM_MEALS_KEY) || "[]"),
   editedMeals: JSON.parse(localStorage.getItem(EDITED_MEALS_KEY) || "{}"),
@@ -1943,6 +2019,45 @@ function playThemeTone(theme) {
 function saveFavorites() {
   state.favoriteIds = state.favoriteIds.filter((id, index, ids) => DATA.some((phase) => phase.id === id) && ids.indexOf(id) === index);
   localStorage.setItem(FAVORITES_KEY, JSON.stringify(state.favoriteIds));
+}
+
+function showUpdateNotice(registration) {
+  if (document.querySelector("[data-update-notice]")) return;
+  const notice = document.createElement("div");
+  notice.className = "update-notice";
+  notice.dataset.updateNotice = "true";
+  notice.innerHTML = `
+    <div><strong>Update ready</strong><span>Refresh once to use the newest app version.</span></div>
+    <button class="primary" type="button" data-refresh-app>Refresh</button>
+  `;
+  document.body.appendChild(notice);
+  notice.querySelector("[data-refresh-app]").addEventListener("click", () => {
+    if (registration?.waiting) registration.waiting.postMessage({ type: "SKIP_WAITING" });
+    else window.location.reload();
+  });
+}
+
+function registerOfflineApp() {
+  if (!("serviceWorker" in navigator) || !["http:", "https:"].includes(window.location.protocol)) return;
+  let refreshing = false;
+  navigator.serviceWorker.addEventListener("controllerchange", () => {
+    if (refreshing) return;
+    refreshing = true;
+    window.location.reload();
+  });
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js").then((registration) => {
+      registration.update().catch(() => {});
+      if (registration.waiting && navigator.serviceWorker.controller) showUpdateNotice(registration);
+      registration.addEventListener("updatefound", () => {
+        const worker = registration.installing;
+        if (!worker) return;
+        worker.addEventListener("statechange", () => {
+          if (worker.state === "installed" && navigator.serviceWorker.controller) showUpdateNotice(registration);
+        });
+      });
+    }).catch(() => {});
+  });
 }
 
 function setView(view) {
@@ -2388,6 +2503,110 @@ function groceryExportText(days = state.groceryDays) {
     ...list.map((entry) => `- ${entry.name}: ${fmt(entry.servings)}`)
   ];
   return lines.join("\n");
+}
+
+function saveWeeklyPlans() {
+  localStorage.setItem(WEEKLY_PLAN_KEY, JSON.stringify(state.weeklyPlans || {}));
+}
+
+function cloneMealPlanState() {
+  return {
+    mealSlots: clone(state.mealSlots || {}),
+    mealServings: clone(state.mealServings || {})
+  };
+}
+
+function planHasMeals(plan) {
+  return MEAL_PLAN_SLOTS.some((slot) => Array.isArray(plan?.mealSlots?.[slot]) && plan.mealSlots[slot].length);
+}
+
+function weekStart(date = new Date()) {
+  const copy = new Date(date);
+  copy.setHours(0, 0, 0, 0);
+  const day = copy.getDay();
+  const diff = day === 0 ? -6 : 1 - day;
+  copy.setDate(copy.getDate() + diff);
+  return copy;
+}
+
+function addDays(date, days) {
+  const copy = new Date(date);
+  copy.setDate(copy.getDate() + days);
+  return copy;
+}
+
+function shortDateLabel(dateKey) {
+  const date = new Date(`${dateKey}T00:00:00`);
+  return date.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" });
+}
+
+function weekDateKeys(start = weekStart()) {
+  return Array.from({ length: 7 }, (_, index) => isoDate(addDays(start, index)));
+}
+
+function matchesForPlanInstance(instanceId, meal, servingsMap = {}) {
+  return meal.items.map((component) => {
+    const item = findTemplateFood(component);
+    if (!item) return null;
+    const key = mealServingKey(instanceId, component);
+    return {
+      item,
+      component,
+      key,
+      servings: servingsMap[key] ?? component.servings ?? 0
+    };
+  }).filter(Boolean);
+}
+
+function totalsForMealPlan(plan) {
+  return MEAL_PLAN_SLOTS.reduce((totals, slot) => {
+    const instances = Array.isArray(plan?.mealSlots?.[slot]) ? plan.mealSlots[slot] : [];
+    instances.forEach((instance) => {
+      const meal = mealById(instance.mealId);
+      if (!meal) return;
+      const matches = matchesForPlanInstance(instance.id, meal, plan.mealServings || {});
+      const mealTotals = mealMacroTotals(matches);
+      totals.calories += mealTotals.calories;
+      totals.fat += mealTotals.fat;
+      totals.carbs += mealTotals.carbs;
+      totals.protein += mealTotals.protein;
+      totals.servings += matches.reduce((sum, match) => sum + match.servings, 0);
+    });
+    return totals;
+  }, { calories: 0, fat: 0, carbs: 0, protein: 0, servings: 0 });
+}
+
+function weeklyTotals(dateKeys = weekDateKeys()) {
+  return dateKeys.reduce((totals, dateKey) => {
+    const dayTotals = totalsForMealPlan(state.weeklyPlans?.[dateKey]);
+    totals.calories += dayTotals.calories;
+    totals.fat += dayTotals.fat;
+    totals.carbs += dayTotals.carbs;
+    totals.protein += dayTotals.protein;
+    totals.servings += dayTotals.servings;
+    return totals;
+  }, { calories: 0, fat: 0, carbs: 0, protein: 0, servings: 0 });
+}
+
+function weeklyGroceryList(dateKeys = weekDateKeys()) {
+  const totals = new Map();
+  dateKeys.forEach((dateKey) => {
+    const plan = state.weeklyPlans?.[dateKey];
+    MEAL_PLAN_SLOTS.forEach((slot) => {
+      const instances = Array.isArray(plan?.mealSlots?.[slot]) ? plan.mealSlots[slot] : [];
+      instances.forEach((instance) => {
+        const meal = mealById(instance.mealId);
+        if (!meal) return;
+        matchesForPlanInstance(instance.id, meal, plan.mealServings || {}).forEach((match) => {
+          const key = foodKey(match.item);
+          const existing = totals.get(key) || { name: match.item.name, servings: 0 };
+          existing.servings += match.servings;
+          totals.set(key, existing);
+        });
+      });
+    });
+  });
+  return [...totals.values()].sort((a, b) => a.name.localeCompare(b.name));
 }
 
 function saveDayTemplates() {
@@ -3385,6 +3604,7 @@ function renderHome() {
     </section>
     <main class="home-grid">
       <button class="home-card" data-view-target="meal"><strong>Meal Plan</strong><span>Daily meals, macro totals, food servings, and saved meal groups.</span></button>
+      <button class="home-card" data-view-target="weekly"><strong>Weekly Plan</strong><span>Plan each day separately and roll the full week into one grocery list.</span></button>
       <button class="home-card" data-view-target="bank"><strong>Food Bank</strong><span>All saved foods grouped by food type.</span></button>
       <button class="home-card" data-view-target="cheat"><strong>Cheat Day Entry</strong><span>Restaurant meals plus normal Food Bank items by meal slot.</span></button>
       <button class="home-card" data-view-target="desserts"><strong>Protein Dessert Options</strong><span>Six macro-friendly dessert ideas with ingredients and visuals.</span></button>
@@ -3638,6 +3858,69 @@ function renderMealPlan() {
   `;
 }
 
+function renderWeeklyPlan() {
+  ensureMealTemplateFoods();
+  const dates = weekDateKeys();
+  const totals = weeklyTotals(dates);
+  const grocery = weeklyGroceryList(dates);
+  const templateOptions = `<option value="">Apply saved template...</option>${state.dayTemplates.map((template) => `<option value="${esc(template.id)}">${esc(template.name)}</option>`).join("")}`;
+  const dayCard = (dateKey) => {
+    const plan = state.weeklyPlans?.[dateKey] || {};
+    const dayTotals = totalsForMealPlan(plan);
+    const mealLines = MEAL_PLAN_SLOTS.flatMap((slot) => {
+      const instances = Array.isArray(plan?.mealSlots?.[slot]) ? plan.mealSlots[slot] : [];
+      return instances.map((instance) => {
+        const meal = mealById(instance.mealId);
+        return meal ? `${slot}: ${meal.name}` : "";
+      }).filter(Boolean);
+    });
+    return `
+      <section class="slot-card weekly-day">
+        <div class="weekly-day-head">
+          <div>
+            <h3>${esc(shortDateLabel(dateKey))}</h3>
+            <span>${mealLines.length ? `${mealLines.length} meal${mealLines.length === 1 ? "" : "s"}` : "No plan saved"}</span>
+          </div>
+          <strong>${fmt(dayTotals.calories)} cal</strong>
+        </div>
+        <div class="weekly-meals">${mealLines.length ? mealLines.map((line) => `<div>${esc(line)}</div>`).join("") : "Save your current Meal Plan here or apply a template."}</div>
+        <div class="weekly-meals">F ${fmt(dayTotals.fat)}g - C ${fmt(dayTotals.carbs)}g - P ${fmt(dayTotals.protein)}g</div>
+        <div class="weekly-actions">
+          <button class="ghost" data-week-save-current="${esc(dateKey)}">Save Current</button>
+          <button class="ghost" data-week-load-day="${esc(dateKey)}" ${planHasMeals(plan) ? "" : "disabled"}>Load Day</button>
+          <button class="ghost danger" data-week-clear-day="${esc(dateKey)}" ${planHasMeals(plan) ? "" : "disabled"}>Clear</button>
+        </div>
+        <div class="weekly-template-row">
+          <select data-week-template="${esc(dateKey)}">${templateOptions}</select>
+          <button class="primary" data-week-apply-template="${esc(dateKey)}">Apply</button>
+        </div>
+      </section>
+    `;
+  };
+  document.querySelector("#app").innerHTML = `
+    ${topShell("Weekly Plan", `<div class="action-row"><button class="ghost" data-view-target="meal">Meal Plan</button><button class="ghost" data-view-target="home">Home</button></div>`)}
+    <section class="summary">
+      <div class="metric"><span>Weekly Calories</span><strong>${fmt(totals.calories)}</strong></div>
+      <div class="metric"><span>Weekly Protein</span><strong>${fmt(totals.protein)}g</strong></div>
+      <div class="metric"><span>Weekly Carbs</span><strong>${fmt(totals.carbs)}g</strong></div>
+      <div class="metric"><span>Weekly Fat</span><strong>${fmt(totals.fat)}g</strong></div>
+    </section>
+    <main class="weekly-grid">
+      ${dates.map(dayCard).join("")}
+      <section class="slot-card weekly-day">
+        <div class="weekly-day-head">
+          <div>
+            <h3>Weekly Grocery List</h3>
+            <span>${grocery.length ? `${grocery.length} food item${grocery.length === 1 ? "" : "s"}` : "No saved weekly meals yet."}</span>
+          </div>
+        </div>
+        ${grocery.length ? grocery.map((entry) => `<div class="weekly-grocery-row"><strong>${esc(entry.name)}</strong><span>${fmt(entry.servings)}</span></div>`).join("") : `<div class="empty">Save or apply meals to the week to build this list.</div>`}
+      </section>
+    </main>
+    <div data-modal-root></div>
+  `;
+}
+
 function renderArchiveSummary() {
   const phase = currentPhase();
   if (!phase) return;
@@ -3731,6 +4014,10 @@ function render() {
     renderMealPlan();
     return;
   }
+  if (state.view === "weekly") {
+    renderWeeklyPlan();
+    return;
+  }
   if (state.view === "archive") {
     renderArchive();
     return;
@@ -3790,13 +4077,54 @@ document.addEventListener("click", (event) => {
     render();
     return;
   }
+  const weekSave = event.target.closest("[data-week-save-current]");
+  if (weekSave) {
+    state.weeklyPlans[weekSave.dataset.weekSaveCurrent] = cloneMealPlanState();
+    saveWeeklyPlans();
+    renderWeeklyPlan();
+    return;
+  }
+  const weekLoad = event.target.closest("[data-week-load-day]");
+  if (weekLoad) {
+    const plan = state.weeklyPlans[weekLoad.dataset.weekLoadDay];
+    if (!plan) return;
+    state.mealSlots = clone(plan.mealSlots || {});
+    state.mealServings = clone(plan.mealServings || {});
+    localStorage.setItem(MEAL_SLOT_KEY, JSON.stringify(state.mealSlots));
+    localStorage.setItem(MEAL_PLAN_KEY, JSON.stringify(state.mealServings));
+    snapshotTodayNutrition();
+    setView("meal");
+    renderMealPlan();
+    return;
+  }
+  const weekClear = event.target.closest("[data-week-clear-day]");
+  if (weekClear) {
+    delete state.weeklyPlans[weekClear.dataset.weekClearDay];
+    saveWeeklyPlans();
+    renderWeeklyPlan();
+    return;
+  }
+  const weekApplyTemplate = event.target.closest("[data-week-apply-template]");
+  if (weekApplyTemplate) {
+    const dateKey = weekApplyTemplate.dataset.weekApplyTemplate;
+    const templateId = document.querySelector(`[data-week-template="${CSS.escape(dateKey)}"]`)?.value || "";
+    const template = state.dayTemplates.find((entry) => entry.id === templateId);
+    if (!template) return;
+    state.weeklyPlans[dateKey] = {
+      mealSlots: clone(template.mealSlots || {}),
+      mealServings: clone(template.mealServings || {})
+    };
+    saveWeeklyPlans();
+    renderWeeklyPlan();
+    return;
+  }
   if (event.target.closest("[data-edit-profile]")) {
     state.editingProfile = true;
     render();
     return;
   }
   if (event.target.closest("[data-export-backup]")) {
-    const keys = [STORAGE_KEY, PROFILE_KEY, PROFILE_DATA_KEY, CHEAT_KEY, TRAINING_KEY, MEAL_PLAN_KEY, MEAL_SLOT_KEY, MEAL_COLLAPSE_KEY, CUSTOM_MEALS_KEY, EDITED_MEALS_KEY, DELETED_FOOD_KEY, MEAL_FOOD_KEY, DAY_LOG_KEY, WEIGHT_LOG_KEY, DAY_TEMPLATES_KEY, RECENT_FOODS_KEY, FAVORITE_FOODS_KEY, FAVORITES_KEY, THEME_KEY, "macroPhase", "macroView", "macroActiveOnly"];
+    const keys = [STORAGE_KEY, PROFILE_KEY, PROFILE_DATA_KEY, CHEAT_KEY, TRAINING_KEY, MEAL_PLAN_KEY, MEAL_SLOT_KEY, MEAL_COLLAPSE_KEY, CUSTOM_MEALS_KEY, EDITED_MEALS_KEY, WEEKLY_PLAN_KEY, DELETED_FOOD_KEY, MEAL_FOOD_KEY, DAY_LOG_KEY, WEIGHT_LOG_KEY, DAY_TEMPLATES_KEY, RECENT_FOODS_KEY, FAVORITE_FOODS_KEY, FAVORITES_KEY, THEME_KEY, "macroPhase", "macroView", "macroActiveOnly"];
     const backup = {};
     keys.forEach((key) => {
       const value = localStorage.getItem(key);
@@ -4141,6 +4469,7 @@ document.addEventListener("click", (event) => {
       localStorage.removeItem(MEAL_SLOT_KEY);
       localStorage.removeItem(CUSTOM_MEALS_KEY);
       localStorage.removeItem(EDITED_MEALS_KEY);
+      localStorage.removeItem(WEEKLY_PLAN_KEY);
       localStorage.removeItem(DELETED_FOOD_KEY);
       localStorage.removeItem(MEAL_FOOD_KEY);
       localStorage.removeItem(DAY_LOG_KEY);
@@ -4153,6 +4482,7 @@ document.addEventListener("click", (event) => {
       state.cheatEntries = {};
       state.mealServings = {};
       state.mealSlots = {};
+      state.weeklyPlans = {};
       state.customMeals = [];
       state.editedMeals = {};
       state.deletedFoodKeys = [];
@@ -4386,6 +4716,7 @@ document.addEventListener("submit", (event) => {
 
 applySpecificFoodCleanup();
 applyTheme();
+registerOfflineApp();
 render();
 </script>
 </body>
