@@ -929,6 +929,96 @@ select:disabled {
   border-top: 1px solid var(--line);
   padding-top: 7px;
 }
+.marathon-lock {
+  display: grid;
+  gap: 10px;
+}
+.lock-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+}
+.marathon-scroll {
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+.marathon-week {
+  display: grid;
+  gap: 7px;
+  min-width: 700px;
+}
+.marathon-week-head {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: center;
+}
+.marathon-week-head h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+.marathon-week-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(88px, 1fr));
+  gap: 5px;
+}
+.marathon-cell {
+  display: grid;
+  gap: 6px;
+  min-height: 148px;
+  border: 1px solid color-mix(in srgb, var(--line) 74%, transparent);
+  border-radius: 8px;
+  padding: 7px;
+  background: color-mix(in srgb, var(--panel) 82%, var(--soft));
+}
+.marathon-cell.planned {
+  border-color: color-mix(in srgb, var(--ink) 55%, var(--accent));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 22%, transparent);
+}
+.marathon-cell.rest {
+  opacity: .72;
+}
+.marathon-day-name {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  color: var(--muted);
+  font-size: .72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.marathon-planned strong,
+.marathon-actual strong {
+  display: block;
+  font-size: .78rem;
+}
+.marathon-planned span,
+.marathon-actual span {
+  color: var(--muted);
+  font-size: .72rem;
+  line-height: 1.25;
+}
+.marathon-actual {
+  display: grid;
+  gap: 5px;
+}
+.marathon-actual input,
+.marathon-actual select,
+.marathon-actual textarea,
+.lock-row input {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 6px;
+  background: color-mix(in srgb, var(--panel) 88%, var(--soft));
+  color: var(--ink);
+  font-size: .78rem;
+}
+.marathon-actual textarea {
+  min-height: 42px;
+  resize: vertical;
+}
 .update-notice {
   position: fixed;
   left: 12px;
@@ -1756,7 +1846,8 @@ const RECENT_FOODS_KEY = "macroRecentFoods";
 const FAVORITE_FOODS_KEY = "macroFavoriteFoods";
 const GROCERY_DAYS_KEY = "macroGroceryDays";
 const UPDATE_BACKUP_KEY = "macroPendingUpdateBackup";
-const USER_DATA_KEYS = [STORAGE_KEY, PROFILE_KEY, PROFILE_DATA_KEY, CHEAT_KEY, TRAINING_KEY, MEAL_PLAN_KEY, MEAL_SLOT_KEY, MEAL_COLLAPSE_KEY, CUSTOM_MEALS_KEY, EDITED_MEALS_KEY, WEEKLY_PLAN_KEY, DELETED_FOOD_KEY, MEAL_FOOD_KEY, DAY_LOG_KEY, WEIGHT_LOG_KEY, DAY_TEMPLATES_KEY, RECENT_FOODS_KEY, FAVORITE_FOODS_KEY, GROCERY_DAYS_KEY, FAVORITES_KEY, THEME_KEY, "macroPhase", "macroView", "macroActiveOnly"];
+const MARATHON_LOG_KEY = "macroMarathonPrepLog";
+const USER_DATA_KEYS = [STORAGE_KEY, PROFILE_KEY, PROFILE_DATA_KEY, CHEAT_KEY, TRAINING_KEY, MEAL_PLAN_KEY, MEAL_SLOT_KEY, MEAL_COLLAPSE_KEY, CUSTOM_MEALS_KEY, EDITED_MEALS_KEY, WEEKLY_PLAN_KEY, MARATHON_LOG_KEY, DELETED_FOOD_KEY, MEAL_FOOD_KEY, DAY_LOG_KEY, WEIGHT_LOG_KEY, DAY_TEMPLATES_KEY, RECENT_FOODS_KEY, FAVORITE_FOODS_KEY, GROCERY_DAYS_KEY, FAVORITES_KEY, THEME_KEY, "macroPhase", "macroView", "macroActiveOnly"];
 
 const clone = (value) => JSON.parse(JSON.stringify(value));
 const slug = (value) => String(value || "item").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "item";
@@ -1773,6 +1864,14 @@ const parseNumber = (value) => {
 };
 const DEFAULT_TARGETS = { calories: 0, fat: 0, carbs: 0, protein: 0 };
 const MEAL_SLOTS = ["Breakfast", "Lunch", "Dinner", "Snacks", "Other"];
+const MARATHON_CODE = "1313";
+const MARATHON_DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+const MARATHON_PLAN = [
+  { week: 1, start: "2026-07-06", runs: { Tuesday: { label: "6 + Strides", miles: 6 }, Thursday: { label: "5-7", miles: 7 }, Saturday: { label: "7", miles: 7 }, Sunday: { label: "13", miles: 13 } } },
+  { week: 2, start: "2026-07-13", runs: { Tuesday: { label: "7", miles: 7 }, Thursday: { label: "7 Easy w/10x1 min (4-5 RPE), 1 min jog", miles: 7 }, Saturday: { label: "8", miles: 8 }, Sunday: { label: "15", miles: 15 } } },
+  { week: 3, start: "2026-07-20", runs: { Tuesday: { label: "8 + Strides", miles: 8 }, Thursday: { label: "9", miles: 9 }, Saturday: { label: "9", miles: 9 }, Sunday: { label: "15", miles: 15 } } },
+  { week: 4, start: "2026-07-27", runs: { Tuesday: { label: "6", miles: 6 }, Thursday: { label: "9 mi incl. 2x10 min Threshold, 3 min jog", miles: 9 }, Saturday: { label: "6", miles: 6 }, Sunday: { label: "10", miles: 10 } } }
+];
 const RESTAURANT_MEALS = [
   { id: "oakwood-cheese-slice", restaurant: "Oakwood Pizza Box", name: "Cheese Pizza Slice", slot: "Lunch", calories: 360, fat: 13, carbs: 45, protein: 16, note: "Estimated from 18 inch cheese pizza" },
   { id: "oakwood-white-slice", restaurant: "Oakwood Pizza Box", name: "White Pizza Slice", slot: "Dinner", calories: 390, fat: 17, carbs: 42, protein: 17, note: "Estimated mozzarella, ricotta, garlic" },
@@ -1924,6 +2023,8 @@ const state = {
   mealServings: JSON.parse(localStorage.getItem(MEAL_PLAN_KEY) || "{}"),
   mealSlots: JSON.parse(localStorage.getItem(MEAL_SLOT_KEY) || "{}"),
   weeklyPlans: JSON.parse(localStorage.getItem(WEEKLY_PLAN_KEY) || "{}"),
+  marathonLog: JSON.parse(localStorage.getItem(MARATHON_LOG_KEY) || "{}"),
+  marathonUnlocked: false,
   collapsedMealSlots: JSON.parse(localStorage.getItem(MEAL_COLLAPSE_KEY) || "{}"),
   customMeals: JSON.parse(localStorage.getItem(CUSTOM_MEALS_KEY) || "[]"),
   editedMeals: JSON.parse(localStorage.getItem(EDITED_MEALS_KEY) || "{}"),
@@ -3122,10 +3223,11 @@ function renderModal() {
           <div class="help-list">
             <div><strong>Home</strong><span>View your profile, macro snapshot, training streak, weight trend, calendar, backups, and quick links.</span></div>
             <div><strong>Meal Plan</strong><span>Build daily meals by breakfast, lunch, dinner, snacks, and other. Set macro goals, save day templates, and create grocery lists.</span></div>
+            <div><strong>Weekly Plan</strong><span>Plan separate days, save templates, and roll the full week into one grocery list.</span></div>
+            <div><strong>Marathon Prep</strong><span>Use the locked calendar for planned vs actual mileage, difficulty ratings, run notes, and weekly totals.</span></div>
             <div><strong>Food Bank</strong><span>Manage every food item, edit macros, remove duplicates, favorite foods, and create reusable saved meals.</span></div>
             <div><strong>Cheat Day</strong><span>Add restaurant meals or manual meals into breakfast, lunch, dinner, snacks, and other slots.</span></div>
             <div><strong>Protein Desserts</strong><span>Browse high-protein dessert ideas with ingredients, macros, pictures, and instructions.</span></div>
-            <div><strong>Archived Phases</strong><span>Reference the original phase tabs from your spreadsheet without mixing them into the main meal-plan setup.</span></div>
           </div>
         ` : isGrocery ? `
           <div class="grocery-tools">
@@ -3231,13 +3333,11 @@ function renderFoodBank() {
         <h1>Food Bank</h1>
         <select class="theme-select" data-theme-select aria-label="Color theme">${themeOptions()}</select>
       </div>
-      <button class="ghost" data-back-phase>Back to Phases</button>
+      <div class="action-row"><button class="ghost" data-view-target="home">Home</button><button class="ghost" data-view-target="meal">Meal Plan</button></div>
     </div>
     <div class="action-row">
       <button class="primary" data-open-bank-food>Add Food Bank Item</button>
       <button class="ghost" data-open-create-meal>Create Meal</button>
-      <button class="ghost" data-view-target="meal">Meal Plan</button>
-      <button class="ghost" data-view-target="home">Home</button>
     </div>
     ${renderPinnedFoods()}
     <div class="section-label">Saved meals</div>
@@ -3639,9 +3739,10 @@ function renderHome() {
     <main class="home-grid">
       <button class="home-card" data-view-target="meal"><strong>Meal Plan</strong><span>Daily meals, macro totals, food servings, and saved meal groups.</span></button>
       <button class="home-card" data-view-target="weekly"><strong>Weekly Plan</strong><span>Plan each day separately and roll the full week into one grocery list.</span></button>
+      <button class="home-card" data-view-target="marathon"><strong>Marathon Prep</strong><span>Locked personal calendar for planned vs actual runs.</span></button>
       <button class="home-card" data-view-target="bank"><strong>Food Bank</strong><span>All saved foods grouped by food type.</span></button>
       <button class="home-card" data-view-target="cheat"><strong>Cheat Day Entry</strong><span>Restaurant meals plus normal Food Bank items by meal slot.</span></button>
-      <button class="home-card" data-view-target="desserts"><strong>Protein Dessert Options</strong><span>Six macro-friendly dessert ideas with ingredients and visuals.</span></button>
+      <button class="home-card" data-view-target="desserts"><strong>Protein Dessert Options</strong><span>Macro-friendly dessert ideas with ingredients, instructions, and visuals.</span></button>
     </main>
     <section class="stat-grid training-stats">
       <div class="metric"><span>Gym Streak</span><strong>${trainingStreak()}</strong></div>
@@ -3651,11 +3752,6 @@ function renderHome() {
     ${renderProgressSummary()}
     ${renderTrainingCalendar()}
     ${renderNutritionHistory()}
-    <section class="archive-section">
-      <h2>Archived Phase Tabs</h2>
-      <p>Old phase tabs stay here as a reference while the main setup moves toward a personal meal plan.</p>
-      <button class="ghost" data-view-target="archive">Open Phase Archive</button>
-    </section>
     <div data-modal-root></div>
   `;
   renderModal();
@@ -3883,7 +3979,7 @@ function renderMealSlot(slot) {
 function renderMealPlan() {
   ensureMealTemplateFoods();
   document.querySelector("#app").innerHTML = `
-    ${topShell("Meal Plan", `<div class="action-row"><button class="ghost" data-view-target="bank">Food Bank</button><button class="ghost" data-view-target="home">Home</button></div>`)}
+    ${topShell("Meal Plan", `<div class="action-row"><button class="ghost" data-view-target="home">Home</button><button class="ghost" data-view-target="bank">Food Bank</button></div>`)}
     ${renderMealPlanSummary()}
     <main class="items">
       ${MEAL_PLAN_SLOTS.map(renderMealSlot).join("")}
@@ -3932,7 +4028,7 @@ function renderWeeklyPlan() {
     `;
   };
   document.querySelector("#app").innerHTML = `
-    ${topShell("Weekly Plan", `<div class="action-row"><button class="ghost" data-view-target="meal">Meal Plan</button><button class="ghost" data-view-target="home">Home</button></div>`)}
+    ${topShell("Weekly Plan", `<div class="action-row"><button class="ghost" data-view-target="home">Home</button><button class="ghost" data-view-target="meal">Meal Plan</button></div>`)}
     <section class="summary">
       <div class="metric"><span>Weekly Calories</span><strong>${fmt(totals.calories)}</strong></div>
       <div class="metric"><span>Weekly Protein</span><strong>${fmt(totals.protein)}g</strong></div>
@@ -3955,6 +4051,108 @@ function renderWeeklyPlan() {
   `;
 }
 
+
+function saveMarathonLog() {
+  localStorage.setItem(MARATHON_LOG_KEY, JSON.stringify(state.marathonLog || {}));
+}
+
+function marathonDateFor(startDate, dayIndex) {
+  return isoDate(addDays(new Date(`${startDate}T00:00:00`), dayIndex));
+}
+
+function marathonEntry(dateKey) {
+  state.marathonLog[dateKey] = state.marathonLog[dateKey] || { miles: "", difficulty: "", note: "" };
+  return state.marathonLog[dateKey];
+}
+
+function marathonPlannedTotal(week) {
+  return MARATHON_DAYS.reduce((sum, day) => sum + (week.runs[day]?.miles || 0), 0);
+}
+
+function marathonActualTotal(week) {
+  return MARATHON_DAYS.reduce((sum, day, index) => {
+    const dateKey = marathonDateFor(week.start, index);
+    return sum + parseNumber(state.marathonLog[dateKey]?.miles);
+  }, 0);
+}
+
+function updateMarathonTotalsDisplay() {
+  const totalActual = MARATHON_PLAN.reduce((sum, week) => sum + marathonActualTotal(week), 0);
+  const totalNode = document.querySelector("[data-marathon-total-actual]");
+  if (totalNode) totalNode.textContent = fmt(totalActual);
+  MARATHON_PLAN.forEach((week) => {
+    const node = document.querySelector(`[data-marathon-week-total="${week.week}"]`);
+    if (node) node.textContent = `Planned ${fmt(marathonPlannedTotal(week))} / Actual ${fmt(marathonActualTotal(week))}`;
+  });
+}
+
+function renderMarathonCell(week, day, index) {
+  const dateKey = marathonDateFor(week.start, index);
+  const planned = week.runs[day];
+  const entry = marathonEntry(dateKey);
+  return `
+    <div class="marathon-cell ${planned ? "planned" : "rest"}">
+      <div class="marathon-day-name"><span>${esc(day.slice(0, 3))}</span><span>${esc(dateKey.slice(5))}</span></div>
+      <div class="marathon-planned"><strong>Planned</strong><span>${planned ? esc(planned.label) : "Rest / mobility"}</span></div>
+      <div class="marathon-actual">
+        <strong>Actual</strong>
+        <input inputmode="decimal" placeholder="${planned ? "Miles" : "Extra miles"}" value="${esc(entry.miles || "")}" data-marathon-field="miles" data-marathon-date="${esc(dateKey)}">
+        <select data-marathon-field="difficulty" data-marathon-date="${esc(dateKey)}">
+          <option value="">Difficulty</option>
+          ${[1, 2, 3, 4, 5].map((level) => `<option value="${level}" ${String(entry.difficulty || "") === String(level) ? "selected" : ""}>${level}/5</option>`).join("")}
+        </select>
+        <textarea placeholder="${planned ? "Run note" : "Extra run note"}" data-marathon-field="note" data-marathon-date="${esc(dateKey)}">${esc(entry.note || "")}</textarea>
+      </div>
+    </div>
+  `;
+}
+
+function renderMarathonPrep() {
+  if (!state.marathonUnlocked) {
+    document.querySelector("#app").innerHTML = `
+      ${topShell("Marathon Prep", `<button class="ghost" data-view-target="home">Home</button>`)}
+      <section class="slot-card marathon-lock">
+        <div class="weekly-day-head">
+          <div>
+            <h3>Locked Personal Calendar</h3>
+            <span>Enter the 4-digit code to expand planned vs actual marathon runs.</span>
+          </div>
+        </div>
+        <form class="lock-row" data-marathon-unlock-form>
+          <input inputmode="numeric" maxlength="4" placeholder="4-digit code" data-marathon-code>
+          <button class="primary" type="submit">Unlock</button>
+        </form>
+      </section>
+    `;
+    return;
+  }
+  const totalPlanned = MARATHON_PLAN.reduce((sum, week) => sum + marathonPlannedTotal(week), 0);
+  const totalActual = MARATHON_PLAN.reduce((sum, week) => sum + marathonActualTotal(week), 0);
+  document.querySelector("#app").innerHTML = `
+    ${topShell("Marathon Prep", `<button class="ghost" data-view-target="home">Home</button>`)}
+    <section class="summary">
+      <div class="metric"><span>Plan Starts</span><strong>Jul 6</strong></div>
+      <div class="metric"><span>Planned Miles</span><strong>${fmt(totalPlanned)}</strong></div>
+      <div class="metric"><span>Actual Miles</span><strong data-marathon-total-actual>${fmt(totalActual)}</strong></div>
+      <div class="metric"><span>Weeks</span><strong>${MARATHON_PLAN.length}</strong></div>
+    </section>
+    <main class="items">
+      ${MARATHON_PLAN.map((week) => `
+        <section class="slot-card marathon-week">
+          <div class="marathon-week-head">
+            <h3>Week ${week.week}</h3>
+            <span class="meal-total" data-marathon-week-total="${week.week}">Planned ${fmt(marathonPlannedTotal(week))} / Actual ${fmt(marathonActualTotal(week))}</span>
+          </div>
+          <div class="marathon-scroll">
+            <div class="marathon-week-grid">
+              ${MARATHON_DAYS.map((day, index) => renderMarathonCell(week, day, index)).join("")}
+            </div>
+          </div>
+        </section>
+      `).join("")}
+    </main>
+  `;
+}
 function renderArchiveSummary() {
   const phase = currentPhase();
   if (!phase) return;
@@ -4050,6 +4248,10 @@ function render() {
   }
   if (state.view === "weekly") {
     renderWeeklyPlan();
+    return;
+  }
+  if (state.view === "marathon") {
+    renderMarathonPrep();
     return;
   }
   if (state.view === "archive") {
@@ -4498,6 +4700,7 @@ document.addEventListener("click", (event) => {
       localStorage.removeItem(CUSTOM_MEALS_KEY);
       localStorage.removeItem(EDITED_MEALS_KEY);
       localStorage.removeItem(WEEKLY_PLAN_KEY);
+      localStorage.removeItem(MARATHON_LOG_KEY);
       localStorage.removeItem(DELETED_FOOD_KEY);
       localStorage.removeItem(MEAL_FOOD_KEY);
       localStorage.removeItem(DAY_LOG_KEY);
@@ -4511,6 +4714,8 @@ document.addEventListener("click", (event) => {
       state.mealServings = {};
       state.mealSlots = {};
       state.weeklyPlans = {};
+      state.marathonLog = {};
+      state.marathonUnlocked = false;
       state.customMeals = [];
       state.editedMeals = {};
       state.deletedFoodKeys = [];
@@ -4542,6 +4747,14 @@ document.addEventListener("input", (event) => {
 });
 
 document.addEventListener("change", (event) => {
+  if (event.target.matches("[data-marathon-field]")) {
+    const dateKey = event.target.dataset.marathonDate;
+    const field = event.target.dataset.marathonField;
+    marathonEntry(dateKey)[field] = event.target.value;
+    saveMarathonLog();
+    if (field === "miles") updateMarathonTotalsDisplay();
+    return;
+  }
   if (event.target.matches("[data-import-file]")) {
     const file = event.target.files?.[0];
     if (!file) return;
@@ -4606,6 +4819,20 @@ document.addEventListener("change", (event) => {
 });
 
 document.addEventListener("submit", (event) => {
+  const marathonUnlockForm = event.target.closest("[data-marathon-unlock-form]");
+  if (marathonUnlockForm) {
+    event.preventDefault();
+    const input = marathonUnlockForm.querySelector("[data-marathon-code]");
+    const code = String(input?.value || "").trim();
+    if (code === MARATHON_CODE) {
+      state.marathonUnlocked = true;
+      renderMarathonPrep();
+    } else if (input) {
+      input.value = "";
+      input.placeholder = "Wrong code";
+    }
+    return;
+  }
   const weightForm = event.target.closest("[data-weight-form]");
   if (weightForm) {
     event.preventDefault();
