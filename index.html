@@ -972,8 +972,10 @@ select:disabled {
   background: color-mix(in srgb, var(--panel) 82%, var(--soft));
 }
 .marathon-cell.planned {
-  border-color: color-mix(in srgb, var(--ink) 55%, var(--accent));
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 22%, transparent);
+  border-color: color-mix(in srgb, var(--planned-difficulty, var(--accent)) 58%, transparent);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--planned-difficulty, var(--accent)) 34%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--planned-difficulty, var(--accent)) 16%, transparent);
 }
 .marathon-cell.rest {
   opacity: .72;
@@ -1867,10 +1869,10 @@ const MEAL_SLOTS = ["Breakfast", "Lunch", "Dinner", "Snacks", "Other"];
 const MARATHON_CODE = "1313";
 const MARATHON_DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 const MARATHON_PLAN = [
-  { week: 1, start: "2026-07-06", runs: { Tuesday: { label: "6 + Strides", miles: 6 }, Thursday: { label: "5-7", miles: 7 }, Saturday: { label: "7", miles: 7 }, Sunday: { label: "13", miles: 13 } } },
-  { week: 2, start: "2026-07-13", runs: { Tuesday: { label: "7", miles: 7 }, Thursday: { label: "7 Easy w/10x1 min (4-5 RPE), 1 min jog", miles: 7 }, Saturday: { label: "8", miles: 8 }, Sunday: { label: "15", miles: 15 } } },
-  { week: 3, start: "2026-07-20", runs: { Tuesday: { label: "8 + Strides", miles: 8 }, Thursday: { label: "9", miles: 9 }, Saturday: { label: "9", miles: 9 }, Sunday: { label: "15", miles: 15 } } },
-  { week: 4, start: "2026-07-27", runs: { Tuesday: { label: "6", miles: 6 }, Thursday: { label: "9 mi incl. 2x10 min Threshold, 3 min jog", miles: 9 }, Saturday: { label: "6", miles: 6 }, Sunday: { label: "10", miles: 10 } } }
+  { week: 1, start: "2026-07-06", runs: { Tuesday: { label: "6 + Strides", miles: 6, difficulty: 3 }, Thursday: { label: "5-7", miles: 7, difficulty: 2 }, Saturday: { label: "7", miles: 7, difficulty: 2 }, Sunday: { label: "13", miles: 13, difficulty: 4 } } },
+  { week: 2, start: "2026-07-13", runs: { Tuesday: { label: "7", miles: 7, difficulty: 2 }, Thursday: { label: "7 Easy w/10x1 min (4-5 RPE), 1 min jog", miles: 7, difficulty: 4 }, Saturday: { label: "8", miles: 8, difficulty: 2 }, Sunday: { label: "15", miles: 15, difficulty: 4 } } },
+  { week: 3, start: "2026-07-20", runs: { Tuesday: { label: "8 + Strides", miles: 8, difficulty: 3 }, Thursday: { label: "9", miles: 9, difficulty: 3 }, Saturday: { label: "9", miles: 9, difficulty: 3 }, Sunday: { label: "15", miles: 15, difficulty: 4 } } },
+  { week: 4, start: "2026-07-27", runs: { Tuesday: { label: "6", miles: 6, difficulty: 2 }, Thursday: { label: "9 mi incl. 2x10 min Threshold, 3 min jog", miles: 9, difficulty: 5 }, Saturday: { label: "6", miles: 6, difficulty: 2 }, Sunday: { label: "10", miles: 10, difficulty: 3 } } }
 ];
 const RESTAURANT_MEALS = [
   { id: "oakwood-cheese-slice", restaurant: "Oakwood Pizza Box", name: "Cheese Pizza Slice", slot: "Lunch", calories: 360, fat: 13, carbs: 45, protein: 16, note: "Estimated from 18 inch cheese pizza" },
@@ -4076,6 +4078,16 @@ function marathonActualTotal(week) {
   }, 0);
 }
 
+function marathonDifficultyColor(level) {
+  return {
+    1: "#22c55e",
+    2: "#84cc16",
+    3: "#facc15",
+    4: "#fb923c",
+    5: "#ef4444"
+  }[Number(level)] || "var(--accent)";
+}
+
 function updateMarathonTotalsDisplay() {
   const totalActual = MARATHON_PLAN.reduce((sum, week) => sum + marathonActualTotal(week), 0);
   const totalNode = document.querySelector("[data-marathon-total-actual]");
@@ -4090,8 +4102,9 @@ function renderMarathonCell(week, day, index) {
   const dateKey = marathonDateFor(week.start, index);
   const planned = week.runs[day];
   const entry = marathonEntry(dateKey);
+  const plannedStyle = planned ? ` style="--planned-difficulty:${marathonDifficultyColor(planned.difficulty)}"` : "";
   return `
-    <div class="marathon-cell ${planned ? "planned" : "rest"}">
+    <div class="marathon-cell ${planned ? "planned" : "rest"}"${plannedStyle}>
       <div class="marathon-day-name"><span>${esc(day.slice(0, 3))}</span><span>${esc(dateKey.slice(5))}</span></div>
       <div class="marathon-planned"><strong>Planned</strong><span>${planned ? esc(planned.label) : "Rest / mobility"}</span></div>
       <div class="marathon-actual">

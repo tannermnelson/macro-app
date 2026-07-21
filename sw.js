@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = "macro-hub-2026-07-21-v7";
+﻿const CACHE_NAME = "macro-hub-2026-07-21-v8";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -77,6 +77,7 @@ self.addEventListener("fetch", (event) => {
     })
   );
 });
+
 
 
 
