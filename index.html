@@ -972,10 +972,10 @@ select:disabled {
   background: color-mix(in srgb, var(--panel) 82%, var(--soft));
 }
 .marathon-cell.planned {
-  border-color: color-mix(in srgb, var(--planned-difficulty, var(--accent)) 58%, transparent);
+  border-color: color-mix(in srgb, var(--planned-difficulty, #111827) 58%, transparent);
   box-shadow:
-    inset 0 0 0 1px color-mix(in srgb, var(--planned-difficulty, var(--accent)) 34%, transparent),
-    0 0 0 1px color-mix(in srgb, var(--planned-difficulty, var(--accent)) 16%, transparent);
+    inset 0 0 0 1px color-mix(in srgb, var(--planned-difficulty, #111827) 34%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--planned-difficulty, #111827) 16%, transparent);
 }
 .marathon-cell.rest {
   opacity: .72;
@@ -1912,7 +1912,8 @@ const PROTEIN_DESSERTS = [
   { name: "Cookies & Cream Protein Blondie", calories: 340, fat: 9, carbs: 38, protein: 28, ingredients: ["1 scoop vanilla protein", "60g Greek yogurt", "20g oat flour", "1 crushed Oreo thin", "1/2 tsp baking powder", "Sweetener to taste"], instructions: ["Stir batter until smooth.", "Fold in crushed cookie pieces.", "Bake in a small dish at 350F for 10-12 minutes."], colors: ["#eee7db", "#2f2a27", "#bca98f"], image: "assets/desserts/cookies-and-cream-protein-blondie.webp" },
   { name: "Fudgy Protein Brownie Bites", calories: 330, fat: 11, carbs: 34, protein: 29, ingredients: ["1 scoop chocolate protein", "60g pumpkin puree", "12g cocoa powder", "15g almond flour", "30g egg whites", "5g dark chocolate"], instructions: ["Mix until glossy and thick.", "Spoon into mini muffin cups.", "Bake at 350F for 9-11 minutes."], colors: ["#251616", "#5a2a24", "#a65f46"], image: "assets/desserts/fudgy-protein-brownie-bites.webp" },
   { name: "Chocolate Chip Cookie Dough Bowl", calories: 360, fat: 12, carbs: 36, protein: 31, ingredients: ["170g low-fat cottage cheese", "1 scoop vanilla protein", "12g peanut butter powder", "8g sugar-free vanilla pudding mix", "8g mini chocolate chips"], instructions: ["Blend cottage cheese until smooth.", "Stir in protein, PB powder, and pudding mix.", "Fold in chocolate chips and chill."], colors: ["#e6c89e", "#7b5434", "#f9ecd7"], image: "assets/desserts/chocolate-chip-cookie-dough-bowl.webp" },
-  { name: "Double Chocolate Mug Brownie", calories: 315, fat: 8, carbs: 32, protein: 27, ingredients: ["1 scoop chocolate protein", "15g cocoa powder", "25g banana", "45g egg whites", "30ml almond milk", "5g chocolate chips"], instructions: ["Mash banana in a mug.", "Mix in remaining ingredients.", "Microwave 50-70 seconds, stopping while still fudgy."], colors: ["#1f1214", "#6b342f", "#d28b62"], image: "assets/desserts/double-chocolate-mug-brownie.webp" }
+  { name: "Double Chocolate Mug Brownie", calories: 315, fat: 8, carbs: 32, protein: 27, ingredients: ["1 scoop chocolate protein", "15g cocoa powder", "25g banana", "45g egg whites", "30ml almond milk", "5g chocolate chips"], instructions: ["Mash banana in a mug.", "Mix in remaining ingredients.", "Microwave 50-70 seconds, stopping while still fudgy."], colors: ["#1f1214", "#6b342f", "#d28b62"], image: "assets/desserts/double-chocolate-mug-brownie.webp" },
+  { name: "Protein Cinnamon Rolls", calories: 202, fat: 2.6, carbs: 28.1, protein: 14.9, ingredients: ["Makes 8 servings", "180g flour", "110g banana", "2.5 servings vanilla protein powder", "340g plain Greek yogurt", "30g brown sugar", "60g cream cheese", "50g monk fruit", "Vanilla extract", "Cinnamon sugar"], instructions: ["Preheat oven to 350 degrees.", "In a blender, mix the wet ingredients, then mix the dry ingredients into that.", "Place and roll out dough on a floured surface into 1/4 inch thick dough.", "Lay cinnamon sugar out over the dough.", "Cut and roll the dough, then cook for 20 minutes.", "Mix cream cheese, protein powder, 50g monk fruit, vanilla extract, and 30g mashed banana for the icing."], category: "Protein Desserts", note: "Makes 8 servings", colors: ["#d69b4a", "#fff0d2", "#8a4f24"], image: "assets/desserts/protein-cinnamon-rolls.png" }
 ];
 
 function canonicalName(name) {
@@ -2210,7 +2211,21 @@ function savedMeals() {
     return edit ? { ...clone(meal), ...clone(edit), id, edited: true } : { ...clone(meal), id };
   });
   const builtInIds = new Set(builtIns.map((meal) => meal.id));
-  return [...builtIns, ...state.customMeals.filter((meal) => !builtInIds.has(meal.id))];
+  const dessertMeals = PROTEIN_DESSERTS
+    .filter((dessert) => !builtInIds.has(slug(dessert.name)))
+    .map((dessert) => {
+      const id = `dessert-${slug(dessert.name)}`;
+      const edit = edited[id] || edited[dessert.name];
+      const meal = {
+        id,
+        name: dessert.name,
+        dessert: true,
+        items: [{ name: dessert.name, servings: 1, aliases: [dessert.name] }]
+      };
+      return edit ? { ...meal, ...clone(edit), id, dessert: true, edited: true } : meal;
+    });
+  const reservedIds = new Set([...builtIns, ...dessertMeals].map((meal) => meal.id));
+  return [...builtIns, ...dessertMeals, ...state.customMeals.filter((meal) => !reservedIds.has(meal.id))];
 }
 
 function saveEditedMeals() {
@@ -2298,8 +2313,9 @@ function foodLibrary() {
   return [...map.values()].sort((a, b) => a.name.localeCompare(b.name));
 }
 
-const GROUP_ORDER = ["Protein", "Dairy", "Grains & Starches", "Fruit", "Vegetables", "Fats, Sauces & Extras", "Supplements", "Other"];
-const MEAL_PLAN_SLOTS = ["Breakfast", "Lunch", "Dinner", "Snacks", "Other"];
+const GROUP_ORDER = ["Protein", "Dairy", "Grains & Starches", "Fruit", "Vegetables", "Fats, Sauces & Extras", "Supplements", "Protein Desserts", "Other"];
+const DESSERT_SLOT = "Dessert";
+const MEAL_PLAN_SLOTS = ["Breakfast", "Lunch", "Dinner", "Snacks", "Other", DESSERT_SLOT];
 const MEAL_TEMPLATES = [
   {
     name: "Ground Turkey Meal",
@@ -2373,6 +2389,18 @@ const MEAL_TEMPLATES = [
       { name: "Strawberries", servings: 1, aliases: ["strawberries"] },
       { name: "Honey", servings: 1, aliases: ["honey"] }
     ]
+  },
+  {
+    name: "Protein Cinnamon Rolls",
+    dessert: true,
+    items: [
+      { name: "Flour", servings: 0.75, aliases: ["flour", "all purpose flour"] },
+      { name: "Banana", servings: 0.125, aliases: ["banana"] },
+      { name: "Vanilla Protein Powder", servings: 0.3125, aliases: ["vanilla protein powder", "vanilla protein", "protein powder vanilla"] },
+      { name: "Greek Yogurt Plain", servings: 0.25, aliases: ["greek yogurt plain", "plain greek yogurt", "greek yogurt"] },
+      { name: "Brown Sugar", servings: 0.46875, aliases: ["brown sugar"] },
+      { name: "Cream Cheese", servings: 0.25, aliases: ["cream cheese"] }
+    ]
   }
 ];
 const TEMPLATE_FOOD_DEFAULTS = [
@@ -2400,8 +2428,24 @@ const TEMPLATE_FOOD_DEFAULTS = [
   { name: "Cinnamon", category: "Fats, Sauces & Extras", calories: 6, fat: 0, carbs: 2, protein: 0 },
   { name: "PB Powder", category: "Supplements", calories: 50, fat: 1.5, carbs: 4, protein: 6 },
   { name: "Cream of Rice", category: "Grains & Starches", calories: 120, fat: 0, carbs: 26, protein: 2 },
-  { name: "Honey", category: "Fats, Sauces & Extras", calories: 60, fat: 0, carbs: 17, protein: 0 }
+  { name: "Honey", category: "Fats, Sauces & Extras", calories: 60, fat: 0, carbs: 17, protein: 0 },
+  { name: "Flour", category: "Grains & Starches", calories: 110, fat: 0, carbs: 23, protein: 3 },
+  { name: "Greek Yogurt Plain", category: "Dairy", calories: 100, fat: 0, carbs: 8, protein: 17 },
+  { name: "Cream Cheese", category: "Dairy", calories: 80, fat: 8, carbs: 2, protein: 2 },
+  { name: "Brown Sugar", category: "Fats, Sauces & Extras", calories: 30, fat: 0, carbs: 8, protein: 0 },
+  { name: "Vanilla Protein Powder", category: "Supplements", calories: 150, fat: 2, carbs: 4, protein: 25 }
 ];
+
+function dessertFoodDefaults() {
+  return PROTEIN_DESSERTS.map((dessert) => ({
+    name: dessert.name,
+    category: "Protein Desserts",
+    calories: dessert.calories,
+    fat: dessert.fat,
+    carbs: dessert.carbs,
+    protein: dessert.protein
+  }));
+}
 
 function normalizedFoodName(value) {
   return String(value || "").toLowerCase().replace(/[^a-z0-9]+/g, "");
@@ -2409,6 +2453,8 @@ function normalizedFoodName(value) {
 
 function duplicateFoodNameKey(value) {
   let name = normalizedFoodName(canonicalName(value));
+  if (name.includes("vanilla") && name.includes("proteinpowder")) return "vanillaproteinpowder";
+  if (name.includes("choccake") && name.includes("proteinpowder")) return "choccakeproteinpowder";
   if (name.includes("proteinpowder")) return "proteinpowder";
   if (name.includes("cottagecheese")) return "cottagecheese";
   if (name.includes("pintobean")) return "pintobeans";
@@ -2416,6 +2462,10 @@ function duplicateFoodNameKey(value) {
   const aliases = {
     proteinpwd: "proteinpowder",
     proteinpowder: "proteinpowder",
+    vanillaprotein: "vanillaproteinpowder",
+    vanillaproteinpowder: "vanillaproteinpowder",
+    choccakeprotein: "choccakeproteinpowder",
+    choccakeproteinpowder: "choccakeproteinpowder",
     pb2: "pbpowder",
     pbpowder: "pbpowder",
     potatoes: "potato",
@@ -2456,7 +2506,7 @@ function ensureMealTemplateFoods() {
   if (!bank) return;
   const library = foodLibrary();
   const deleted = new Set(state.deletedFoodKeys || []);
-  const missing = TEMPLATE_FOOD_DEFAULTS.filter((food) => {
+  const missing = [...TEMPLATE_FOOD_DEFAULTS, ...dessertFoodDefaults()].filter((food) => {
     const foodName = normalizedFoodName(food.name);
     return !deleted.has(foodKey({ ...food, servings: 0 })) && !library.some((item) => normalizedFoodName(item.name) === foodName);
   });
@@ -2776,10 +2826,17 @@ function applySpecificFoodCleanup() {
       const updated = { ...item };
       let remove = false;
 
-      if (nameKey === "proteinpowder") {
-        if (calories === 147) {
+      if (nameKey === "proteinpowder" || nameKey === "choccakeproteinpowder" || nameKey === "vanillaproteinpowder") {
+        if (calories === 147 || nameKey === "choccakeproteinpowder") {
           updated.name = "Choc. Cake Protein Powder";
           updated.category = "Supplements";
+        } else if (calories === 150 || nameKey === "vanillaproteinpowder") {
+          updated.name = "Vanilla Protein Powder";
+          updated.category = "Supplements";
+          updated.calories = 150;
+          updated.fat = 2;
+          updated.carbs = 4;
+          updated.protein = 25;
         } else {
           remove = true;
         }
@@ -2821,7 +2878,8 @@ function applySpecificFoodCleanup() {
 
   const library = foodLibrary();
   const linkTargets = [
-    ["Protein Powder", (item) => duplicateFoodNameKey(item.name) === "proteinpowder" && parseNumber(item.calories) === 147],
+    ["Protein Powder", (item) => (duplicateFoodNameKey(item.name) === "proteinpowder" || duplicateFoodNameKey(item.name) === "choccakeproteinpowder") && parseNumber(item.calories) === 147],
+    ["Vanilla Protein Powder", (item) => duplicateFoodNameKey(item.name) === "vanillaproteinpowder" && parseNumber(item.calories) === 150],
     ["Banana", (item) => duplicateFoodNameKey(item.name) === "banana" && parseNumber(item.calories) === 110],
     ["Pinto Beans", (item) => duplicateFoodNameKey(item.name) === "pintobeans" || duplicateFoodNameKey(item.name) === "pintobean" || (duplicateFoodNameKey(item.name) === "beans" && parseNumber(item.calories) === 90)],
     ["Cottage Cheese", (item) => duplicateFoodNameKey(item.name) === "cottagecheese" && parseNumber(item.calories) === 90]
@@ -2836,7 +2894,8 @@ function applySpecificFoodCleanup() {
     state.deletedFoodKeys = (state.deletedFoodKeys || []).filter((key) => {
       const [name, calories] = key.split("|");
       const nameKey = duplicateFoodNameKey(name);
-      if (nameKey === "proteinpowder" && Number(calories) !== 147) return false;
+      if ((nameKey === "proteinpowder" || nameKey === "choccakeproteinpowder") && Number(calories) !== 147) return false;
+      if (nameKey === "vanillaproteinpowder" && Number(calories) !== 150) return false;
       if (name === "carrots" || name === "carrot" || name === "other") return false;
       if (isPlainRiceItem(name) && Number(calories) !== 160) return false;
       return true;
@@ -3848,8 +3907,11 @@ function renderDesserts() {
   `;
 }
 
-function mealOptions(selected = "") {
-  return `<option value="">Choose saved meal...</option>${savedMeals().map((meal) => {
+function mealOptions(selected = "", slot = "") {
+  const dessertOnly = slot === DESSERT_SLOT;
+  const meals = savedMeals().filter((meal) => dessertOnly ? meal.dessert : !meal.dessert);
+  const placeholder = dessertOnly ? "Choose dessert..." : "Choose saved meal...";
+  return `<option value="">${placeholder}</option>${meals.map((meal) => {
     const id = meal.id || meal.name;
     return `<option value="${esc(id)}" ${id === selected ? "selected" : ""}>${esc(meal.name)}</option>`;
   }).join("")}`;
@@ -3950,8 +4012,8 @@ function renderMealSlot(slot) {
       </div>
       ${isCollapsed ? "" : `
       <div class="slot-add-row">
-        <select class="phase-select" data-pending-slot-meal="${esc(slot)}">${mealOptions()}</select>
-        <button class="primary" data-add-slot-meal="${esc(slot)}">Add Meal</button>
+        <select class="phase-select" data-pending-slot-meal="${esc(slot)}">${mealOptions("", slot)}</select>
+        <button class="primary" data-add-slot-meal="${esc(slot)}">${slot === DESSERT_SLOT ? "Add Dessert" : "Add Meal"}</button>
       </div>
       ${instances.length ? instances.map((instance) => {
         const meal = mealById(instance.mealId);
@@ -4080,12 +4142,19 @@ function marathonActualTotal(week) {
 
 function marathonDifficultyColor(level) {
   return {
-    1: "#22c55e",
+    1: "#16a34a",
     2: "#84cc16",
-    3: "#facc15",
-    4: "#fb923c",
-    5: "#ef4444"
-  }[Number(level)] || "var(--accent)";
+    3: "#eab308",
+    4: "#f97316",
+    5: "#dc2626"
+  }[Number(level)] || "#111827";
+}
+
+function updateMarathonDifficultyDisplay(dateKey, level) {
+  const cell = document.querySelector(`[data-marathon-cell="${dateKey}"]`);
+  if (!cell) return;
+  if (level) cell.style.setProperty("--planned-difficulty", marathonDifficultyColor(level));
+  else cell.style.removeProperty("--planned-difficulty");
 }
 
 function updateMarathonTotalsDisplay() {
@@ -4102,11 +4171,13 @@ function renderMarathonCell(week, day, index) {
   const dateKey = marathonDateFor(week.start, index);
   const planned = week.runs[day];
   const entry = marathonEntry(dateKey);
-  const plannedStyle = planned ? ` style="--planned-difficulty:${marathonDifficultyColor(planned.difficulty)}"` : "";
+  const displayDifficulty = entry.difficulty || "";
+  const plannedStyle = planned && displayDifficulty ? ` style="--planned-difficulty:${marathonDifficultyColor(displayDifficulty)}"` : "";
+  const plannedLabel = planned ? planned.label : "Rest / mobility";
   return `
-    <div class="marathon-cell ${planned ? "planned" : "rest"}"${plannedStyle}>
+    <div class="marathon-cell ${planned ? "planned" : "rest"}"${plannedStyle} data-marathon-cell="${esc(dateKey)}">
       <div class="marathon-day-name"><span>${esc(day.slice(0, 3))}</span><span>${esc(dateKey.slice(5))}</span></div>
-      <div class="marathon-planned"><strong>Planned</strong><span>${planned ? esc(planned.label) : "Rest / mobility"}</span></div>
+      <div class="marathon-planned"><strong>Planned</strong><span>${esc(plannedLabel)}</span></div>
       <div class="marathon-actual">
         <strong>Actual</strong>
         <input inputmode="decimal" placeholder="${planned ? "Miles" : "Extra miles"}" value="${esc(entry.miles || "")}" data-marathon-field="miles" data-marathon-date="${esc(dateKey)}">
@@ -4766,6 +4837,7 @@ document.addEventListener("change", (event) => {
     marathonEntry(dateKey)[field] = event.target.value;
     saveMarathonLog();
     if (field === "miles") updateMarathonTotalsDisplay();
+    if (field === "difficulty") updateMarathonDifficultyDisplay(dateKey, event.target.value);
     return;
   }
   if (event.target.matches("[data-import-file]")) {

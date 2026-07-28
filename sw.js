@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = "macro-hub-2026-07-21-v8";
+﻿const CACHE_NAME = "macro-hub-2026-07-28-v13";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -18,6 +18,7 @@ const APP_SHELL = [
   "./assets/desserts/high-protein-rice-pudding.webp",
   "./assets/desserts/peanut-butter-protein-cookie.webp",
   "./assets/desserts/protein-brownie-bowl.webp",
+  "./assets/desserts/protein-cinnamon-rolls.png",
   "./assets/desserts/protein-ice-cream-base.webp",
   "./assets/desserts/silken-tofu-mocha-mousse.webp",
   "./assets/sounds/goggins-boats.mp3",
@@ -77,6 +78,11 @@ self.addEventListener("fetch", (event) => {
     })
   );
 });
+
+
+
+
+
 
 
 
