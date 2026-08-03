@@ -1375,6 +1375,61 @@ select:disabled {
   color: var(--muted);
   font-size: .82rem;
 }
+.travel-card {
+  display: grid;
+  gap: 12px;
+}
+.travel-card h2 {
+  margin: 0 0 4px;
+  font-size: 1.05rem;
+}
+.travel-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: .82rem;
+}
+.travel-form {
+  display: grid;
+  gap: 10px;
+}
+.travel-photo-box {
+  display: grid;
+  gap: 8px;
+  min-height: 150px;
+  border: 1px dashed color-mix(in srgb, var(--accent) 55%, var(--line));
+  border-radius: 8px;
+  padding: 12px;
+  background: color-mix(in srgb, var(--panel) 70%, var(--soft));
+  color: var(--muted);
+  text-align: center;
+}
+.travel-photo-box input {
+  display: none;
+}
+.travel-photo-box b {
+  display: grid;
+  place-items: center;
+  min-height: 88px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--accent) 12%, var(--soft));
+  color: var(--accent-dark);
+}
+.travel-photo-box img,
+.travel-thumb {
+  width: 100%;
+  border-radius: 8px;
+  object-fit: cover;
+}
+.travel-photo-box img {
+  max-height: 220px;
+}
+.travel-thumb {
+  max-height: 150px;
+  margin-bottom: 10px;
+}
+.compact-fields {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
 .dessert-image {
   display: block;
   width: calc(100% + 4px);
@@ -1832,6 +1887,7 @@ const FAVORITES_KEY = "macroFavoritePhases";
 const PROFILE_KEY = "macroProfileName";
 const PROFILE_DATA_KEY = "macroProfileData";
 const CHEAT_KEY = "macroCheatEntries";
+const TRAVEL_MEALS_KEY = "macroTravelMeals";
 const TRAINING_KEY = "macroTrainingLog";
 const MEAL_PLAN_KEY = "macroDailyMealPlan";
 const MEAL_SLOT_KEY = "macroMealSlots";
@@ -1849,7 +1905,7 @@ const FAVORITE_FOODS_KEY = "macroFavoriteFoods";
 const GROCERY_DAYS_KEY = "macroGroceryDays";
 const UPDATE_BACKUP_KEY = "macroPendingUpdateBackup";
 const MARATHON_LOG_KEY = "macroMarathonPrepLog";
-const USER_DATA_KEYS = [STORAGE_KEY, PROFILE_KEY, PROFILE_DATA_KEY, CHEAT_KEY, TRAINING_KEY, MEAL_PLAN_KEY, MEAL_SLOT_KEY, MEAL_COLLAPSE_KEY, CUSTOM_MEALS_KEY, EDITED_MEALS_KEY, WEEKLY_PLAN_KEY, MARATHON_LOG_KEY, DELETED_FOOD_KEY, MEAL_FOOD_KEY, DAY_LOG_KEY, WEIGHT_LOG_KEY, DAY_TEMPLATES_KEY, RECENT_FOODS_KEY, FAVORITE_FOODS_KEY, GROCERY_DAYS_KEY, FAVORITES_KEY, THEME_KEY, "macroPhase", "macroView", "macroActiveOnly"];
+const USER_DATA_KEYS = [STORAGE_KEY, PROFILE_KEY, PROFILE_DATA_KEY, CHEAT_KEY, TRAVEL_MEALS_KEY, TRAINING_KEY, MEAL_PLAN_KEY, MEAL_SLOT_KEY, MEAL_COLLAPSE_KEY, CUSTOM_MEALS_KEY, EDITED_MEALS_KEY, WEEKLY_PLAN_KEY, MARATHON_LOG_KEY, DELETED_FOOD_KEY, MEAL_FOOD_KEY, DAY_LOG_KEY, WEIGHT_LOG_KEY, DAY_TEMPLATES_KEY, RECENT_FOODS_KEY, FAVORITE_FOODS_KEY, GROCERY_DAYS_KEY, FAVORITES_KEY, THEME_KEY, "macroPhase", "macroView", "macroActiveOnly"];
 
 const clone = (value) => JSON.parse(JSON.stringify(value));
 const slug = (value) => String(value || "item").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "item";
@@ -2023,6 +2079,8 @@ const state = {
   profileData: JSON.parse(localStorage.getItem(PROFILE_DATA_KEY) || "{}"),
   trainingLog: JSON.parse(localStorage.getItem(TRAINING_KEY) || "{}"),
   cheatEntries: JSON.parse(localStorage.getItem(CHEAT_KEY) || "{}"),
+  travelMeals: JSON.parse(localStorage.getItem(TRAVEL_MEALS_KEY) || "[]"),
+  travelPhotoPreview: "",
   mealServings: JSON.parse(localStorage.getItem(MEAL_PLAN_KEY) || "{}"),
   mealSlots: JSON.parse(localStorage.getItem(MEAL_SLOT_KEY) || "{}"),
   weeklyPlans: JSON.parse(localStorage.getItem(WEEKLY_PLAN_KEY) || "{}"),
@@ -2224,8 +2282,9 @@ function savedMeals() {
       };
       return edit ? { ...meal, ...clone(edit), id, dessert: true, edited: true } : meal;
     });
-  const reservedIds = new Set([...builtIns, ...dessertMeals].map((meal) => meal.id));
-  return [...builtIns, ...dessertMeals, ...state.customMeals.filter((meal) => !reservedIds.has(meal.id))];
+  const travelMeals = (state.travelMeals || []).map((meal) => ({ ...clone(meal), travel: true }));
+  const reservedIds = new Set([...builtIns, ...dessertMeals, ...travelMeals].map((meal) => meal.id));
+  return [...builtIns, ...dessertMeals, ...travelMeals, ...state.customMeals.filter((meal) => !reservedIds.has(meal.id))];
 }
 
 function saveEditedMeals() {
@@ -2314,8 +2373,9 @@ function foodLibrary() {
 }
 
 const GROUP_ORDER = ["Protein", "Dairy", "Grains & Starches", "Fruit", "Vegetables", "Fats, Sauces & Extras", "Supplements", "Protein Desserts", "Other"];
+const TRAVEL_SLOT = "Travel Meals";
 const DESSERT_SLOT = "Dessert";
-const MEAL_PLAN_SLOTS = ["Breakfast", "Lunch", "Dinner", "Snacks", "Other", DESSERT_SLOT];
+const MEAL_PLAN_SLOTS = ["Breakfast", "Lunch", "Dinner", "Snacks", "Other", TRAVEL_SLOT, DESSERT_SLOT];
 const MEAL_TEMPLATES = [
   {
     name: "Ground Turkey Meal",
@@ -2435,6 +2495,8 @@ const TEMPLATE_FOOD_DEFAULTS = [
   { name: "Brown Sugar", category: "Fats, Sauces & Extras", calories: 30, fat: 0, carbs: 8, protein: 0 },
   { name: "Vanilla Protein Powder", category: "Supplements", calories: 150, fat: 2, carbs: 4, protein: 25 }
 ];
+
+const REMOVED_HEALTHY_DEFAULT_NAMES = new Set('Chicken Breast|Chicken Thigh|Chicken Tenderloin|Rotisserie Chicken Breast|Lean Ground Chicken|Turkey Breast|Lean Ground Turkey 99|Lean Ground Turkey 93|Turkey Sausage|Turkey Bacon|Sirloin Steak|Flank Steak|Top Round Steak|Filet Mignon|Ribeye Steak|New York Strip Steak|Lean Ground Beef 96|Lean Ground Beef 93|Beef Tenderloin|Beef Chuck Roast|Pork Tenderloin|Pork Loin Chop|Center Cut Pork Chop|Lean Ham|Canadian Bacon|Turkey Meatballs|Beef Meatballs|Chicken Sausage|Chicken Meatballs|Turkey Pepperoni|Salmon Fillet|Cod Fillet|Tilapia Fillet|Mahi Mahi|Tuna Steak|Canned Tuna In Water|Canned Salmon|Shrimp|Scallops|Crab Meat|Lobster Tail|Sardines In Water|Anchovies|Bison Steak|Ground Bison|Venison|Lamb Loin Chop|Egg Substitute|Carton Egg Whites|Firm Tofu|Extra Firm Tofu|Tempeh|Seitan|Edamame|Lentils|Black Beans|Kidney Beans|Chickpeas|Navy Beans|Split Peas|Nonfat Greek Yogurt|Greek Yogurt 2 Percent|Vanilla Greek Yogurt|Icelandic Skyr|Whole Milk Cottage Cheese|Ricotta Part Skim|Part Skim Mozzarella|Feta Cheese|Parmesan Cheese|Reduced Fat Cheddar|Swiss Cheese|Light String Cheese|Fairlife Skim Milk|Fairlife Chocolate Milk|Plain Kefir|Skim Milk|Two Percent Milk|Lactose Free Milk|Goat Cheese|Light Cream Cheese|Neufchatel Cheese|Queso Fresco|Whipped Cottage Cheese|Labneh|Protein Yogurt Cup|Pasta|Whole Wheat Pasta|Chickpea Pasta|Lentil Pasta|Brown Rice Cooked|White Rice|Jasmine Rice Cooked|Basmati Rice Cooked|Wild Rice|Quinoa|Couscous|Farro|Barley|Bulgur|Millet|Buckwheat|Polenta|Grits|Steel Cut Oats|Rolled Oats|Quick Oats|Granola Low Sugar|Muesli|Whole Wheat Bread|Sourdough Bread|Ezekiel Bread|Whole Wheat Tortilla|Corn Tortilla|Flour Tortilla|Pita Bread|English Muffin|Whole Grain Bagel Thin|Naan|Sweet Potato|Yukon Gold Potato|Red Potato|Butternut Squash|Acorn Squash|Plantain|Corn|Peas|Rice Noodles|Soba Noodles|Udon Noodles|Ramen Noodles Plain|Lasagna Noodles|Macaroni Pasta|Orzo|Cavatappi Pasta|Penne Pasta|Rigatoni Pasta|Spaghetti|Fettuccine|Angel Hair Pasta|Protein Pancake Mix|Kodiak Pancake Mix|Whole Wheat Flour|Oat Flour|Almond Flour|Coconut Flour|Panko Breadcrumbs|Whole Wheat Breadcrumbs|Low Carb Wrap|Cauliflower Rice|Hash Browns|Tater Tots Air Fried|Baked Potato Wedges|Cornbread Mix|Brown Rice Cakes|Pretzels|Apple|Green Apple|Orange|Clementine|Grapefruit|Pineapple|Mango|Peach|Pear|Plum|Kiwi|Grapes|Watermelon|Cantaloupe|Honeydew|Raspberries|Blackberries|Cherries|Dates|Figs|Dried Cranberries|Raisins|Prunes|Frozen Mixed Berries|Frozen Mango|Frozen Pineapple|Unsweetened Applesauce|Pomegranate Seeds|Papaya|Guava|Dragon Fruit|Passion Fruit|Nectarine|Apricot|Star Fruit|Lychee|Persimmon|Cranberries|Lemon|Lime|Broccoli|Broccoli Florets|Cauliflower|Brussels Sprouts|Asparagus|Green Beans|Snap Peas|Snow Peas|Carrots|Baby Carrots|Celery|Cucumber|Zucchini|Yellow Squash|Eggplant|Mushrooms|Portobello Mushrooms|Bell Pepper|Red Bell Pepper|Jalapeno|Roma Tomato|Cherry Tomatoes|Diced Tomatoes|Tomato Paste|Red Onion|Yellow Onion|Green Onion|Garlic|Ginger|Romaine Lettuce|Spring Mix|Arugula|Kale|Collard Greens|Swiss Chard|Cabbage|Red Cabbage|Bok Choy|Bean Sprouts|Radishes|Beets|Turnips|Parsnips|Spaghetti Squash|Pumpkin Puree|Artichoke Hearts|Hearts Of Palm|Okra|Seaweed|Kimchi|Sauerkraut|Pickles|Roasted Red Peppers|Salsa Veg Mix|Frozen Stir Fry Vegetables|Frozen Broccoli|Frozen Spinach|Frozen Peas And Carrots|Mixed Vegetables|Coleslaw Mix|Riced Broccoli|Shredded Lettuce|Cilantro|Parsley|Basil|Olive Oil|Avocado Oil|Coconut Oil|Butter|Ghee|Avocado|Guacamole|Peanut Butter|Almond Butter|Cashew Butter|Tahini|Hummus|Chia Seeds|Flaxseed Meal|Hemp Hearts|Pumpkin Seeds|Sunflower Seeds|Walnuts|Almonds|Cashews|Pistachios|Pecans|Marinara Sauce|Low Sugar Pasta Sauce|Alfredo Sauce Light|Pesto|Teriyaki Sauce|Soy Sauce|Coconut Aminos|Buffalo Sauce|Barbecue Sauce|Sugar Free Barbecue Sauce|Hot Sauce|Sriracha|Salsa|Pico De Gallo|Tzatziki|Light Mayo|Mustard|Ranch Greek Yogurt Dressing'.split("|"));
 
 function dessertFoodDefaults() {
   return PROTEIN_DESSERTS.map((dessert) => ({
@@ -2657,7 +2719,7 @@ function renderPinnedFoods() {
 
 function currentGroceryList() {
   const totals = new Map();
-  MEAL_PLAN_SLOTS.forEach((slot) => {
+  MEAL_PLAN_SLOTS.filter((slot) => slot !== TRAVEL_SLOT).forEach((slot) => {
     mealInstancesForSlot(slot).forEach((instance) => {
       const meal = mealById(instance.mealId);
       if (!meal) return;
@@ -2733,7 +2795,7 @@ function weekDateKeys(start = weekStart()) {
 
 function matchesForPlanInstance(instanceId, meal, servingsMap = {}) {
   return meal.items.map((component) => {
-    const item = findTemplateFood(component);
+    const item = component.inlineFood ? { ...component.inlineFood, id: component.inlineFood.id || slug(component.inlineFood.name) } : findTemplateFood(component);
     if (!item) return null;
     const key = mealServingKey(instanceId, component);
     return {
@@ -2779,7 +2841,7 @@ function weeklyGroceryList(dateKeys = weekDateKeys()) {
   const totals = new Map();
   dateKeys.forEach((dateKey) => {
     const plan = state.weeklyPlans?.[dateKey];
-    MEAL_PLAN_SLOTS.forEach((slot) => {
+    MEAL_PLAN_SLOTS.filter((slot) => slot !== TRAVEL_SLOT).forEach((slot) => {
       const instances = Array.isArray(plan?.mealSlots?.[slot]) ? plan.mealSlots[slot] : [];
       instances.forEach((instance) => {
         const meal = mealById(instance.mealId);
@@ -2825,6 +2887,8 @@ function applySpecificFoodCleanup() {
       const calories = parseNumber(item.calories);
       const updated = { ...item };
       let remove = false;
+
+      if (String(item.id || "").includes("-meal-bank-") && REMOVED_HEALTHY_DEFAULT_NAMES.has(updated.name)) remove = true;
 
       if (nameKey === "proteinpowder" || nameKey === "choccakeproteinpowder" || nameKey === "vanillaproteinpowder") {
         if (calories === 147 || nameKey === "choccakeproteinpowder") {
@@ -2985,7 +3049,7 @@ function mealMacroTotals(matches) {
 
 function mealMatchesFor(instanceId, meal) {
   return meal.items.map((component) => {
-    const item = findTemplateFood(component);
+    const item = component.inlineFood ? { ...component.inlineFood, id: component.inlineFood.id || slug(component.inlineFood.name) } : findTemplateFood(component);
     if (!item) return null;
     return {
       item,
@@ -3803,6 +3867,7 @@ function renderHome() {
       <button class="home-card" data-view-target="marathon"><strong>Marathon Prep</strong><span>Locked personal calendar for planned vs actual runs.</span></button>
       <button class="home-card" data-view-target="bank"><strong>Food Bank</strong><span>All saved foods grouped by food type.</span></button>
       <button class="home-card" data-view-target="cheat"><strong>Cheat Day Entry</strong><span>Restaurant meals plus normal Food Bank items by meal slot.</span></button>
+      <button class="home-card" data-view-target="travel"><strong>Travel Meal Scan</strong><span>Take or upload a meal photo, enter estimated macros, and add it to today.</span></button>
       <button class="home-card" data-view-target="desserts"><strong>Protein Dessert Options</strong><span>Macro-friendly dessert ideas with ingredients, instructions, and visuals.</span></button>
     </main>
     <section class="stat-grid training-stats">
@@ -3842,6 +3907,133 @@ function mealLikeCard(item, options = {}) {
       ${options.ingredients ? `<ul class="ingredients">${options.ingredients.map((ingredient) => `<li>${esc(ingredient)}</li>`).join("")}</ul>` : ""}
       ${options.instructions ? `<div class="section-label">How to make</div><ol class="ingredients">${options.instructions.map((step) => `<li>${esc(step)}</li>`).join("")}</ol>` : ""}
     </article>
+  `;
+}
+
+
+function saveTravelMeals() {
+  localStorage.setItem(TRAVEL_MEALS_KEY, JSON.stringify(state.travelMeals || []));
+}
+
+function travelTotals() {
+  return (state.travelMeals || []).reduce((totals, meal) => {
+    const food = meal.items?.[0]?.inlineFood || {};
+    totals.calories += parseNumber(food.calories);
+    totals.fat += parseNumber(food.fat);
+    totals.carbs += parseNumber(food.carbs);
+    totals.protein += parseNumber(food.protein);
+    return totals;
+  }, { calories: 0, fat: 0, carbs: 0, protein: 0 });
+}
+
+function addTravelMeal(data) {
+  const id = `travel-${slug(data.name)}-${Date.now()}`;
+  const food = {
+    id: `${id}-food`,
+    name: data.name,
+    category: "Travel Meals",
+    calories: parseNumber(data.calories),
+    fat: parseNumber(data.fat),
+    carbs: parseNumber(data.carbs),
+    protein: parseNumber(data.protein)
+  };
+  const meal = {
+    id,
+    name: data.name,
+    travel: true,
+    note: data.note || "",
+    photo: data.photo || "",
+    createdAt: new Date().toISOString(),
+    items: [{ name: data.name, servings: 1, aliases: [data.name], inlineFood: food }]
+  };
+  state.travelMeals = [meal, ...(state.travelMeals || [])].slice(0, 30);
+  state.mealSlots[TRAVEL_SLOT] = mealInstancesForSlot(TRAVEL_SLOT);
+  state.mealSlots[TRAVEL_SLOT].push({ id: `${id}-instance`, mealId: id });
+  saveTravelMeals();
+  localStorage.setItem(MEAL_SLOT_KEY, JSON.stringify(state.mealSlots));
+  snapshotTodayNutrition();
+}
+
+function removeTravelMeal(mealId) {
+  state.travelMeals = (state.travelMeals || []).filter((meal) => meal.id !== mealId);
+  state.mealSlots[TRAVEL_SLOT] = mealInstancesForSlot(TRAVEL_SLOT).filter((instance) => instance.mealId !== mealId);
+  Object.keys(state.mealServings).forEach((key) => {
+    if (key.includes(`::${slug(mealId)}`)) delete state.mealServings[key];
+  });
+  saveTravelMeals();
+  localStorage.setItem(MEAL_SLOT_KEY, JSON.stringify(state.mealSlots));
+  localStorage.setItem(MEAL_PLAN_KEY, JSON.stringify(state.mealServings));
+  snapshotTodayNutrition();
+}
+
+function setTravelPhotoFromFile(file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    const img = new Image();
+    img.onload = () => {
+      const maxSide = 900;
+      const scale = Math.min(1, maxSide / Math.max(img.width, img.height));
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.max(1, Math.round(img.width * scale));
+      canvas.height = Math.max(1, Math.round(img.height * scale));
+      const context = canvas.getContext("2d");
+      context.drawImage(img, 0, 0, canvas.width, canvas.height);
+      state.travelPhotoPreview = canvas.toDataURL("image/jpeg", 0.76);
+      renderTravelScan();
+    };
+    img.src = String(reader.result || "");
+  };
+  reader.readAsDataURL(file);
+}
+
+function renderTravelScan() {
+  const totals = travelTotals();
+  document.querySelector("#app").innerHTML = `
+    ${topShell("Travel Meal Scan", `<div class="action-row"><button class="ghost" data-view-target="home">Home</button><button class="ghost" data-view-target="meal">Meal Plan</button></div>`)}
+    <section class="summary travel-summary">
+      <div class="metric"><span>Travel Calories</span><strong>${fmt(totals.calories)}</strong></div>
+      <div class="metric"><span>Protein</span><strong>${fmt(totals.protein)}g</strong></div>
+      <div class="metric"><span>Carbs</span><strong>${fmt(totals.carbs)}g</strong></div>
+      <div class="metric"><span>Fat</span><strong>${fmt(totals.fat)}g</strong></div>
+    </section>
+    <section class="slot-card travel-card">
+      <div>
+        <h2>Unexpected Meal</h2>
+        <p>Take or upload a photo, enter the best macro estimate, then add it to today's Meal Plan totals.</p>
+      </div>
+      <form class="travel-form" data-travel-form>
+        <label class="travel-photo-box">
+          <span>${state.travelPhotoPreview ? "Change meal photo" : "Take or upload meal photo"}</span>
+          <input type="file" accept="image/*" capture="environment" data-travel-photo>
+          ${state.travelPhotoPreview ? `<img src="${esc(state.travelPhotoPreview)}" alt="Travel meal preview">` : `<b>Camera / Photo Library</b>`}
+        </label>
+        <label class="field full"><span>Meal name</span><input name="travelName" placeholder="Example: airport chicken bowl" required></label>
+        <label class="field full"><span>Notes</span><input name="travelNote" placeholder="Restaurant, sauce, portion guess, confidence"></label>
+        <div class="form-grid compact-fields">
+          <label class="field"><span>Calories</span><input name="travelCalories" inputmode="decimal" required></label>
+          <label class="field"><span>Fat</span><input name="travelFat" inputmode="decimal"></label>
+          <label class="field"><span>Carbs</span><input name="travelCarbs" inputmode="decimal"></label>
+          <label class="field"><span>Protein</span><input name="travelProtein" inputmode="decimal"></label>
+        </div>
+        <div class="action-row"><button class="primary" type="submit">Add To Meal Plan</button><button class="ghost" type="button" data-clear-travel-photo>Clear Photo</button></div>
+      </form>
+    </section>
+    <div class="section-label">Saved travel meals today</div>
+    <main class="items">
+      ${(state.travelMeals || []).length ? state.travelMeals.map((meal) => {
+        const food = meal.items?.[0]?.inlineFood || {};
+        return `
+          <article class="item travel-entry">
+            ${meal.photo ? `<img class="travel-thumb" src="${esc(meal.photo)}" alt="${esc(meal.name)}">` : ""}
+            <div class="item-head">
+              <div><div class="item-name">${esc(meal.name)}</div><div class="item-cat">${fmt(food.calories)} cal - F ${fmt(food.fat)}g - C ${fmt(food.carbs)}g - P ${fmt(food.protein)}g${meal.note ? " - " + esc(meal.note) : ""}</div></div>
+              <button class="mini danger" data-delete-travel-meal="${esc(meal.id)}">Remove</button>
+            </div>
+          </article>
+        `;
+      }).join("") : `<div class="empty">No travel meals added yet.</div>`}
+    </main>
   `;
 }
 
@@ -3909,8 +4101,9 @@ function renderDesserts() {
 
 function mealOptions(selected = "", slot = "") {
   const dessertOnly = slot === DESSERT_SLOT;
-  const meals = savedMeals().filter((meal) => dessertOnly ? meal.dessert : !meal.dessert);
-  const placeholder = dessertOnly ? "Choose dessert..." : "Choose saved meal...";
+  const travelOnly = slot === TRAVEL_SLOT;
+  const meals = savedMeals().filter((meal) => travelOnly ? meal.travel : dessertOnly ? meal.dessert : !meal.dessert && !meal.travel);
+  const placeholder = travelOnly ? "Travel meals are added from the scan page" : dessertOnly ? "Choose dessert..." : "Choose saved meal...";
   return `<option value="">${placeholder}</option>${meals.map((meal) => {
     const id = meal.id || meal.name;
     return `<option value="${esc(id)}" ${id === selected ? "selected" : ""}>${esc(meal.name)}</option>`;
@@ -4012,8 +4205,10 @@ function renderMealSlot(slot) {
       </div>
       ${isCollapsed ? "" : `
       <div class="slot-add-row">
-        <select class="phase-select" data-pending-slot-meal="${esc(slot)}">${mealOptions("", slot)}</select>
-        <button class="primary" data-add-slot-meal="${esc(slot)}">${slot === DESSERT_SLOT ? "Add Dessert" : "Add Meal"}</button>
+        ${slot === TRAVEL_SLOT
+          ? `<button class="primary" data-view-target="travel">Open Travel Meal Scan</button>`
+          : `<select class="phase-select" data-pending-slot-meal="${esc(slot)}">${mealOptions("", slot)}</select>
+        <button class="primary" data-add-slot-meal="${esc(slot)}">${slot === DESSERT_SLOT ? "Add Dessert" : "Add Meal"}</button>`}
       </div>
       ${instances.length ? instances.map((instance) => {
         const meal = mealById(instance.mealId);
@@ -4334,6 +4529,10 @@ function render() {
     renderWeeklyPlan();
     return;
   }
+  if (state.view === "travel") {
+    renderTravelScan();
+    return;
+  }
   if (state.view === "marathon") {
     renderMarathonPrep();
     return;
@@ -4503,6 +4702,17 @@ document.addEventListener("click", (event) => {
     renderModal();
     return;
   }
+  if (event.target.closest("[data-clear-travel-photo]")) {
+    state.travelPhotoPreview = "";
+    renderTravelScan();
+    return;
+  }
+  const deleteTravelMeal = event.target.closest("[data-delete-travel-meal]");
+  if (deleteTravelMeal) {
+    removeTravelMeal(deleteTravelMeal.dataset.deleteTravelMeal);
+    renderTravelScan();
+    return;
+  }
   const mealSlotToggle = event.target.closest("[data-toggle-meal-slot]");
   if (mealSlotToggle) {
     const slot = mealSlotToggle.dataset.toggleMealSlot;
@@ -4529,6 +4739,12 @@ document.addEventListener("click", (event) => {
   if (removeSlotMeal) {
     const slot = removeSlotMeal.dataset.removeSlotMeal;
     const instanceId = removeSlotMeal.dataset.mealInstance;
+    const removedInstance = mealInstancesForSlot(slot).find((instance) => instance.id === instanceId);
+    if (slot === TRAVEL_SLOT && removedInstance) {
+      removeTravelMeal(removedInstance.mealId);
+      renderMealPlan();
+      return;
+    }
     state.mealSlots[slot] = mealInstancesForSlot(slot).filter((instance) => instance.id !== instanceId);
     Object.keys(state.mealServings).forEach((key) => {
       if (key.startsWith(`${instanceId}::`)) delete state.mealServings[key];
@@ -4779,6 +4995,7 @@ document.addEventListener("click", (event) => {
       localStorage.removeItem("macroServings");
       localStorage.removeItem("macroActiveOnly");
       localStorage.removeItem(CHEAT_KEY);
+      localStorage.removeItem(TRAVEL_MEALS_KEY);
       localStorage.removeItem(MEAL_PLAN_KEY);
       localStorage.removeItem(MEAL_SLOT_KEY);
       localStorage.removeItem(CUSTOM_MEALS_KEY);
@@ -4795,6 +5012,8 @@ document.addEventListener("click", (event) => {
       localStorage.removeItem(GROCERY_DAYS_KEY);
       state.favoriteIds = [];
       state.cheatEntries = {};
+      state.travelMeals = [];
+      state.travelPhotoPreview = "";
       state.mealServings = {};
       state.mealSlots = {};
       state.weeklyPlans = {};
@@ -4857,6 +5076,11 @@ document.addEventListener("change", (event) => {
       }
     };
     reader.readAsText(file);
+    return;
+  }
+  if (event.target.matches("[data-travel-photo]")) {
+    const file = event.target.files?.[0];
+    if (file) setTravelPhotoFromFile(file);
     return;
   }
   if (event.target.matches("[data-theme-select]")) {
@@ -4930,6 +5154,26 @@ document.addEventListener("submit", (event) => {
       localStorage.setItem(PROFILE_DATA_KEY, JSON.stringify(state.profileData));
     }
     render();
+    return;
+  }
+  const travelForm = event.target.closest("[data-travel-form]");
+  if (travelForm) {
+    event.preventDefault();
+    const formData = new FormData(travelForm);
+    const calories = parseNumber(formData.get("travelCalories"));
+    const name = String(formData.get("travelName") || "").trim() || "Travel meal";
+    if (calories <= 0) return;
+    addTravelMeal({
+      name,
+      note: String(formData.get("travelNote") || "").trim(),
+      calories,
+      fat: parseNumber(formData.get("travelFat")),
+      carbs: parseNumber(formData.get("travelCarbs")),
+      protein: parseNumber(formData.get("travelProtein")),
+      photo: state.travelPhotoPreview
+    });
+    state.travelPhotoPreview = "";
+    renderTravelScan();
     return;
   }
   const profileForm = event.target.closest("[data-profile-form]");
